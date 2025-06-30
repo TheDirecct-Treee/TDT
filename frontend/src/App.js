@@ -158,20 +158,20 @@ const HomePage = () => {
       </section>
 
       {/* Islands Section */}
-      <section className="py-16 bg-gray-50">
+      <section className="py-16 bg-gradient-to-br from-blue-50 to-teal-50">
         <div className="container mx-auto px-6">
           <h2 className="text-3xl font-bold text-center mb-12 text-gray-800">
-            Explore Businesses by Island
+            🏝️ Explore Businesses by Island
           </h2>
           <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
             {islands.slice(0, 12).map((island) => (
               <Link
                 key={island}
                 to={`/businesses?island=${encodeURIComponent(island)}`}
-                className="bg-white rounded-lg p-4 text-center shadow-md hover:shadow-lg transition-shadow hover:bg-blue-50"
+                className="bg-white rounded-xl p-4 text-center shadow-md hover:shadow-xl transition-all transform hover:scale-105 hover:bg-gradient-to-br hover:from-orange-50 hover:to-pink-50 group"
               >
-                <div className="text-2xl mb-2">🏝️</div>
-                <div className="font-semibold text-gray-800">{island}</div>
+                <div className="text-2xl mb-2 group-hover:scale-110 transition-transform">🏝️</div>
+                <div className="font-semibold text-gray-800 text-sm">{island}</div>
               </Link>
             ))}
           </div>
@@ -179,19 +179,19 @@ const HomePage = () => {
       </section>
 
       {/* Categories Section */}
-      <section className="py-16">
+      <section className="py-16 bg-white">
         <div className="container mx-auto px-6">
           <h2 className="text-3xl font-bold text-center mb-12 text-gray-800">
-            Browse by Category
+            🎯 Browse by Category
           </h2>
           <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6">
             {categories.slice(0, 12).map((category) => (
               <Link
                 key={category}
                 to={`/businesses?category=${encodeURIComponent(category)}`}
-                className="bg-gradient-to-br from-blue-500 to-teal-500 text-white rounded-lg p-6 text-center hover:from-blue-600 hover:to-teal-600 transition-all transform hover:scale-105 shadow-lg"
+                className="bg-gradient-to-br from-blue-500 via-teal-500 to-orange-500 text-white rounded-xl p-6 text-center hover:from-blue-600 hover:via-teal-600 hover:to-orange-600 transition-all transform hover:scale-105 shadow-lg hover:shadow-xl"
               >
-                <div className="font-semibold">{category}</div>
+                <div className="font-semibold text-sm">{category}</div>
               </Link>
             ))}
           </div>
