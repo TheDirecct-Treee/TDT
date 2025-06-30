@@ -1147,7 +1147,7 @@ async def create_subscription(
 async def execute_subscription(
     subscription_id: str, 
     payer_id: str,
-    background_tasks: BackgroundTasks = Depends()
+    background_tasks: BackgroundTasks
 ):
     try:
         billing_agreement = paypalrestsdk.BillingAgreement.find(subscription_id)
