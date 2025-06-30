@@ -527,6 +527,240 @@ async def update_business_rating(business_id: str):
             {"$set": {"rating_average": round(average_rating, 1), "rating_count": len(reviews)}}
         )
 
+# PayPal Routes
+@api_router.post("/paypal/create-plan")
+async def create_billing_plan():
+    try:
+        billing_plan = paypalrestsdk.BillingPlan({
+            "name": "The Direct Tree Monthly Subscription",
+            "description": "$20/month recurring subscription for business owners",
+            "type": "INFINITE",
+            "payment_definitions": [{
+                "name": "Regular payment definition",
+                "type": "REGULAR",
+                "frequency": "MONTH",
+                "frequency_interval": "1",
+                "amount": {
+                    "value": "20.00",
+                    "currency": "USD"
+                },
+                "cycles": "0"
+            }],
+            "merchant_preferences": {
+                "setup_fee": {
+                    "value": "0.00",
+                    "currency": "USD"
+                },
+                "return_url": f"{os.environ.get('FRONTEND_URL')}/subscription/success",
+                "cancel_url": f"{os.environ.get('FRONTEND_URL')}/subscription/cancel",
+                "auto_bill_amount": "YES",
+                "initial_fail_amount_action": "CONTINUE",
+                "max_fail_attempts": "3"
+            }
+        })
+
+        if billing_plan.create():
+            if billing_plan.activate():
+                # Store in database
+                plan_data = {
+                    "id": str(uuid.uuid4()),
+                    "paypal_plan_id": billing_plan.id,
+                    "name": billing_plan.name,
+                    "amount": "20.00",
+                    "currency": "USD",
+                    "status": "ACTIVE",
+                    "created_at": datetime.utcnow()
+                }
+                await db.billing_plans.insert_one(plan_data)
+                return {"plan_id": billing_plan.id, "status": "ACTIVE"}
+            else:
+                raise HTTPException(status_code=500, detail="Failed to activate billing plan")
+        else:
+            raise HTTPException(status_code=500, detail="Failed to create billing plan")
+    except Exception as e:
+        logger.error(f"Error creating billing plan: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@api_router.post("/paypal/create-subscription", response_model=SubscriptionResponse)
+async def create_subscription(
+    request: SubscriptionRequest,
+    current_user: User = Depends(get_current_user)
+):
+    try:
+        if current_user.role != UserRole.BUSINESS_OWNER:
+            raise HTTPException(status_code=403, detail="Only business owners can create subscriptions")
+        
+        # Get user's business
+        business = await db.businesses.find_one({"user_id": current_user.id})
+        if not business:
+            raise HTTPException(status_code=404, detail="Business not found")
+        
+        # Check if subscription already exists
+        existing_subscription = await db.subscriptions.find_one({"user_id": current_user.id})
+        if existing_subscription:
+            raise HTTPException(status_code=400, detail="Subscription already exists")
+        
+        # Calculate trial end date
+        trial_end = datetime.utcnow() + timedelta(days=7)
+        
+        billing_agreement = paypalrestsdk.BillingAgreement({
+            "name": "The Direct Tree Monthly Subscription",
+            "description": "$20/month subscription with 7-day trial",
+            "start_date": trial_end.isoformat() + "Z",
+            "plan": {
+                "id": request.plan_id
+            },
+            "payer": {
+                "payment_method": "paypal",
+                "payer_info": {
+                    "email": current_user.email
+                }
+            }
+        })
+
+        if billing_agreement.create():
+            # Store subscription in database
+            subscription_data = PayPalSubscription(
+                user_id=current_user.id,
+                business_id=business["id"],
+                paypal_subscription_id=billing_agreement.id,
+                plan_id=request.plan_id,
+                status="PENDING",
+                trial_end_date=trial_end
+            )
+            
+            await db.subscriptions.insert_one(subscription_data.dict())
+            
+            # Get approval URL
+            approval_url = None
+            for link in billing_agreement.links:
+                if link.rel == "approval_url":
+                    approval_url = link.href
+                    break
+            
+            return SubscriptionResponse(
+                subscription_id=billing_agreement.id,
+                approval_url=approval_url,
+                status="PENDING"
+            )
+        else:
+            raise HTTPException(status_code=500, detail="Failed to create subscription")
+    except Exception as e:
+        logger.error(f"Error creating subscription: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@api_router.post("/paypal/execute-subscription/{subscription_id}")
+async def execute_subscription(subscription_id: str, payer_id: str):
+    try:
+        billing_agreement = paypalrestsdk.BillingAgreement.find(subscription_id)
+        
+        if billing_agreement.execute({"payer_id": payer_id}):
+            # Update subscription status in database
+            await db.subscriptions.update_one(
+                {"paypal_subscription_id": subscription_id},
+                {
+                    "$set": {
+                        "status": "ACTIVE",
+                        "activated_at": datetime.utcnow(),
+                        "updated_at": datetime.utcnow()
+                    }
+                }
+            )
+            
+            # Update business subscription status
+            subscription = await db.subscriptions.find_one({"paypal_subscription_id": subscription_id})
+            if subscription:
+                await db.businesses.update_one(
+                    {"id": subscription["business_id"]},
+                    {"$set": {"subscription_status": SubscriptionStatus.ACTIVE}}
+                )
+            
+            return {"status": "ACTIVE", "message": "Subscription activated successfully"}
+        else:
+            raise HTTPException(status_code=500, detail="Failed to execute subscription")
+    except Exception as e:
+        logger.error(f"Error executing subscription: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@api_router.post("/paypal/cancel-subscription/{subscription_id}")
+async def cancel_subscription(subscription_id: str, current_user: User = Depends(get_current_user)):
+    try:
+        # Verify user owns this subscription
+        subscription = await db.subscriptions.find_one({
+            "paypal_subscription_id": subscription_id,
+            "user_id": current_user.id
+        })
+        if not subscription:
+            raise HTTPException(status_code=404, detail="Subscription not found")
+        
+        billing_agreement = paypalrestsdk.BillingAgreement.find(subscription_id)
+        
+        cancel_note = {
+            "note": "Subscription cancelled by user request"
+        }
+        
+        if billing_agreement.cancel(cancel_note):
+            # Update subscription status in database
+            await db.subscriptions.update_one(
+                {"paypal_subscription_id": subscription_id},
+                {
+                    "$set": {
+                        "status": "CANCELLED",
+                        "cancelled_at": datetime.utcnow(),
+                        "updated_at": datetime.utcnow()
+                    }
+                }
+            )
+            
+            # Update business subscription status
+            await db.businesses.update_one(
+                {"id": subscription["business_id"]},
+                {"$set": {"subscription_status": SubscriptionStatus.CANCELLED}}
+            )
+            
+            return {"status": "CANCELLED", "message": "Subscription cancelled successfully"}
+        else:
+            raise HTTPException(status_code=500, detail="Failed to cancel subscription")
+    except Exception as e:
+        logger.error(f"Error cancelling subscription: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@api_router.get("/paypal/subscription-status")
+async def get_user_subscription_status(current_user: User = Depends(get_current_user)):
+    try:
+        # Get from database
+        subscription = await db.subscriptions.find_one({"user_id": current_user.id})
+        
+        if not subscription:
+            return {"status": "NONE", "message": "No subscription found"}
+        
+        # Verify with PayPal
+        billing_agreement = paypalrestsdk.BillingAgreement.find(subscription["paypal_subscription_id"])
+        
+        # Update database if status changed
+        if billing_agreement.state != subscription["status"]:
+            await db.subscriptions.update_one(
+                {"paypal_subscription_id": subscription["paypal_subscription_id"]},
+                {
+                    "$set": {
+                        "status": billing_agreement.state,
+                        "updated_at": datetime.utcnow()
+                    }
+                }
+            )
+        
+        return {
+            "subscription_id": subscription["paypal_subscription_id"],
+            "status": billing_agreement.state,
+            "amount": subscription["amount"],
+            "currency": subscription["currency"],
+            "trial_end_date": subscription.get("trial_end_date"),
+            "next_billing_date": getattr(billing_agreement.agreement_details, 'next_billing_date', None) if hasattr(billing_agreement, 'agreement_details') else None
+        }
+    except Exception as e:
+        logger.error(f"Error checking subscription status: {str(e)}")
+        return {"status": "ERROR", "message": str(e)}
+
 # Include the router in the main app
 app.include_router(api_router)
 
