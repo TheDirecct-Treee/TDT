@@ -181,6 +181,30 @@ class AppointmentCreate(BaseModel):
     service: str
     notes: Optional[str] = None
 
+# PayPal Models
+class SubscriptionRequest(BaseModel):
+    plan_id: str
+
+class SubscriptionResponse(BaseModel):
+    subscription_id: str
+    approval_url: str
+    status: str
+
+class PayPalSubscription(BaseModel):
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    user_id: str
+    business_id: str
+    paypal_subscription_id: str
+    plan_id: str
+    status: str
+    amount: str = "20.00"
+    currency: str = "USD"
+    trial_days: int = 7
+    trial_end_date: datetime
+    next_billing_date: Optional[datetime] = None
+    created_at: datetime = Field(default_factory=datetime.utcnow)
+    updated_at: datetime = Field(default_factory=datetime.utcnow)
+
 # Utility functions
 def hash_password(password: str) -> str:
     return bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
