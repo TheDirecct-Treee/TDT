@@ -1118,7 +1118,235 @@ async def update_appointment_status(
     
     return {"message": f"Appointment {status.value} successfully"}
 
-# Admin Routes
+# Event Routes
+@api_router.get("/events")
+async def get_events(
+    island: Optional[str] = None,
+    category: Optional[str] = None,
+    date: Optional[str] = None,
+    skip: int = 0,
+    limit: int = 50
+):
+    query = {"is_active": True, "is_paid": True}
+    
+    if island:
+        query["island"] = island
+    if category:
+        query["category"] = category
+    if date:
+        # Parse date and find events for that day
+        try:
+            event_date = datetime.strptime(date, "%Y-%m-%d")
+            next_day = event_date + timedelta(days=1)
+            query["event_date"] = {"$gte": event_date, "$lt": next_day}
+        except ValueError:
+            raise HTTPException(status_code=400, detail="Invalid date format. Use YYYY-MM-DD")
+    
+    events = await db.events.find(query).sort("event_date", 1).skip(skip).limit(limit).to_list(limit)
+    return [Event(**event) for event in events]
+
+@api_router.post("/event/create", response_model=Event)
+async def create_event(event_data: EventCreate):
+    # Create event (unpaid initially)
+    event = Event(**event_data.dict())
+    event.is_paid = False
+    
+    await db.events.insert_one(event.dict())
+    return event
+
+@api_router.get("/event/{event_id}", response_model=Event)
+async def get_event(event_id: str):
+    event_data = await db.events.find_one({"id": event_id})
+    if not event_data:
+        raise HTTPException(status_code=404, detail="Event not found")
+    return Event(**event_data)
+
+# Event Payment Routes
+@api_router.post("/event/{event_id}/create-payment")
+async def create_event_payment(event_id: str):
+    # Get event
+    event_data = await db.events.find_one({"id": event_id})
+    if not event_data:
+        raise HTTPException(status_code=404, detail="Event not found")
+    
+    event = Event(**event_data)
+    
+    if event.is_paid:
+        raise HTTPException(status_code=400, detail="Event already paid")
+    
+    try:
+        # Create PayPal payment for $5
+        payment = paypalrestsdk.Payment({
+            "intent": "sale",
+            "payer": {
+                "payment_method": "paypal"
+            },
+            "redirect_urls": {
+                "return_url": f"{os.environ.get('FRONTEND_URL')}/event/payment-success?event_id={event_id}",
+                "cancel_url": f"{os.environ.get('FRONTEND_URL')}/event/payment-cancel?event_id={event_id}"
+            },
+            "transactions": [{
+                "item_list": {
+                    "items": [{
+                        "name": f"Event Listing: {event.title}",
+                        "sku": f"event-{event_id}",
+                        "price": "5.00",
+                        "currency": "USD",
+                        "quantity": 1
+                    }]
+                },
+                "amount": {
+                    "total": "5.00",
+                    "currency": "USD"
+                },
+                "description": f"Payment for event listing: {event.title}"
+            }]
+        })
+
+        if payment.create():
+            # Get approval URL
+            approval_url = None
+            for link in payment.links:
+                if link.rel == "approval_url":
+                    approval_url = link.href
+                    break
+            
+            return {
+                "payment_id": payment.id,
+                "approval_url": approval_url,
+                "status": "created"
+            }
+        else:
+            raise HTTPException(status_code=500, detail="Failed to create payment")
+            
+    except Exception as e:
+        logger.error(f"Error creating event payment: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@api_router.post("/event/{event_id}/execute-payment")
+async def execute_event_payment(
+    event_id: str,
+    payment_id: str,
+    payer_id: str,
+    background_tasks: BackgroundTasks
+):
+    try:
+        # Execute PayPal payment
+        payment = paypalrestsdk.Payment.find(payment_id)
+        
+        if payment.execute({"payer_id": payer_id}):
+            # Update event as paid
+            await db.events.update_one(
+                {"id": event_id},
+                {
+                    "$set": {
+                        "is_paid": True,
+                        "payment_date": datetime.utcnow(),
+                        "paypal_payment_id": payment_id,
+                        "updated_at": datetime.utcnow()
+                    }
+                }
+            )
+            
+            # Get event for email notification
+            event_data = await db.events.find_one({"id": event_id})
+            if event_data:
+                event = Event(**event_data)
+                # Send confirmation email
+                background_tasks.add_task(
+                    send_event_payment_confirmation,
+                    event.organizer_email,
+                    event.organizer_name,
+                    event.title,
+                    event.event_date.strftime("%B %d, %Y")
+                )
+            
+            return {"status": "success", "message": "Payment confirmed. Your event is now live!"}
+        else:
+            raise HTTPException(status_code=500, detail="Failed to execute payment")
+            
+    except Exception as e:
+        logger.error(f"Error executing event payment: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@api_router.get("/my-events")
+async def get_my_events(organizer_email: str):
+    events = await db.events.find({"organizer_email": organizer_email}).sort("event_date", 1).to_list(100)
+    return [Event(**event) for event in events]
+
+@api_router.put("/event/{event_id}")
+async def update_event(
+    event_id: str,
+    event_data: EventCreate,
+    organizer_email: str
+):
+    # Verify organizer ownership
+    event = await db.events.find_one({"id": event_id, "organizer_email": organizer_email})
+    if not event:
+        raise HTTPException(status_code=404, detail="Event not found or access denied")
+    
+    update_data = event_data.dict()
+    update_data["updated_at"] = datetime.utcnow()
+    
+    await db.events.update_one({"id": event_id}, {"$set": update_data})
+    
+    updated_event = await db.events.find_one({"id": event_id})
+    return Event(**updated_event)
+
+@api_router.delete("/event/{event_id}")
+async def delete_event(event_id: str, organizer_email: str):
+    # Verify organizer ownership
+    event = await db.events.find_one({"id": event_id, "organizer_email": organizer_email})
+    if not event:
+        raise HTTPException(status_code=404, detail="Event not found or access denied")
+    
+    await db.events.update_one(
+        {"id": event_id},
+        {"$set": {"is_active": False, "updated_at": datetime.utcnow()}}
+    )
+    
+    return {"message": "Event deleted successfully"}
+
+# Event email notification
+def send_event_payment_confirmation(organizer_email: str, organizer_name: str, event_title: str, event_date: str):
+    """Send event payment confirmation email"""
+    html_content = f"""
+    <html>
+        <body style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+            <div style="background: linear-gradient(135deg, #f59e0b, #ec4899); padding: 20px; text-align: center;">
+                <h1 style="color: white; margin: 0;">Event Payment Confirmed! 🎉</h1>
+            </div>
+            <div style="padding: 20px; background: #f8fafc;">
+                <h2 style="color: #1e293b;">Hi {organizer_name}!</h2>
+                <p style="color: #475569; font-size: 16px;">
+                    Your payment of $5.00 has been confirmed and your event is now live on The Direct Tree!
+                </p>
+                <div style="background: #fef3c7; padding: 15px; border-radius: 8px; margin: 20px 0;">
+                    <h3 style="color: #92400e; margin: 0 0 10px 0;">Event Details:</h3>
+                    <p style="color: #92400e; margin: 5px 0;"><strong>Title:</strong> {event_title}</p>
+                    <p style="color: #92400e; margin: 5px 0;"><strong>Date:</strong> {event_date}</p>
+                </div>
+                <p style="color: #475569; font-size: 16px;">
+                    Your event will be visible to everyone browsing The Direct Tree. You can manage your event anytime from your organizer dashboard.
+                </p>
+                <div style="text-align: center; margin: 30px 0;">
+                    <a href="{os.environ.get('FRONTEND_URL')}/events" 
+                       style="background: linear-gradient(135deg, #f59e0b, #ec4899); 
+                              color: white; 
+                              padding: 15px 30px; 
+                              text-decoration: none; 
+                              border-radius: 25px; 
+                              font-weight: bold;
+                              display: inline-block;">
+                        View Your Event
+                    </a>
+                </div>
+            </div>
+        </body>
+    </html>
+    """
+    
+    return send_email(organizer_email, f"Event Payment Confirmed - {event_title}", html_content)
 @api_router.get("/admin/businesses/pending")
 async def get_pending_businesses(current_user: User = Depends(get_current_user)):
     if current_user.role != UserRole.ADMIN:
