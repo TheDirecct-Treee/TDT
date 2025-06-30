@@ -57,45 +57,45 @@ const Header = () => {
   const navigate = useNavigate();
 
   return (
-    <header className="bg-gradient-to-r from-blue-600 to-teal-600 text-white shadow-lg">
+    <header className="bg-gradient-to-r from-blue-600 via-teal-600 to-orange-500 text-white shadow-lg">
       <div className="container mx-auto px-6 py-4">
         <div className="flex items-center justify-between">
           <Link to="/" className="text-2xl font-bold text-white hover:text-orange-200 transition-colors">
             The Direct Tree
           </Link>
           <nav className="flex items-center space-x-6">
-            <Link to="/businesses" className="hover:text-blue-200 transition-colors">
+            <Link to="/businesses" className="hover:text-orange-200 transition-colors font-medium">
               Browse Businesses
             </Link>
             {user ? (
               <div className="flex items-center space-x-4">
-                <span className="text-blue-200">
-                  Welcome, {user.first_name}!
+                <span className="text-blue-100">
+                  Welcome, {user.first_name}! 👋
                 </span>
                 {user.role === 'business_owner' && (
-                  <Link to="/dashboard" className="hover:text-blue-200 transition-colors">
+                  <Link to="/dashboard" className="hover:text-orange-200 transition-colors font-medium">
                     Dashboard
                   </Link>
                 )}
                 {user.role === 'admin' && (
-                  <Link to="/admin" className="hover:text-blue-200 transition-colors">
+                  <Link to="/admin" className="hover:text-orange-200 transition-colors font-medium">
                     Admin
                   </Link>
                 )}
                 <button
                   onClick={logout}
-                  className="bg-blue-700 hover:bg-blue-800 px-4 py-2 rounded-lg transition-colors"
+                  className="bg-white/20 hover:bg-white/30 backdrop-blur-sm px-4 py-2 rounded-full transition-all font-medium"
                 >
                   Logout
                 </button>
               </div>
             ) : (
               <div className="flex items-center space-x-4">
-                <Link to="/login" className="hover:text-blue-200 transition-colors">
+                <Link to="/login" className="hover:text-orange-200 transition-colors font-medium">
                   Login
                 </Link>
-                <Link to="/register" className="bg-teal-500 hover:bg-teal-600 px-4 py-2 rounded-lg transition-colors">
-                  Register
+                <Link to="/register" className="bg-gradient-to-r from-orange-500 to-pink-500 hover:from-orange-600 hover:to-pink-600 px-6 py-2 rounded-full transition-all font-medium shadow-lg transform hover:scale-105">
+                  Join Us
                 </Link>
               </div>
             )}
