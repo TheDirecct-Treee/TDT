@@ -1027,6 +1027,7 @@ async def delete_business_faq(
     
     await db.business_faqs.delete_one({"id": faq_id})
     return {"message": "FAQ deleted successfully"}
+# Enhanced Appointment Routes
 @api_router.post("/appointment/create", response_model=Appointment)
 async def create_appointment(
     appointment_data: AppointmentCreate,
@@ -1077,8 +1078,45 @@ async def get_business_appointments(
     if not business:
         raise HTTPException(status_code=403, detail="Access denied")
     
-    appointments = await db.appointments.find({"business_id": business_id}).to_list(100)
-    return [Appointment(**appointment) for appointment in appointments]
+    appointments = await db.appointments.find({"business_id": business_id}).sort("appointment_date", 1).to_list(100)
+    
+    # Get customer details for each appointment
+    enriched_appointments = []
+    for appointment in appointments:
+        customer = await db.users.find_one({"id": appointment["customer_id"]})
+        appointment_obj = Appointment(**appointment)
+        appointment_dict = appointment_obj.dict()
+        if customer:
+            appointment_dict["customer_name"] = f"{customer['first_name']} {customer['last_name']}"
+            appointment_dict["customer_email"] = customer["email"]
+            appointment_dict["customer_phone"] = customer.get("phone", "")
+        enriched_appointments.append(appointment_dict)
+    
+    return enriched_appointments
+
+@api_router.put("/appointment/{appointment_id}/status")
+async def update_appointment_status(
+    appointment_id: str,
+    status: AppointmentStatus,
+    current_user: User = Depends(get_current_user)
+):
+    # Get appointment
+    appointment = await db.appointments.find_one({"id": appointment_id})
+    if not appointment:
+        raise HTTPException(status_code=404, detail="Appointment not found")
+    
+    # Verify business ownership
+    business = await db.businesses.find_one({"id": appointment["business_id"], "user_id": current_user.id})
+    if not business:
+        raise HTTPException(status_code=403, detail="Access denied")
+    
+    # Update status
+    await db.appointments.update_one(
+        {"id": appointment_id},
+        {"$set": {"status": status, "updated_at": datetime.utcnow()}}
+    )
+    
+    return {"message": f"Appointment {status.value} successfully"}
 
 # Admin Routes
 @api_router.get("/admin/businesses/pending")
