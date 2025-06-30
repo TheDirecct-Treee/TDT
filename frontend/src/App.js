@@ -199,32 +199,32 @@ const HomePage = () => {
       </section>
 
       {/* Featured Businesses */}
-      <section className="py-16 bg-gray-50">
+      <section className="py-16 bg-gradient-to-br from-teal-50 to-orange-50">
         <div className="container mx-auto px-6">
           <h2 className="text-3xl font-bold text-center mb-12 text-gray-800">
-            Featured Businesses
+            ⭐ Featured Businesses
           </h2>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {featuredBusinesses.map((business) => (
-              <div key={business.id} className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
+              <div key={business.id} className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition-all transform hover:scale-105 group">
                 <div className="p-6">
                   <div className="flex items-center justify-between mb-4">
-                    <h3 className="text-xl font-bold text-gray-800">{business.business_name}</h3>
-                    <div className="flex items-center">
-                      <span className="text-yellow-400">⭐</span>
-                      <span className="ml-1 text-gray-600">{business.rating_average || 'New'}</span>
+                    <h3 className="text-xl font-bold text-gray-800 group-hover:text-orange-600 transition-colors">{business.business_name}</h3>
+                    <div className="flex items-center bg-yellow-100 rounded-full px-3 py-1">
+                      <span className="text-yellow-500">⭐</span>
+                      <span className="ml-1 text-gray-700 font-medium text-sm">{business.rating_average || 'New'}</span>
                     </div>
                   </div>
-                  <p className="text-gray-600 mb-4">{business.description}</p>
-                  <div className="flex items-center justify-between text-sm text-gray-500">
-                    <span>{business.category}</span>
-                    <span>{business.island}</span>
+                  <p className="text-gray-600 mb-4 line-clamp-2">{business.description}</p>
+                  <div className="flex items-center justify-between text-sm text-gray-500 mb-4">
+                    <span className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full font-medium">{business.category}</span>
+                    <span className="bg-teal-100 text-teal-800 px-3 py-1 rounded-full font-medium">{business.island}</span>
                   </div>
                   <Link
                     to={`/business/${business.id}`}
-                    className="mt-4 block w-full bg-blue-600 hover:bg-blue-700 text-white text-center py-2 rounded-lg transition-colors"
+                    className="block w-full bg-gradient-to-r from-blue-600 to-teal-600 hover:from-blue-700 hover:to-teal-700 text-white text-center py-3 rounded-xl transition-all font-medium transform hover:scale-105"
                   >
-                    View Details
+                    View Details 🔍
                   </Link>
                 </div>
               </div>
