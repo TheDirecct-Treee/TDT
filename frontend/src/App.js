@@ -138,21 +138,21 @@ const HomePage = () => {
       <section 
         className="relative h-96 bg-cover bg-center flex items-center justify-center"
         style={{ 
-          backgroundImage: "linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('https://images.pexels.com/photos/32761989/pexels-photo-32761989.jpeg')"
+          backgroundImage: "linear-gradient(rgba(0, 91, 150, 0.7), rgba(0, 150, 136, 0.7)), url('https://images.unsplash.com/photo-1568826248417-b40de68c4ad6?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDQ2NDF8MHwxfHNlYXJjaHwxfHwxNzUxMzEwNDgwfDA&ixlib=rb-4.1.0&q=85')"
         }}
       >
-        <div className="text-center text-white">
-          <h1 className="text-5xl font-bold mb-4">
+        <div className="text-center text-white hero-text">
+          <h1 className="text-5xl font-bold mb-4 hero-title">
             Find & Connect with Local Bahamas Businesses
           </h1>
-          <p className="text-xl mb-8">
+          <p className="text-xl mb-8 hero-subtitle">
             The Direct Tree - Your trusted directory for licensed businesses across all islands
           </p>
           <Link 
             to="/businesses"
-            className="bg-teal-500 hover:bg-teal-600 text-white px-8 py-3 rounded-lg text-lg font-semibold transition-colors"
+            className="bg-gradient-to-r from-orange-500 to-pink-500 hover:from-orange-600 hover:to-pink-600 text-white px-8 py-3 rounded-full text-lg font-semibold transition-all transform hover:scale-105 shadow-lg"
           >
-            Explore Businesses
+            Explore Businesses 🏝️
           </Link>
         </div>
       </section>
