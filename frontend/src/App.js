@@ -258,8 +258,10 @@ const RegisterPage = () => {
 
     try {
       const response = await axios.post(`${API}/register`, formData);
-      login(response.data.user, response.data.token);
-      navigate('/');
+    return {
+      "message": "User registered successfully. Please check your email to verify your account.",
+      "email": user_data.email
+    };
     } catch (error) {
       setError(error.response?.data?.detail || 'Registration failed');
     } finally {
