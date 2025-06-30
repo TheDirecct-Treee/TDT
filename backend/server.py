@@ -649,6 +649,10 @@ async def get_islands():
 async def get_categories():
     return {"categories": BUSINESS_CATEGORIES}
 
+@api_router.get("/event-categories")
+async def get_event_categories():
+    return {"categories": EVENT_CATEGORIES}
+
 # Authentication Routes
 @api_router.post("/register")
 async def register(user_data: UserCreate, background_tasks: BackgroundTasks):
