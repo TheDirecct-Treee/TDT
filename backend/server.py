@@ -14,6 +14,8 @@ import bcrypt
 import jwt
 from enum import Enum
 import re
+import paypalrestsdk
+import requests
 
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
