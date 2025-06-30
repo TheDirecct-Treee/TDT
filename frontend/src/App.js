@@ -649,7 +649,356 @@ const BusinessListPage = () => {
   );
 };
 
-// Main App Component
+// Business Dashboard Page
+const BusinessDashboard = () => {
+  const { user } = useAuth();
+  const [business, setBusiness] = useState(null);
+  const [subscription, setSubscription] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [planId, setPlanId] = useState(null);
+
+  useEffect(() => {
+    fetchBusinessData();
+    fetchSubscriptionStatus();
+  }, []);
+
+  const fetchBusinessData = async () => {
+    try {
+      const response = await axios.get(`${API}/businesses`);
+      const userBusiness = response.data.find(b => b.user_id === user.id);
+      setBusiness(userBusiness);
+    } catch (error) {
+      console.error('Error fetching business:', error);
+    }
+  };
+
+  const fetchSubscriptionStatus = async () => {
+    try {
+      const response = await axios.get(`${API}/paypal/subscription-status`);
+      setSubscription(response.data);
+    } catch (error) {
+      console.error('Error fetching subscription:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const createBillingPlan = async () => {
+    try {
+      const response = await axios.post(`${API}/paypal/create-plan`);
+      setPlanId(response.data.plan_id);
+      return response.data.plan_id;
+    } catch (error) {
+      console.error('Error creating plan:', error);
+      throw error;
+    }
+  };
+
+  const startSubscription = async () => {
+    try {
+      setLoading(true);
+      
+      // Create plan if needed
+      let currentPlanId = planId;
+      if (!currentPlanId) {
+        currentPlanId = await createBillingPlan();
+      }
+
+      // Create subscription
+      const response = await axios.post(`${API}/paypal/create-subscription`, {
+        plan_id: currentPlanId
+      });
+
+      // Redirect to PayPal
+      if (response.data.approval_url) {
+        window.location.href = response.data.approval_url;
+      }
+    } catch (error) {
+      console.error('Error starting subscription:', error);
+      alert('Failed to start subscription. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const cancelSubscription = async () => {
+    if (!window.confirm('Are you sure you want to cancel your subscription?')) {
+      return;
+    }
+
+    try {
+      setLoading(true);
+      await axios.post(`${API}/paypal/cancel-subscription/${subscription.subscription_id}`);
+      await fetchSubscriptionStatus();
+      alert('Subscription cancelled successfully');
+    } catch (error) {
+      console.error('Error cancelling subscription:', error);
+      alert('Failed to cancel subscription. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-xl">Loading dashboard...</div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-teal-50 py-8">
+      <div className="container mx-auto px-6">
+        <div className="mb-8">
+          <h1 className="text-4xl font-bold text-gray-800 mb-2">
+            Business Dashboard 📊
+          </h1>
+          <p className="text-gray-600">Welcome back, {user.first_name}!</p>
+        </div>
+
+        <div className="grid lg:grid-cols-2 gap-8">
+          {/* Business Info Card */}
+          <div className="bg-white rounded-xl shadow-lg p-6">
+            <h2 className="text-2xl font-bold text-gray-800 mb-4">
+              🏢 Your Business
+            </h2>
+            {business ? (
+              <div className="space-y-4">
+                <div>
+                  <h3 className="text-xl font-semibold text-gray-800">{business.business_name}</h3>
+                  <p className="text-gray-600">{business.description}</p>
+                </div>
+                <div className="grid grid-cols-2 gap-4 text-sm">
+                  <div>
+                    <span className="font-medium text-gray-700">Category:</span>
+                    <div className="bg-blue-100 text-blue-800 px-2 py-1 rounded-full inline-block ml-2">
+                      {business.category}
+                    </div>
+                  </div>
+                  <div>
+                    <span className="font-medium text-gray-700">Island:</span>
+                    <div className="bg-teal-100 text-teal-800 px-2 py-1 rounded-full inline-block ml-2">
+                      {business.island}
+                    </div>
+                  </div>
+                  <div>
+                    <span className="font-medium text-gray-700">Status:</span>
+                    <div className={`px-2 py-1 rounded-full inline-block ml-2 ${
+                      business.status === 'approved' ? 'bg-green-100 text-green-800' :
+                      business.status === 'pending' ? 'bg-yellow-100 text-yellow-800' :
+                      'bg-red-100 text-red-800'
+                    }`}>
+                      {business.status}
+                    </div>
+                  </div>
+                  <div>
+                    <span className="font-medium text-gray-700">Rating:</span>
+                    <div className="ml-2 inline-flex items-center">
+                      <span className="text-yellow-400">⭐</span>
+                      <span className="ml-1">{business.rating_average || 'New'} ({business.rating_count || 0} reviews)</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <div className="text-center py-8">
+                <p className="text-gray-500 mb-4">No business profile found</p>
+                <Link
+                  to="/create-business"
+                  className="bg-gradient-to-r from-blue-600 to-teal-600 text-white px-6 py-3 rounded-lg hover:from-blue-700 hover:to-teal-700 transition-all"
+                >
+                  Create Business Profile
+                </Link>
+              </div>
+            )}
+          </div>
+
+          {/* Subscription Card */}
+          <div className="bg-white rounded-xl shadow-lg p-6">
+            <h2 className="text-2xl font-bold text-gray-800 mb-4">
+              💳 Subscription
+            </h2>
+            
+            {subscription && subscription.status !== 'NONE' ? (
+              <div className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <span className="font-medium text-gray-700">Status:</span>
+                  <div className={`px-3 py-1 rounded-full font-medium ${
+                    subscription.status === 'ACTIVE' ? 'bg-green-100 text-green-800' :
+                    subscription.status === 'PENDING' ? 'bg-yellow-100 text-yellow-800' :
+                    subscription.status === 'CANCELLED' ? 'bg-red-100 text-red-800' :
+                    'bg-gray-100 text-gray-800'
+                  }`}>
+                    {subscription.status}
+                  </div>
+                </div>
+                
+                <div className="flex items-center justify-between">
+                  <span className="font-medium text-gray-700">Amount:</span>
+                  <span className="text-lg font-bold text-gray-800">
+                    ${subscription.amount} {subscription.currency}/month
+                  </span>
+                </div>
+
+                {subscription.trial_end_date && (
+                  <div className="flex items-center justify-between">
+                    <span className="font-medium text-gray-700">Trial ends:</span>
+                    <span className="text-gray-600">
+                      {new Date(subscription.trial_end_date).toLocaleDateString()}
+                    </span>
+                  </div>
+                )}
+
+                {subscription.next_billing_date && (
+                  <div className="flex items-center justify-between">
+                    <span className="font-medium text-gray-700">Next billing:</span>
+                    <span className="text-gray-600">
+                      {new Date(subscription.next_billing_date).toLocaleDateString()}
+                    </span>
+                  </div>
+                )}
+
+                {subscription.status === 'ACTIVE' && (
+                  <button
+                    onClick={cancelSubscription}
+                    disabled={loading}
+                    className="w-full bg-red-600 hover:bg-red-700 text-white py-2 rounded-lg transition-colors disabled:opacity-50"
+                  >
+                    {loading ? 'Cancelling...' : 'Cancel Subscription'}
+                  </button>
+                )}
+              </div>
+            ) : (
+              <div className="text-center space-y-4">
+                <div className="bg-gradient-to-br from-orange-100 to-pink-100 p-6 rounded-lg">
+                  <h3 className="text-xl font-bold text-gray-800 mb-2">
+                    Start Your Subscription 🚀
+                  </h3>
+                  <p className="text-gray-600 mb-4">
+                    Get full access to The Direct Tree platform
+                  </p>
+                  <div className="text-center">
+                    <div className="text-3xl font-bold text-gray-800 mb-2">$20/month</div>
+                    <div className="text-sm text-gray-600 mb-4">
+                      ✨ 7-day free trial included
+                    </div>
+                    <ul className="text-left text-sm text-gray-600 space-y-1 mb-6">
+                      <li>✅ Business profile listing</li>
+                      <li>✅ Customer reviews & ratings</li>
+                      <li>✅ Appointment booking system</li>
+                      <li>✅ Photo gallery uploads</li>
+                      <li>✅ Business analytics</li>
+                    </ul>
+                  </div>
+                </div>
+                
+                <button
+                  onClick={startSubscription}
+                  disabled={loading || !business}
+                  className="w-full bg-gradient-to-r from-orange-500 to-pink-500 hover:from-orange-600 hover:to-pink-600 text-white py-3 rounded-lg font-semibold transition-all disabled:opacity-50 transform hover:scale-105"
+                >
+                  {loading ? 'Starting...' : 'Start Subscription'}
+                </button>
+                
+                {!business && (
+                  <p className="text-sm text-gray-500">
+                    Create a business profile first to subscribe
+                  </p>
+                )}
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// Subscription Success Page
+const SubscriptionSuccess = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
+  const [executing, setExecuting] = useState(true);
+
+  useEffect(() => {
+    const executeSubscription = async () => {
+      const params = new URLSearchParams(location.search);
+      const token = params.get('token');
+      const payerId = params.get('PayerID');
+      
+      if (token && payerId) {
+        try {
+          await axios.post(`${API}/paypal/execute-subscription/${token}?payer_id=${payerId}`);
+          setExecuting(false);
+          setTimeout(() => navigate('/dashboard'), 3000);
+        } catch (error) {
+          console.error('Error executing subscription:', error);
+          setExecuting(false);
+        }
+      } else {
+        setExecuting(false);
+      }
+    };
+
+    executeSubscription();
+  }, [location, navigate]);
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-green-50 to-teal-50 flex items-center justify-center">
+      <div className="bg-white rounded-xl shadow-lg p-8 max-w-md w-full text-center">
+        {executing ? (
+          <div>
+            <div className="loading-spinner mx-auto mb-4"></div>
+            <h2 className="text-2xl font-bold text-gray-800 mb-4">
+              Activating Your Subscription...
+            </h2>
+            <p className="text-gray-600">Please wait while we set up your account.</p>
+          </div>
+        ) : (
+          <div>
+            <div className="text-6xl mb-4">🎉</div>
+            <h2 className="text-2xl font-bold text-gray-800 mb-4">
+              Subscription Successful!
+            </h2>
+            <p className="text-gray-600 mb-6">
+              Your subscription has been activated. You'll be billed $20/month after your 7-day trial period.
+            </p>
+            <Link
+              to="/dashboard"
+              className="bg-gradient-to-r from-green-600 to-teal-600 text-white px-6 py-3 rounded-lg hover:from-green-700 hover:to-teal-700 transition-all inline-block"
+            >
+              Go to Dashboard
+            </Link>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+
+// Subscription Cancel Page
+const SubscriptionCancel = () => {
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-red-50 to-orange-50 flex items-center justify-center">
+      <div className="bg-white rounded-xl shadow-lg p-8 max-w-md w-full text-center">
+        <div className="text-6xl mb-4">❌</div>
+        <h2 className="text-2xl font-bold text-gray-800 mb-4">
+          Subscription Cancelled
+        </h2>
+        <p className="text-gray-600 mb-6">
+          Your subscription was not activated. You can try again anytime from your dashboard.
+        </p>
+        <Link
+          to="/dashboard"
+          className="bg-gradient-to-r from-blue-600 to-teal-600 text-white px-6 py-3 rounded-lg hover:from-blue-700 hover:to-teal-700 transition-all inline-block"
+        >
+          Back to Dashboard
+        </Link>
+      </div>
+    </div>
+  );
+};
 function App() {
   return (
     <AuthProvider>
