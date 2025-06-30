@@ -1,4 +1,4 @@
-from fastapi import FastAPI, APIRouter, HTTPException, UploadFile, File, Form, Depends
+from fastapi import FastAPI, APIRouter, HTTPException, UploadFile, File, Form, Depends, BackgroundTasks
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from dotenv import load_dotenv
 from starlette.middleware.cors import CORSMiddleware
@@ -16,6 +16,11 @@ from enum import Enum
 import re
 import paypalrestsdk
 import requests
+from sendgrid import SendGridAPIClient
+from sendgrid.helpers.mail import Mail
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
 
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
@@ -41,6 +46,17 @@ paypalrestsdk.configure({
     "client_id": os.environ.get('PAYPAL_CLIENT_ID'),
     "client_secret": os.environ.get('PAYPAL_CLIENT_SECRET')
 })
+
+# SendGrid Configuration
+SENDGRID_API_KEY = os.environ.get('SENDGRID_API_KEY')
+SENDGRID_FROM_EMAIL = os.environ.get('SENDGRID_FROM_EMAIL', 'noreply@direct-tree.com')
+
+# Cloudinary Configuration
+cloudinary.config(
+    cloud_name=os.environ.get('CLOUDINARY_CLOUD_NAME'),
+    api_key=os.environ.get('CLOUDINARY_API_KEY'),
+    api_secret=os.environ.get('CLOUDINARY_API_SECRET')
+)
 
 # Enums
 class UserRole(str, Enum):
@@ -94,6 +110,8 @@ class User(BaseModel):
     last_name: str
     role: UserRole
     phone: Optional[str] = None
+    email_verified: bool = False
+    verification_token: Optional[str] = None
     created_at: datetime = Field(default_factory=datetime.utcnow)
     is_active: bool = True
 
@@ -108,6 +126,9 @@ class UserCreate(BaseModel):
 class UserLogin(BaseModel):
     email: EmailStr
     password: str
+
+class EmailVerification(BaseModel):
+    token: str
 
 class BusinessProfile(BaseModel):
     id: str = Field(default_factory=lambda: str(uuid.uuid4()))
@@ -209,6 +230,234 @@ class PayPalSubscription(BaseModel):
     created_at: datetime = Field(default_factory=datetime.utcnow)
     updated_at: datetime = Field(default_factory=datetime.utcnow)
 
+# Photo Models
+class PhotoMetadata(BaseModel):
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    business_id: str
+    original_filename: str
+    cloudinary_url: str
+    cloudinary_public_id: str
+    optimized_url: str
+    thumbnail_url: str
+    file_size: int
+    content_type: str
+    uploaded_at: datetime = Field(default_factory=datetime.utcnow)
+
+# Email utility functions
+def send_email(to_email: str, subject: str, html_content: str):
+    """Send email using SendGrid"""
+    try:
+        if SENDGRID_API_KEY == "PLACEHOLDER_SENDGRID_KEY":
+            logger.info(f"Email would be sent to {to_email}: {subject}")
+            return True
+            
+        message = Mail(
+            from_email=SENDGRID_FROM_EMAIL,
+            to_emails=to_email,
+            subject=subject,
+            html_content=html_content
+        )
+        
+        sg = SendGridAPIClient(SENDGRID_API_KEY)
+        response = sg.send(message)
+        return response.status_code == 202
+    except Exception as e:
+        logger.error(f"Email send error: {str(e)}")
+        return False
+
+def generate_verification_token() -> str:
+    """Generate a secure verification token"""
+    return str(uuid.uuid4())
+
+def send_verification_email(user_email: str, user_name: str, verification_token: str):
+    """Send email verification"""
+    verification_url = f"{os.environ.get('FRONTEND_URL')}/verify-email?token={verification_token}"
+    
+    html_content = f"""
+    <html>
+        <body style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+            <div style="background: linear-gradient(135deg, #0ea5e9, #14b8a6); padding: 20px; text-align: center;">
+                <h1 style="color: white; margin: 0;">Welcome to The Direct Tree! 🌳</h1>
+            </div>
+            <div style="padding: 20px; background: #f8fafc;">
+                <h2 style="color: #1e293b;">Hi {user_name}!</h2>
+                <p style="color: #475569; font-size: 16px;">
+                    Thanks for joining The Direct Tree - your trusted Bahamas business directory!
+                </p>
+                <p style="color: #475569; font-size: 16px;">
+                    Please verify your email address to activate your account:
+                </p>
+                <div style="text-align: center; margin: 30px 0;">
+                    <a href="{verification_url}" 
+                       style="background: linear-gradient(135deg, #f97316, #ec4899); 
+                              color: white; 
+                              padding: 15px 30px; 
+                              text-decoration: none; 
+                              border-radius: 25px; 
+                              font-weight: bold;
+                              display: inline-block;">
+                        Verify Email Address
+                    </a>
+                </div>
+                <p style="color: #64748b; font-size: 14px;">
+                    If the button doesn't work, copy and paste this link: <br>
+                    <a href="{verification_url}">{verification_url}</a>
+                </p>
+                <hr style="border: none; border-top: 1px solid #e2e8f0; margin: 20px 0;">
+                <p style="color: #64748b; font-size: 12px; text-align: center;">
+                    © 2025 The Direct Tree. Connecting businesses across the Bahamas.
+                </p>
+            </div>
+        </body>
+    </html>
+    """
+    
+    return send_email(user_email, "Verify Your Email - The Direct Tree", html_content)
+
+def send_welcome_email(user_email: str, user_name: str):
+    """Send welcome email after verification"""
+    html_content = f"""
+    <html>
+        <body style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+            <div style="background: linear-gradient(135deg, #0ea5e9, #14b8a6); padding: 20px; text-align: center;">
+                <h1 style="color: white; margin: 0;">Welcome to The Direct Tree! 🎉</h1>
+            </div>
+            <div style="padding: 20px; background: #f8fafc;">
+                <h2 style="color: #1e293b;">Welcome aboard, {user_name}!</h2>
+                <p style="color: #475569; font-size: 16px;">
+                    Your email has been verified and your account is now active!
+                </p>
+                <p style="color: #475569; font-size: 16px;">
+                    You can now:
+                </p>
+                <ul style="color: #475569; font-size: 16px;">
+                    <li>Browse businesses across all Bahamas islands</li>
+                    <li>Leave reviews and ratings</li>
+                    <li>Book appointments with local businesses</li>
+                    <li>Connect with trusted, licensed professionals</li>
+                </ul>
+                <div style="text-align: center; margin: 30px 0;">
+                    <a href="{os.environ.get('FRONTEND_URL')}" 
+                       style="background: linear-gradient(135deg, #0ea5e9, #14b8a6); 
+                              color: white; 
+                              padding: 15px 30px; 
+                              text-decoration: none; 
+                              border-radius: 25px; 
+                              font-weight: bold;
+                              display: inline-block;">
+                        Start Exploring
+                    </a>
+                </div>
+            </div>
+        </body>
+    </html>
+    """
+    
+    return send_email(user_email, "Welcome to The Direct Tree!", html_content)
+
+def send_payment_confirmation_email(user_email: str, user_name: str, amount: str):
+    """Send payment confirmation email"""
+    html_content = f"""
+    <html>
+        <body style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+            <div style="background: linear-gradient(135deg, #22c55e, #16a34a); padding: 20px; text-align: center;">
+                <h1 style="color: white; margin: 0;">Payment Confirmed! ✅</h1>
+            </div>
+            <div style="padding: 20px; background: #f8fafc;">
+                <h2 style="color: #1e293b;">Thank you, {user_name}!</h2>
+                <p style="color: #475569; font-size: 16px;">
+                    Your subscription payment of ${amount}/month has been confirmed.
+                </p>
+                <p style="color: #475569; font-size: 16px;">
+                    Your business profile is now active and visible to customers across the Bahamas!
+                </p>
+                <div style="background: #dcfce7; padding: 15px; border-radius: 8px; margin: 20px 0;">
+                    <h3 style="color: #166534; margin: 0 0 10px 0;">What's included:</h3>
+                    <ul style="color: #166534; margin: 0;">
+                        <li>Business profile listing</li>
+                        <li>Customer reviews & ratings</li>
+                        <li>Photo gallery uploads</li>
+                        <li>Appointment booking system</li>
+                        <li>Business analytics</li>
+                    </ul>
+                </div>
+                <div style="text-align: center; margin: 30px 0;">
+                    <a href="{os.environ.get('FRONTEND_URL')}/dashboard" 
+                       style="background: linear-gradient(135deg, #f97316, #ec4899); 
+                              color: white; 
+                              padding: 15px 30px; 
+                              text-decoration: none; 
+                              border-radius: 25px; 
+                              font-weight: bold;
+                              display: inline-block;">
+                        Go to Dashboard
+                    </a>
+                </div>
+            </div>
+        </body>
+    </html>
+    """
+    
+    return send_email(user_email, "Payment Confirmed - The Direct Tree", html_content)
+
+def send_appointment_notification(business_email: str, customer_email: str, appointment_details: dict):
+    """Send appointment notifications to both business and customer"""
+    business_html = f"""
+    <html>
+        <body style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+            <div style="background: linear-gradient(135deg, #3b82f6, #1d4ed8); padding: 20px; text-align: center;">
+                <h1 style="color: white; margin: 0;">New Appointment Booking! 📅</h1>
+            </div>
+            <div style="padding: 20px; background: #f8fafc;">
+                <h2 style="color: #1e293b;">You have a new appointment request</h2>
+                <div style="background: #dbeafe; padding: 15px; border-radius: 8px; margin: 20px 0;">
+                    <p style="margin: 5px 0;"><strong>Service:</strong> {appointment_details.get('service', 'N/A')}</p>
+                    <p style="margin: 5px 0;"><strong>Date & Time:</strong> {appointment_details.get('date', 'N/A')}</p>
+                    <p style="margin: 5px 0;"><strong>Customer:</strong> {appointment_details.get('customer', 'N/A')}</p>
+                    <p style="margin: 5px 0;"><strong>Notes:</strong> {appointment_details.get('notes', 'None')}</p>
+                </div>
+                <div style="text-align: center; margin: 30px 0;">
+                    <a href="{os.environ.get('FRONTEND_URL')}/dashboard" 
+                       style="background: linear-gradient(135deg, #3b82f6, #1d4ed8); 
+                              color: white; 
+                              padding: 15px 30px; 
+                              text-decoration: none; 
+                              border-radius: 25px; 
+                              font-weight: bold;
+                              display: inline-block;">
+                        Manage Appointments
+                    </a>
+                </div>
+            </div>
+        </body>
+    </html>
+    """
+    
+    customer_html = f"""
+    <html>
+        <body style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+            <div style="background: linear-gradient(135deg, #10b981, #059669); padding: 20px; text-align: center;">
+                <h1 style="color: white; margin: 0;">Appointment Request Sent! ✅</h1>
+            </div>
+            <div style="padding: 20px; background: #f8fafc;">
+                <h2 style="color: #1e293b;">Your appointment request has been submitted</h2>
+                <p style="color: #475569; font-size: 16px;">
+                    We've sent your appointment request to the business. They will contact you to confirm.
+                </p>
+                <div style="background: #d1fae5; padding: 15px; border-radius: 8px; margin: 20px 0;">
+                    <p style="margin: 5px 0;"><strong>Service:</strong> {appointment_details.get('service', 'N/A')}</p>
+                    <p style="margin: 5px 0;"><strong>Requested Date:</strong> {appointment_details.get('date', 'N/A')}</p>
+                    <p style="margin: 5px 0;"><strong>Business:</strong> {appointment_details.get('business', 'N/A')}</p>
+                </div>
+            </div>
+        </body>
+    </html>
+    """
+    
+    # Send to both
+    send_email(business_email, "New Appointment Request - The Direct Tree", business_html)
+    send_email(customer_email, "Appointment Request Sent - The Direct Tree", customer_html)
+
 # Utility functions
 def hash_password(password: str) -> str:
     return bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
@@ -248,6 +497,78 @@ def filter_profanity(text: str) -> str:
         text = re.sub(r'\b' + word + r'\b', '*' * len(word), text, flags=re.IGNORECASE)
     return text
 
+# File upload utility functions
+ALLOWED_IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/jpg']
+MAX_FILE_SIZE = 10 * 1024 * 1024  # 10MB
+
+def validate_image_file(file: UploadFile):
+    """Validate uploaded image file"""
+    # Check file type
+    if file.content_type not in ALLOWED_IMAGE_TYPES:
+        raise HTTPException(status_code=415, detail=f"Invalid file type. Allowed types: {ALLOWED_IMAGE_TYPES}")
+    
+    # Check file size
+    file.file.seek(0, 2)
+    file_size = file.file.tell()
+    file.file.seek(0)
+    
+    if file_size > MAX_FILE_SIZE:
+        raise HTTPException(status_code=413, detail="File too large. Maximum size: 10MB")
+    
+    return file_size
+
+async def upload_to_cloudinary(file: UploadFile, business_id: str) -> PhotoMetadata:
+    """Upload image to Cloudinary and return metadata"""
+    try:
+        if os.environ.get('CLOUDINARY_CLOUD_NAME') == 'PLACEHOLDER_CLOUD_NAME':
+            # Mock response for development
+            photo_id = str(uuid.uuid4())
+            return PhotoMetadata(
+                business_id=business_id,
+                original_filename=file.filename,
+                cloudinary_url=f"https://mock-cloudinary.com/{photo_id}",
+                cloudinary_public_id=photo_id,
+                optimized_url=f"https://mock-cloudinary.com/{photo_id}/optimized",
+                thumbnail_url=f"https://mock-cloudinary.com/{photo_id}/thumb",
+                file_size=validate_image_file(file),
+                content_type=file.content_type
+            )
+        
+        # Upload with optimization
+        result = cloudinary.uploader.upload(
+            file.file,
+            folder=f"businesses/{business_id}",
+            transformation=[
+                {'width': 1920, 'crop': 'limit'},
+                {'quality': 'auto:best'},
+                {'format': 'webp'}
+            ]
+        )
+        
+        # Generate optimized and thumbnail URLs
+        optimized_url = cloudinary.CloudinaryImage(result['public_id']).build_url(
+            width=800, height=600, crop="fill", quality="auto:best", format="webp"
+        )
+        
+        thumbnail_url = cloudinary.CloudinaryImage(result['public_id']).build_url(
+            width=300, height=200, crop="fill", quality="auto:best", format="webp"
+        )
+        
+        return PhotoMetadata(
+            business_id=business_id,
+            original_filename=file.filename,
+            cloudinary_url=result['secure_url'],
+            cloudinary_public_id=result['public_id'],
+            optimized_url=optimized_url,
+            thumbnail_url=thumbnail_url,
+            file_size=result['bytes'],
+            content_type=file.content_type
+        )
+        
+    except Exception as e:
+        logger.error(f"Cloudinary upload error: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Upload failed: {str(e)}")
+
 # Routes
 @api_router.get("/")
 async def root():
@@ -263,7 +584,7 @@ async def get_categories():
 
 # Authentication Routes
 @api_router.post("/register")
-async def register(user_data: UserCreate):
+async def register(user_data: UserCreate, background_tasks: BackgroundTasks):
     # Check if user exists
     existing_user = await db.users.find_one({"email": user_data.email})
     if existing_user:
@@ -272,17 +593,64 @@ async def register(user_data: UserCreate):
     # Hash password
     hashed_password = hash_password(user_data.password)
     
-    # Create user
+    # Generate verification token
+    verification_token = generate_verification_token()
+    
+    # Create user (inactive until verified)
     user = User(**user_data.dict())
     user.password = hashed_password
+    user.email_verified = False
+    user.verification_token = verification_token
+    user.is_active = False
     
     await db.users.insert_one(user.dict())
+    
+    # Send verification email
+    background_tasks.add_task(
+        send_verification_email,
+        user.email,
+        f"{user.first_name} {user.last_name}",
+        verification_token
+    )
+    
+    return {
+        "message": "User registered successfully. Please check your email to verify your account.",
+        "email": user.email
+    }
+
+@api_router.post("/verify-email")
+async def verify_email(verification: EmailVerification, background_tasks: BackgroundTasks):
+    # Find user with verification token
+    user_data = await db.users.find_one({"verification_token": verification.token})
+    if not user_data:
+        raise HTTPException(status_code=400, detail="Invalid verification token")
+    
+    user = User(**user_data)
+    
+    # Update user as verified and active
+    await db.users.update_one(
+        {"id": user.id},
+        {
+            "$set": {
+                "email_verified": True,
+                "is_active": True,
+                "verification_token": None
+            }
+        }
+    )
+    
+    # Send welcome email
+    background_tasks.add_task(
+        send_welcome_email,
+        user.email,
+        f"{user.first_name} {user.last_name}"
+    )
     
     # Create JWT token
     token = create_jwt_token(user.id, user.role.value)
     
     return {
-        "message": "User registered successfully",
+        "message": "Email verified successfully",
         "token": token,
         "user": {
             "id": user.id,
@@ -302,6 +670,10 @@ async def login(login_data: UserLogin):
     
     user = User(**user_data)
     
+    # Check if email is verified
+    if not user.email_verified:
+        raise HTTPException(status_code=401, detail="Please verify your email before logging in")
+    
     # Verify password
     if not verify_password(login_data.password, user.password):
         raise HTTPException(status_code=401, detail="Invalid credentials")
@@ -319,6 +691,37 @@ async def login(login_data: UserLogin):
             "role": user.role
         }
     }
+
+@api_router.post("/resend-verification")
+async def resend_verification(email: EmailStr, background_tasks: BackgroundTasks):
+    # Find user
+    user_data = await db.users.find_one({"email": email})
+    if not user_data:
+        raise HTTPException(status_code=404, detail="User not found")
+    
+    user = User(**user_data)
+    
+    if user.email_verified:
+        raise HTTPException(status_code=400, detail="Email already verified")
+    
+    # Generate new verification token
+    verification_token = generate_verification_token()
+    
+    # Update user with new token
+    await db.users.update_one(
+        {"id": user.id},
+        {"$set": {"verification_token": verification_token}}
+    )
+    
+    # Send verification email
+    background_tasks.add_task(
+        send_verification_email,
+        user.email,
+        f"{user.first_name} {user.last_name}",
+        verification_token
+    )
+    
+    return {"message": "Verification email sent"}
 
 # Business Routes
 @api_router.post("/business/create", response_model=BusinessProfile)
@@ -368,6 +771,88 @@ async def get_businesses(
     businesses = await db.businesses.find(query).skip(skip).limit(limit).to_list(limit)
     return [BusinessProfile(**business) for business in businesses]
 
+# Photo upload routes
+@api_router.post("/business/{business_id}/upload-photos")
+async def upload_business_photos(
+    business_id: str,
+    files: List[UploadFile] = File(...),
+    current_user: User = Depends(get_current_user)
+):
+    # Verify business ownership
+    business = await db.businesses.find_one({"id": business_id, "user_id": current_user.id})
+    if not business:
+        raise HTTPException(status_code=403, detail="Access denied")
+    
+    uploaded_photos = []
+    
+    for file in files:
+        try:
+            # Upload to Cloudinary
+            photo_metadata = await upload_to_cloudinary(file, business_id)
+            
+            # Save metadata to database
+            await db.photos.insert_one(photo_metadata.dict())
+            
+            # Add photo URL to business photos array
+            await db.businesses.update_one(
+                {"id": business_id},
+                {"$push": {"photos": photo_metadata.optimized_url}}
+            )
+            
+            uploaded_photos.append({
+                "id": photo_metadata.id,
+                "url": photo_metadata.optimized_url,
+                "thumbnail": photo_metadata.thumbnail_url
+            })
+            
+        except Exception as e:
+            logger.error(f"Error uploading photo {file.filename}: {str(e)}")
+            continue
+    
+    return {
+        "message": f"Successfully uploaded {len(uploaded_photos)} photos",
+        "photos": uploaded_photos
+    }
+
+@api_router.get("/business/{business_id}/photos")
+async def get_business_photos(business_id: str):
+    photos = await db.photos.find({"business_id": business_id}).to_list(100)
+    return [PhotoMetadata(**photo) for photo in photos]
+
+@api_router.delete("/photos/{photo_id}")
+async def delete_photo(photo_id: str, current_user: User = Depends(get_current_user)):
+    # Get photo metadata
+    photo_data = await db.photos.find_one({"id": photo_id})
+    if not photo_data:
+        raise HTTPException(status_code=404, detail="Photo not found")
+    
+    photo = PhotoMetadata(**photo_data)
+    
+    # Verify business ownership
+    business = await db.businesses.find_one({"id": photo.business_id, "user_id": current_user.id})
+    if not business:
+        raise HTTPException(status_code=403, detail="Access denied")
+    
+    try:
+        # Delete from Cloudinary
+        if os.environ.get('CLOUDINARY_CLOUD_NAME') != 'PLACEHOLDER_CLOUD_NAME':
+            cloudinary.uploader.destroy(photo.cloudinary_public_id)
+        
+        # Remove from database
+        await db.photos.delete_one({"id": photo_id})
+        
+        # Remove from business photos array
+        await db.businesses.update_one(
+            {"id": photo.business_id},
+            {"$pull": {"photos": photo.optimized_url}}
+        )
+        
+        return {"message": "Photo deleted successfully"}
+        
+    except Exception as e:
+        logger.error(f"Error deleting photo: {str(e)}")
+        raise HTTPException(status_code=500, detail="Failed to delete photo")
+
 # Review Routes
 @api_router.post("/review/create", response_model=Review)
 async def create_review(
@@ -415,7 +900,8 @@ async def get_business_reviews(
 @api_router.post("/appointment/create", response_model=Appointment)
 async def create_appointment(
     appointment_data: AppointmentCreate,
-    current_user: User = Depends(get_current_user)
+    current_user: User = Depends(get_current_user),
+    background_tasks: BackgroundTasks
 ):
     if current_user.role != UserRole.CUSTOMER:
         raise HTTPException(status_code=403, detail="Only customers can book appointments")
@@ -434,6 +920,21 @@ async def create_appointment(
     appointment.duration = business_obj.appointment_duration
     
     await db.appointments.insert_one(appointment.dict())
+    
+    # Send appointment notifications
+    background_tasks.add_task(
+        send_appointment_notification,
+        business_obj.email,
+        current_user.email,
+        {
+            "service": appointment.service,
+            "date": appointment.appointment_date.strftime("%B %d, %Y at %I:%M %p"),
+            "customer": f"{current_user.first_name} {current_user.last_name}",
+            "business": business_obj.business_name,
+            "notes": appointment.notes or "None"
+        }
+    )
+    
     return appointment
 
 @api_router.get("/business/{business_id}/appointments")
@@ -519,17 +1020,6 @@ async def approve_review(
         raise HTTPException(status_code=404, detail="Review not found")
     
     return {"message": "Review approved successfully"}
-
-# Utility function to update business rating
-async def update_business_rating(business_id: str):
-    reviews = await db.reviews.find({"business_id": business_id, "is_approved": True}).to_list(1000)
-    if reviews:
-        total_rating = sum(review["rating"] for review in reviews)
-        average_rating = total_rating / len(reviews)
-        await db.businesses.update_one(
-            {"id": business_id},
-            {"$set": {"rating_average": round(average_rating, 1), "rating_count": len(reviews)}}
-        )
 
 # PayPal Routes
 @api_router.post("/paypal/create-plan")
@@ -654,7 +1144,7 @@ async def create_subscription(
         raise HTTPException(status_code=500, detail=str(e))
 
 @api_router.post("/paypal/execute-subscription/{subscription_id}")
-async def execute_subscription(subscription_id: str, payer_id: str):
+async def execute_subscription(subscription_id: str, payer_id: str, background_tasks: BackgroundTasks):
     try:
         billing_agreement = paypalrestsdk.BillingAgreement.find(subscription_id)
         
@@ -678,6 +1168,17 @@ async def execute_subscription(subscription_id: str, payer_id: str):
                     {"id": subscription["business_id"]},
                     {"$set": {"subscription_status": SubscriptionStatus.ACTIVE}}
                 )
+                
+                # Get user info for email
+                user = await db.users.find_one({"id": subscription["user_id"]})
+                if user:
+                    # Send payment confirmation email
+                    background_tasks.add_task(
+                        send_payment_confirmation_email,
+                        user["email"],
+                        f"{user['first_name']} {user['last_name']}",
+                        "20.00"
+                    )
             
             return {"status": "ACTIVE", "message": "Subscription activated successfully"}
         else:
@@ -764,6 +1265,17 @@ async def get_user_subscription_status(current_user: User = Depends(get_current_
     except Exception as e:
         logger.error(f"Error checking subscription status: {str(e)}")
         return {"status": "ERROR", "message": str(e)}
+
+# Utility function to update business rating
+async def update_business_rating(business_id: str):
+    reviews = await db.reviews.find({"business_id": business_id, "is_approved": True}).to_list(1000)
+    if reviews:
+        total_rating = sum(review["rating"] for review in reviews)
+        average_rating = total_rating / len(reviews)
+        await db.businesses.update_one(
+            {"id": business_id},
+            {"$set": {"rating_average": round(average_rating, 1), "rating_count": len(reviews)}}
+        )
 
 # Include the router in the main app
 app.include_router(api_router)
