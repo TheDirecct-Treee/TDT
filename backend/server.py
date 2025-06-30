@@ -214,7 +214,7 @@ def filter_profanity(text: str) -> str:
 # Routes
 @api_router.get("/")
 async def root():
-    return {"message": "Bahamas Business Directory API"}
+    return {"message": "The Direct Tree - Bahamas Business Directory API"}
 
 @api_router.get("/islands")
 async def get_islands():
