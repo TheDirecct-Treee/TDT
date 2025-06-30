@@ -297,8 +297,10 @@ async def create_business(
     if existing_business:
         raise HTTPException(status_code=400, detail="You already have a business registered")
     
-    business = BusinessProfile(**business_data.dict())
-    business.user_id = current_user.id
+    # Create business with user_id
+    business_dict = business_data.dict()
+    business_dict["user_id"] = current_user.id
+    business = BusinessProfile(**business_dict)
     
     await db.businesses.insert_one(business.dict())
     return business
