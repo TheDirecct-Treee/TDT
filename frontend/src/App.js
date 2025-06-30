@@ -143,10 +143,10 @@ const HomePage = () => {
       >
         <div className="text-center text-white">
           <h1 className="text-5xl font-bold mb-4">
-            Discover Local Businesses Across the Bahamas
+            Find & Connect with Local Bahamas Businesses
           </h1>
           <p className="text-xl mb-8">
-            Connect with trusted, licensed businesses on every island
+            The Direct Tree - Your trusted directory for licensed businesses across all islands
           </p>
           <Link 
             to="/businesses"
