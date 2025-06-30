@@ -248,6 +248,8 @@ const RegisterPage = () => {
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [success, setSuccess] = useState(false);
+  const [message, setMessage] = useState('');
   const { login } = useAuth();
   const navigate = useNavigate();
 
