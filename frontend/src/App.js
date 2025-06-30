@@ -290,6 +290,18 @@ const RegisterPage = () => {
           </div>
         )}
 
+        {success && (
+          <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4">
+            <div className="flex items-center">
+              <span className="text-green-500 mr-2">✅</span>
+              {message}
+            </div>
+            <p className="text-sm mt-2">
+              Check your email and click the verification link to activate your account.
+            </p>
+          </div>
+        )}
+
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="grid grid-cols-2 gap-4">
             <div>
