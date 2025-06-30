@@ -230,7 +230,74 @@ class PayPalSubscription(BaseModel):
     created_at: datetime = Field(default_factory=datetime.utcnow)
     updated_at: datetime = Field(default_factory=datetime.utcnow)
 
-# Photo Models
+# Business FAQ Models
+class BusinessFAQ(BaseModel):
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    business_id: str
+    question: str
+    answer: str
+    is_active: bool = True
+    created_at: datetime = Field(default_factory=datetime.utcnow)
+    updated_at: datetime = Field(default_factory=datetime.utcnow)
+
+class FAQCreate(BaseModel):
+    question: str
+    answer: str
+
+class FAQUpdate(BaseModel):
+    question: Optional[str] = None
+    answer: Optional[str] = None
+    is_active: Optional[bool] = None
+
+# Event Models
+class Event(BaseModel):
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    title: str
+    description: str
+    category: str
+    island: str
+    location: str
+    event_date: datetime
+    start_time: str
+    end_time: str
+    organizer_name: str
+    organizer_email: EmailStr
+    organizer_phone: Optional[str] = None
+    ticket_price: Optional[str] = None
+    ticket_link: Optional[str] = None
+    event_image: Optional[str] = None
+    is_paid: bool = False
+    payment_date: Optional[datetime] = None
+    paypal_payment_id: Optional[str] = None
+    is_active: bool = True
+    created_at: datetime = Field(default_factory=datetime.utcnow)
+    updated_at: datetime = Field(default_factory=datetime.utcnow)
+
+class EventCreate(BaseModel):
+    title: str
+    description: str
+    category: str
+    island: str
+    location: str
+    event_date: datetime
+    start_time: str
+    end_time: str
+    organizer_name: str
+    organizer_email: EmailStr
+    organizer_phone: Optional[str] = None
+    ticket_price: Optional[str] = None
+    ticket_link: Optional[str] = None
+
+class EventPayment(BaseModel):
+    event_id: str
+    paypal_payment_id: str
+
+# Event Categories
+EVENT_CATEGORIES = [
+    "Concert", "Festival", "Market", "Sports", "Food & Drink", "Art & Culture",
+    "Workshop", "Conference", "Charity", "Community", "Religious", "Business",
+    "Education", "Health & Wellness", "Family", "Nightlife", "Other"
+]
 class PhotoMetadata(BaseModel):
     id: str = Field(default_factory=lambda: str(uuid.uuid4()))
     business_id: str
