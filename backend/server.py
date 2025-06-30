@@ -35,6 +35,13 @@ api_router = APIRouter(prefix="/api")
 JWT_SECRET = os.environ.get('JWT_SECRET', 'your-secret-key-here')
 security = HTTPBearer()
 
+# PayPal Configuration
+paypalrestsdk.configure({
+    "mode": os.environ.get('PAYPAL_MODE', 'sandbox'),
+    "client_id": os.environ.get('PAYPAL_CLIENT_ID'),
+    "client_secret": os.environ.get('PAYPAL_CLIENT_SECRET')
+})
+
 # Enums
 class UserRole(str, Enum):
     CUSTOMER = "customer"
