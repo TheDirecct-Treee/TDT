@@ -1011,6 +1011,9 @@ function App() {
               <Route path="/register" element={<RegisterPage />} />
               <Route path="/login" element={<LoginPage />} />
               <Route path="/businesses" element={<BusinessListPage />} />
+              <Route path="/dashboard" element={<BusinessDashboard />} />
+              <Route path="/subscription/success" element={<SubscriptionSuccess />} />
+              <Route path="/subscription/cancel" element={<SubscriptionCancel />} />
             </Routes>
           </main>
         </div>
