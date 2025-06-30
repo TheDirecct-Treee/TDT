@@ -967,7 +967,66 @@ async def get_business_reviews(
     reviews = await db.reviews.find(query).skip(skip).limit(limit).to_list(limit)
     return [Review(**review) for review in reviews]
 
-# Appointment Routes
+# Business FAQ Routes
+@api_router.get("/business/{business_id}/faqs")
+async def get_business_faqs(business_id: str):
+    faqs = await db.business_faqs.find({"business_id": business_id, "is_active": True}).to_list(100)
+    return [BusinessFAQ(**faq) for faq in faqs]
+
+@api_router.post("/business/{business_id}/faqs", response_model=BusinessFAQ)
+async def create_business_faq(
+    business_id: str,
+    faq_data: FAQCreate,
+    current_user: User = Depends(get_current_user)
+):
+    # Verify business ownership
+    business = await db.businesses.find_one({"id": business_id, "user_id": current_user.id})
+    if not business:
+        raise HTTPException(status_code=403, detail="Access denied")
+    
+    faq = BusinessFAQ(**faq_data.dict(), business_id=business_id)
+    await db.business_faqs.insert_one(faq.dict())
+    return faq
+
+@api_router.put("/business/faqs/{faq_id}", response_model=BusinessFAQ)
+async def update_business_faq(
+    faq_id: str,
+    faq_data: FAQUpdate,
+    current_user: User = Depends(get_current_user)
+):
+    # Get FAQ and verify ownership
+    faq_doc = await db.business_faqs.find_one({"id": faq_id})
+    if not faq_doc:
+        raise HTTPException(status_code=404, detail="FAQ not found")
+    
+    business = await db.businesses.find_one({"id": faq_doc["business_id"], "user_id": current_user.id})
+    if not business:
+        raise HTTPException(status_code=403, detail="Access denied")
+    
+    update_data = {k: v for k, v in faq_data.dict().items() if v is not None}
+    update_data["updated_at"] = datetime.utcnow()
+    
+    await db.business_faqs.update_one({"id": faq_id}, {"$set": update_data})
+    
+    updated_faq = await db.business_faqs.find_one({"id": faq_id})
+    return BusinessFAQ(**updated_faq)
+
+@api_router.delete("/business/faqs/{faq_id}")
+async def delete_business_faq(
+    faq_id: str,
+    current_user: User = Depends(get_current_user)
+):
+    # Get FAQ and verify ownership
+    faq_doc = await db.business_faqs.find_one({"id": faq_id})
+    if not faq_doc:
+        raise HTTPException(status_code=404, detail="FAQ not found")
+    
+    business = await db.businesses.find_one({"id": faq_doc["business_id"], "user_id": current_user.id})
+    if not business:
+        raise HTTPException(status_code=403, detail="Access denied")
+    
+    await db.business_faqs.delete_one({"id": faq_id})
+    return {"message": "FAQ deleted successfully"}
 @api_router.post("/appointment/create", response_model=Appointment)
 async def create_appointment(
     appointment_data: AppointmentCreate,
