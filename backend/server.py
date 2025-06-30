@@ -76,9 +76,13 @@ BAHAMAS_ISLANDS = [
 
 BUSINESS_CATEGORIES = [
     "Restaurant", "Hotel", "Tour Operator", "Transportation", "Retail",
-    "Beauty & Spa", "Health & Medical", "Automotive", "Real Estate",
-    "Legal Services", "Financial Services", "Construction", "Entertainment",
-    "Education", "Technology", "Other"
+    "Health & Medical", "Construction", "Education", "Legal Services",
+    "Barbers", "Make up Artist", "Mechanics", "Electrician", "Handyman", 
+    "Plumbers", "Car Cleaning/Detailing", "Photographers", "Bakers", 
+    "Graphic Designers", "Cellphone Repairs", "Aestheticians", 
+    "Hair Stylist/Braiders", "A/C Technician", "Carpenters", "Catering",
+    "Shipping Companies", "Pet Grooming", "Seamstress", "Car Rentals",
+    "Fishing Charters", "Other"
 ]
 
 # Models
