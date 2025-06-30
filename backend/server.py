@@ -901,7 +901,7 @@ async def get_business_reviews(
 async def create_appointment(
     appointment_data: AppointmentCreate,
     current_user: User = Depends(get_current_user),
-    background_tasks: BackgroundTasks
+    background_tasks: BackgroundTasks = Depends()
 ):
     if current_user.role != UserRole.CUSTOMER:
         raise HTTPException(status_code=403, detail="Only customers can book appointments")
