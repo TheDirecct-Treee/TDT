@@ -60,8 +60,8 @@ const Header = () => {
     <header className="bg-gradient-to-r from-blue-600 to-teal-600 text-white shadow-lg">
       <div className="container mx-auto px-6 py-4">
         <div className="flex items-center justify-between">
-          <Link to="/" className="text-2xl font-bold">
-            🌳 The Direct Tree
+          <Link to="/" className="text-2xl font-bold text-white hover:text-orange-200 transition-colors">
+            The Direct Tree
           </Link>
           <nav className="flex items-center space-x-6">
             <Link to="/businesses" className="hover:text-blue-200 transition-colors">
