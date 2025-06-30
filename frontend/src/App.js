@@ -61,7 +61,7 @@ const Header = () => {
       <div className="container mx-auto px-6 py-4">
         <div className="flex items-center justify-between">
           <Link to="/" className="text-2xl font-bold">
-            🏝️ Bahamas Business Directory
+            🌳 The Direct Tree
           </Link>
           <nav className="flex items-center space-x-6">
             <Link to="/businesses" className="hover:text-blue-200 transition-colors">
