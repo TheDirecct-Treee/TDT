@@ -649,7 +649,199 @@ const BusinessListPage = () => {
   );
 };
 
-// Business Dashboard Page
+// Email Verification Page
+const EmailVerificationPage = () => {
+  const [searchParams] = useSearchParams();
+  const [verifying, setVerifying] = useState(true);
+  const [message, setMessage] = useState('');
+  const [success, setSuccess] = useState(false);
+  const { login } = useAuth();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const verifyEmail = async () => {
+      const token = searchParams.get('token');
+      
+      if (!token) {
+        setMessage('Invalid verification link');
+        setVerifying(false);
+        return;
+      }
+
+      try {
+        const response = await axios.post(`${API}/verify-email`, { token });
+        login(response.data.user, response.data.token);
+        setMessage('Email verified successfully! Welcome to The Direct Tree!');
+        setSuccess(true);
+        setTimeout(() => navigate('/'), 3000);
+      } catch (error) {
+        setMessage(error.response?.data?.detail || 'Verification failed');
+        setSuccess(false);
+      } finally {
+        setVerifying(false);
+      }
+    };
+
+    verifyEmail();
+  }, [searchParams, login, navigate]);
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-teal-50 flex items-center justify-center">
+      <div className="bg-white rounded-xl shadow-lg p-8 max-w-md w-full text-center">
+        {verifying ? (
+          <div>
+            <div className="loading-spinner mx-auto mb-4"></div>
+            <h2 className="text-2xl font-bold text-gray-800 mb-4">
+              Verifying Your Email...
+            </h2>
+            <p className="text-gray-600">Please wait while we verify your account.</p>
+          </div>
+        ) : (
+          <div>
+            <div className={`text-6xl mb-4 ${success ? '🎉' : '❌'}`}>
+              {success ? '🎉' : '❌'}
+            </div>
+            <h2 className="text-2xl font-bold text-gray-800 mb-4">
+              {success ? 'Email Verified!' : 'Verification Failed'}
+            </h2>
+            <p className={`mb-6 ${success ? 'text-gray-600' : 'text-red-600'}`}>
+              {message}
+            </p>
+            {!success && (
+              <Link
+                to="/register"
+                className="bg-gradient-to-r from-blue-600 to-teal-600 text-white px-6 py-3 rounded-lg hover:from-blue-700 hover:to-teal-700 transition-all inline-block"
+              >
+                Try Again
+              </Link>
+            )}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+
+// Photo Gallery Component
+const PhotoGallery = ({ businessId, isOwner = false }) => {
+  const [photos, setPhotos] = useState([]);
+  const [uploading, setUploading] = useState(false);
+  const [selectedFiles, setSelectedFiles] = useState([]);
+
+  useEffect(() => {
+    if (businessId) {
+      fetchPhotos();
+    }
+  }, [businessId]);
+
+  const fetchPhotos = async () => {
+    try {
+      const response = await axios.get(`${API}/business/${businessId}/photos`);
+      setPhotos(response.data);
+    } catch (error) {
+      console.error('Error fetching photos:', error);
+    }
+  };
+
+  const handleFileSelect = (e) => {
+    const files = Array.from(e.target.files);
+    setSelectedFiles(files);
+  };
+
+  const uploadPhotos = async () => {
+    if (!selectedFiles.length) return;
+
+    setUploading(true);
+    const formData = new FormData();
+    selectedFiles.forEach(file => formData.append('files', file));
+
+    try {
+      await axios.post(`${API}/business/${businessId}/upload-photos`, formData, {
+        headers: { 'Content-Type': 'multipart/form-data' }
+      });
+      setSelectedFiles([]);
+      fetchPhotos();
+      alert('Photos uploaded successfully!');
+    } catch (error) {
+      console.error('Upload failed:', error);
+      alert('Upload failed. Please try again.');
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  const deletePhoto = async (photoId) => {
+    if (!window.confirm('Are you sure you want to delete this photo?')) {
+      return;
+    }
+
+    try {
+      await axios.delete(`${API}/photos/${photoId}`);
+      fetchPhotos();
+    } catch (error) {
+      console.error('Delete failed:', error);
+      alert('Failed to delete photo.');
+    }
+  };
+
+  return (
+    <div className="photo-gallery">
+      <h3 className="text-xl font-bold text-gray-800 mb-4">📸 Photo Gallery</h3>
+      
+      {isOwner && (
+        <div className="upload-section mb-6 p-4 bg-gradient-to-r from-blue-50 to-teal-50 rounded-lg">
+          <h4 className="font-semibold text-gray-800 mb-3">Upload Photos</h4>
+          <input
+            type="file"
+            multiple
+            accept="image/*"
+            onChange={handleFileSelect}
+            className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 mb-3"
+          />
+          {selectedFiles.length > 0 && (
+            <div className="mb-3">
+              <p className="text-sm text-gray-600">Selected: {selectedFiles.length} files</p>
+            </div>
+          )}
+          <button
+            onClick={uploadPhotos}
+            disabled={uploading || selectedFiles.length === 0}
+            className="bg-gradient-to-r from-blue-600 to-teal-600 text-white px-4 py-2 rounded-lg hover:from-blue-700 hover:to-teal-700 transition-all disabled:opacity-50"
+          >
+            {uploading ? 'Uploading...' : 'Upload Photos'}
+          </button>
+        </div>
+      )}
+
+      {photos.length > 0 ? (
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+          {photos.map((photo) => (
+            <div key={photo.id} className="relative group">
+              <img
+                src={photo.thumbnail_url}
+                alt={photo.original_filename}
+                className="w-full h-32 object-cover rounded-lg shadow-md hover:shadow-lg transition-shadow cursor-pointer"
+                onClick={() => window.open(photo.optimized_url, '_blank')}
+              />
+              {isOwner && (
+                <button
+                  onClick={() => deletePhoto(photo.id)}
+                  className="absolute top-2 right-2 bg-red-600 text-white rounded-full w-6 h-6 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity text-xs"
+                >
+                  ×
+                </button>
+              )}
+            </div>
+          ))}
+        </div>
+      ) : (
+        <div className="text-center py-8 text-gray-500">
+          {isOwner ? 'Upload some photos to showcase your work!' : 'No photos available yet.'}
+        </div>
+      )}
+    </div>
+  );
+};
 const BusinessDashboard = () => {
   const { user } = useAuth();
   const [business, setBusiness] = useState(null);
