@@ -1219,6 +1219,7 @@ function App() {
               <Route path="/" element={<HomePage />} />
               <Route path="/register" element={<RegisterPage />} />
               <Route path="/login" element={<LoginPage />} />
+              <Route path="/verify-email" element={<EmailVerificationPage />} />
               <Route path="/businesses" element={<BusinessListPage />} />
               <Route path="/dashboard" element={<BusinessDashboard />} />
               <Route path="/subscription/success" element={<SubscriptionSuccess />} />
