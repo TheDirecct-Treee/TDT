@@ -1144,7 +1144,9 @@ async def create_subscription(
         raise HTTPException(status_code=500, detail=str(e))
 
 @api_router.post("/paypal/execute-subscription/{subscription_id}")
-async def execute_subscription(subscription_id: str, background_tasks: BackgroundTasks, payer_id: str = None):
+async def execute_subscription(subscription_id: str, background_tasks: BackgroundTasks = Depends(), payer_id: str = None):
+    if not payer_id:
+        raise HTTPException(status_code=400, detail="PayerID is required")
     try:
         billing_agreement = paypalrestsdk.BillingAgreement.find(subscription_id)
         
