@@ -1386,6 +1386,7 @@ function App() {
               <Route path="/login" element={<LoginPage />} />
               <Route path="/verify-email" element={<EmailVerificationPage />} />
               <Route path="/businesses" element={<BusinessListPage />} />
+              <Route path="/events" element={<EventsPage />} />
               <Route path="/dashboard" element={<BusinessDashboard />} />
               <Route path="/subscription/success" element={<SubscriptionSuccess />} />
               <Route path="/subscription/cancel" element={<SubscriptionCancel />} />
