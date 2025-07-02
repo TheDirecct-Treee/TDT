@@ -50,6 +50,11 @@ MAILGUN_API_KEY = os.environ.get('MAILGUN_API_KEY')
 MAILGUN_DOMAIN = os.environ.get('MAILGUN_DOMAIN')
 MAILGUN_FROM_EMAIL = os.environ.get('MAILGUN_FROM_EMAIL', 'noreply@direct-tree.com')
 
+# Mailgun Configuration
+MAILGUN_API_KEY = os.environ.get('MAILGUN_API_KEY')
+MAILGUN_DOMAIN = os.environ.get('MAILGUN_DOMAIN')
+MAILGUN_FROM_EMAIL = os.environ.get('MAILGUN_FROM_EMAIL', 'noreply@direct-tree.com')
+
 # Cloudinary Configuration
 cloudinary.config(
     cloud_name=os.environ.get('CLOUDINARY_CLOUD_NAME'),
