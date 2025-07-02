@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate, Link, useNavigate, useLocation, useSearchParams } from 'react-router-dom';
 import axios from 'axios';
+import EventsPage from './EventsPage';
 import './App.css';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
