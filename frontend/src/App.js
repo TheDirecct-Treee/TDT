@@ -141,7 +141,7 @@ const HomePage = () => {
       <section 
         className="relative h-96 bg-cover bg-center flex items-center justify-center"
         style={{ 
-          backgroundImage: "linear-gradient(rgba(0, 91, 150, 0.7), rgba(0, 150, 136, 0.7)), url('https://images.unsplash.com/photo-1568826248417-b40de68c4ad6?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDQ2NDF8MHwxfHNlYXJjaHwxfHwxNzUxMzEwNDgwfDA&ixlib=rb-4.1.0&q=85')"
+          backgroundImage: "linear-gradient(rgba(22, 101, 52, 0.8), rgba(120, 53, 15, 0.8)), url('https://images.unsplash.com/photo-1568826248417-b40de68c4ad6?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDQ2NDF8MHwxfHNlYXJjaHwxfHwxNzUxMzEwNDgwfDA&ixlib=rb-4.1.0&q=85')"
         }}
       >
         <div className="text-center text-white hero-text">
@@ -153,7 +153,7 @@ const HomePage = () => {
           </p>
           <Link 
             to="/businesses"
-            className="bg-gradient-to-r from-orange-500 to-pink-500 hover:from-orange-600 hover:to-pink-600 text-white px-8 py-3 rounded-full text-lg font-semibold transition-all transform hover:scale-105 shadow-lg"
+            className="bg-gradient-to-r from-green-600 to-amber-600 hover:from-green-700 hover:to-amber-700 text-white px-8 py-3 rounded-full text-lg font-semibold transition-all transform hover:scale-105 shadow-lg"
           >
             Explore Businesses 🏝️
           </Link>
