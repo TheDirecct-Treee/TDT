@@ -239,7 +239,7 @@ const HomePage = () => {
   );
 };
 
-// Registration Page
+// Registration Page with License Upload
 const RegisterPage = () => {
   const [formData, setFormData] = useState({
     email: '',
@@ -249,17 +249,61 @@ const RegisterPage = () => {
     role: 'customer',
     phone: ''
   });
+  const [businessData, setBusinessData] = useState({
+    business_name: '',
+    category: '',
+    island: '',
+    license_number: ''
+  });
+  const [licenseFile, setLicenseFile] = useState(null);
+  const [categories, setCategories] = useState([]);
+  const [islands, setIslands] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
   const [message, setMessage] = useState('');
-  const { login } = useAuth();
-  const navigate = useNavigate();
+
+  useEffect(() => {
+    fetchCategories();
+    fetchIslands();
+  }, []);
+
+  const fetchCategories = async () => {
+    try {
+      const response = await axios.get(`${API}/categories`);
+      setCategories(response.data.categories);
+    } catch (error) {
+      console.error('Error fetching categories:', error);
+    }
+  };
+
+  const fetchIslands = async () => {
+    try {
+      const response = await axios.get(`${API}/islands`);
+      setIslands(response.data.islands);
+    } catch (error) {
+      console.error('Error fetching islands:', error);
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setError('');
+
+    // Validate business owner requirements
+    if (formData.role === 'business_owner') {
+      if (!businessData.business_name || !businessData.category || !businessData.island || !businessData.license_number) {
+        setError('Please fill in all business information');
+        setLoading(false);
+        return;
+      }
+      if (!licenseFile) {
+        setError('Please upload your business license');
+        setLoading(false);
+        return;
+      }
+    }
 
     try {
       const response = await axios.post(`${API}/register`, formData);
@@ -280,9 +324,20 @@ const RegisterPage = () => {
     });
   };
 
+  const handleBusinessChange = (e) => {
+    setBusinessData({
+      ...businessData,
+      [e.target.name]: e.target.value
+    });
+  };
+
+  const handleFileChange = (e) => {
+    setLicenseFile(e.target.files[0]);
+  };
+
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center py-12 px-4">
-      <div className="max-w-md w-full bg-white rounded-lg shadow-lg p-8">
+    <div className="min-h-screen bg-gradient-to-br from-green-50 to-amber-50 flex items-center justify-center py-12 px-4">
+      <div className="max-w-2xl w-full bg-white rounded-lg shadow-lg p-8">
         <h2 className="text-3xl font-bold text-center text-gray-800 mb-8">
           Join The Direct Tree Family! 🌟
         </h2>
@@ -306,95 +361,201 @@ const RegisterPage = () => {
         )}
 
         <form onSubmit={handleSubmit} className="space-y-6">
-          <div className="grid grid-cols-2 gap-4">
+          {/* Personal Information */}
+          <div className="bg-gray-50 p-4 rounded-lg">
+            <h3 className="font-semibold text-gray-800 mb-4">Personal Information</h3>
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  First Name
+                </label>
+                <input
+                  type="text"
+                  name="first_name"
+                  required
+                  value={formData.first_name}
+                  onChange={handleChange}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-green-500"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Last Name
+                </label>
+                <input
+                  type="text"
+                  name="last_name"
+                  required
+                  value={formData.last_name}
+                  onChange={handleChange}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-green-500"
+                />
+              </div>
+            </div>
+
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                First Name
+                Email
               </label>
               <input
-                type="text"
-                name="first_name"
+                type="email"
+                name="email"
                 required
-                value={formData.first_name}
+                value={formData.email}
                 onChange={handleChange}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-green-500"
               />
             </div>
+
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Last Name
+                Password
               </label>
               <input
-                type="text"
-                name="last_name"
+                type="password"
+                name="password"
                 required
-                value={formData.last_name}
+                value={formData.password}
                 onChange={handleChange}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-green-500"
               />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Phone (Optional)
+              </label>
+              <input
+                type="tel"
+                name="phone"
+                value={formData.phone}
+                onChange={handleChange}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-green-500"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Account Type
+              </label>
+              <select
+                name="role"
+                value={formData.role}
+                onChange={handleChange}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-green-500"
+              >
+                <option value="customer">Customer</option>
+                <option value="business_owner">Business Owner</option>
+              </select>
             </div>
           </div>
 
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Email
-            </label>
-            <input
-              type="email"
-              name="email"
-              required
-              value={formData.email}
-              onChange={handleChange}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
-            />
-          </div>
+          {/* Business Information (only for business owners) */}
+          {formData.role === 'business_owner' && (
+            <div className="bg-amber-50 p-4 rounded-lg border border-amber-200">
+              <h3 className="font-semibold text-gray-800 mb-4">🏢 Business Information</h3>
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Business Name
+                  </label>
+                  <input
+                    type="text"
+                    name="business_name"
+                    required={formData.role === 'business_owner'}
+                    value={businessData.business_name}
+                    onChange={handleBusinessChange}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-amber-500"
+                  />
+                </div>
 
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Password
-            </label>
-            <input
-              type="password"
-              name="password"
-              required
-              value={formData.password}
-              onChange={handleChange}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
-            />
-          </div>
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Category
+                    </label>
+                    <select
+                      name="category"
+                      required={formData.role === 'business_owner'}
+                      value={businessData.category}
+                      onChange={handleBusinessChange}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-amber-500"
+                    >
+                      <option value="">Select Category</option>
+                      {categories.map((category) => (
+                        <option key={category} value={category}>{category}</option>
+                      ))}
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Island
+                    </label>
+                    <select
+                      name="island"
+                      required={formData.role === 'business_owner'}
+                      value={businessData.island}
+                      onChange={handleBusinessChange}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-amber-500"
+                    >
+                      <option value="">Select Island</option>
+                      {islands.map((island) => (
+                        <option key={island} value={island}>{island}</option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
 
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Phone (Optional)
-            </label>
-            <input
-              type="tel"
-              name="phone"
-              value={formData.phone}
-              onChange={handleChange}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
-            />
-          </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Business License Number
+                  </label>
+                  <input
+                    type="text"
+                    name="license_number"
+                    required={formData.role === 'business_owner'}
+                    value={businessData.license_number}
+                    onChange={handleBusinessChange}
+                    placeholder="Enter your government-issued license number"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-amber-500"
+                  />
+                </div>
 
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Account Type
-            </label>
-            <select
-              name="role"
-              value={formData.role}
-              onChange={handleChange}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
-            >
-              <option value="customer">Customer</option>
-              <option value="business_owner">Business Owner</option>
-            </select>
-          </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Business License Document
+                  </label>
+                  <input
+                    type="file"
+                    accept=".pdf,.jpg,.jpeg,.png"
+                    onChange={handleFileChange}
+                    required={formData.role === 'business_owner'}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-amber-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-amber-50 file:text-amber-700 hover:file:bg-amber-100"
+                  />
+                  <p className="text-xs text-gray-500 mt-1">
+                    Upload a clear copy of your government business license (PDF, JPG, PNG)
+                  </p>
+                </div>
+
+                <div className="bg-green-100 border border-green-300 rounded-lg p-3">
+                  <div className="flex items-start">
+                    <span className="text-green-500 text-lg mr-2">ℹ️</span>
+                    <div>
+                      <h4 className="font-semibold text-green-800">License Verification Required</h4>
+                      <p className="text-green-700 text-sm">
+                        All businesses must have a valid Bahamas government license. Your application will be reviewed by our admin team before approval.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
 
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-gradient-to-r from-blue-600 to-teal-600 hover:from-blue-700 hover:to-teal-700 text-white font-semibold py-3 rounded-xl transition-all disabled:opacity-50 transform hover:scale-105"
+            className="w-full bg-gradient-to-r from-green-600 to-amber-600 hover:from-green-700 hover:to-amber-700 text-white font-semibold py-3 rounded-xl transition-all disabled:opacity-50 transform hover:scale-105"
           >
             {loading ? 'Creating Account...' : 'Join The Direct Tree 🚀'}
           </button>
@@ -403,7 +564,7 @@ const RegisterPage = () => {
         <div className="mt-6 text-center">
           <p className="text-gray-600">
             Already have an account?{' '}
-            <Link to="/login" className="text-blue-600 hover:text-blue-800 font-semibold">
+            <Link to="/login" className="text-green-600 hover:text-green-800 font-semibold">
               Sign in
             </Link>
           </p>
