@@ -161,7 +161,7 @@ const HomePage = () => {
       </section>
 
       {/* Islands Section */}
-      <section className="py-16 bg-gradient-to-br from-blue-50 to-teal-50">
+      <section className="py-16 bg-gradient-to-br from-green-50 to-amber-50">
         <div className="container mx-auto px-6">
           <h2 className="text-3xl font-bold text-center mb-12 text-gray-800">
             🏝️ Explore Businesses by Island
@@ -171,7 +171,7 @@ const HomePage = () => {
               <Link
                 key={island}
                 to={`/businesses?island=${encodeURIComponent(island)}`}
-                className="bg-white rounded-xl p-4 text-center shadow-md hover:shadow-xl transition-all transform hover:scale-105 hover:bg-gradient-to-br hover:from-orange-50 hover:to-pink-50 group"
+                className="bg-white rounded-xl p-4 text-center shadow-md hover:shadow-xl transition-all transform hover:scale-105 hover:bg-gradient-to-br hover:from-green-50 hover:to-amber-50 group"
               >
                 <div className="text-2xl mb-2 group-hover:scale-110 transition-transform">🏝️</div>
                 <div className="font-semibold text-gray-800 text-sm">{island}</div>
@@ -192,7 +192,7 @@ const HomePage = () => {
               <Link
                 key={category}
                 to={`/businesses?category=${encodeURIComponent(category)}`}
-                className="bg-gradient-to-br from-blue-500 via-teal-500 to-orange-500 text-white rounded-xl p-6 text-center hover:from-blue-600 hover:via-teal-600 hover:to-orange-600 transition-all transform hover:scale-105 shadow-lg hover:shadow-xl"
+                className="bg-gradient-to-br from-green-600 via-green-500 to-amber-600 text-white rounded-xl p-6 text-center hover:from-green-700 hover:via-green-600 hover:to-amber-700 transition-all transform hover:scale-105 shadow-lg hover:shadow-xl"
               >
                 <div className="font-semibold text-sm">{category}</div>
               </Link>
