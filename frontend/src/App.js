@@ -173,7 +173,7 @@ const HomePage = () => {
             Find & Connect with Local Bahamas Businesses
           </h1>
           <p className="text-2xl md:text-3xl mb-10 hero-subtitle text-green-100 font-light">
-            The Direct Tree - Your trusted directory for licensed businesses across all islands 🏝️
+            The Direct Tree - Your trusted directory for licensed businesses across all islands
           </p>
           
           {/* CTA Buttons */}
