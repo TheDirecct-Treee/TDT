@@ -150,6 +150,9 @@ class BusinessProfile(BaseModel):
     business_hours: Dict[str, str] = {}
     services: List[str] = []
     photos: List[str] = []
+    profile_photo: Optional[str] = None  # Main business profile photo
+    cover_photo: Optional[str] = None   # Cover/banner photo
+    logo: Optional[str] = None          # Business logo
     license_number: str
     license_document: Optional[str] = None
     status: BusinessStatus = BusinessStatus.PENDING
