@@ -67,7 +67,7 @@ const Header = () => {
         <div className="flex items-center justify-between">
           <Link to="/" className="flex items-center space-x-3 text-white hover:text-green-200 transition-colors group">
             <img 
-              src="https://images.pexels.com/photos/10168430/pexels-photo-10168430.jpeg?w=80&h=80&fit=crop&crop=center" 
+              src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgdmlld0JveD0iMCAwIDEwMCAxMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxjaXJjbGUgY3g9IjUwIiBjeT0iNTAiIHI9IjQ1IiBmaWxsPSIjZmZmZmZmIiBzdHJva2U9IiM2MmE1MzMiIHN0cm9rZS13aWR0aD0iMiIvPgo8Y2lyY2xlIGN4PSI1MCIgY3k9IjUwIiByPSIzNSIgZmlsbD0iIzYyYTUzMyIvPgo8cGF0aCBkPSJNMzUgNzBMMzUgNTVMNDUgNDVMNTUgNDVMNjUgNTVMNjUgNzAiIHN0cm9rZT0iI2ZmZmZmZiIgc3Ryb2tlLXdpZHRoPSIzIiBmaWxsPSJub25lIi8+CjxjaXJjbGUgY3g9IjQ1IiBjeT0iNDAiIHI9IjMiIGZpbGw9IiNmZmZmZmYiLz4KPGF0aC5SYWRpdXMiIGN4PSI1NSIgY3k9IjQwIiByPSIzIiBmaWxsPSIjZmZmZmZmIi8+CjxjaXJjbGUgY3g9IjUwIiBjeT0iMzAiIHI9IjQiIGZpbGw9IiNmZmZmZmYiLz4KPC9zdmc+" 
               alt="The Direct Tree Logo" 
               className="w-10 h-10 rounded-full group-hover:scale-110 transition-transform shadow-lg"
             />
