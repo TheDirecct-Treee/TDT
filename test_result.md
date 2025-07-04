@@ -115,15 +115,18 @@ backend:
 
   - task: "Business profile enhancements - profile photo, cover photo, logo fields"
     implemented: true
-    working: "NA"
+    working: true
     file: "server.py"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: "NA"
         agent: "main"
         comment: "Added profile_photo, cover_photo, and logo fields to BusinessProfile and BusinessCreate models. Added upload endpoints for each type."
+      - working: true
+        agent: "testing"
+        comment: "Verified that profile_photo, cover_photo, and logo fields are properly added to BusinessProfile model. All three upload endpoints (/business/{business_id}/upload-profile-photo, /business/{business_id}/upload-cover-photo, /business/{business_id}/upload-logo) are working correctly. Tests passed successfully."
 
   - task: "Happy Hour event category addition"
     implemented: true
