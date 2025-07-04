@@ -1118,7 +1118,7 @@ const BusinessListPage = () => {
                   to={`/business/${business.id}`}
                   className="block w-full bg-gradient-to-r from-green-600 to-amber-600 hover:from-green-700 hover:to-amber-700 text-white text-center py-3 rounded-xl transition-all font-semibold transform hover:scale-105 shadow-lg"
                 >
-                  View Details 🔍
+                  View Details
                 </Link>
               </div>
             </div>
