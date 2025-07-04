@@ -161,16 +161,16 @@ const HomePage = () => {
         <div className="text-center text-white hero-text relative z-10 max-w-5xl mx-auto px-6">
           <div className="mb-8">
             <img 
-              src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTUwIiBoZWlnaHQ9IjE1MCIgdmlld0JveD0iMCAwIDEwMCAxMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxjaXJjbGUgY3g9IjUwIiBjeT0iNTAiIHI9IjQ1IiBmaWxsPSIjZmZmZmZmIiBzdHJva2U9IiM2MmE1MzMiIHN0cm9rZS13aWR0aD0iMiIvPgo8Y2lyY2xlIGN4PSI1MCIgY3k9IjUwIiByPSIzNSIgZmlsbD0iIzYyYTUzMyIvPgo8cGF0aCBkPSJNMzUgNzBMMzUgNTVMNDUgNDVMNTUgNDVMNjUgNTVMNjUgNzAiIHN0cm9rZT0iI2ZmZmZmZiIgc3Ryb2tlLXdpZHRoPSIzIiBmaWxsPSJub25lIi8+CjxjaXJjbGUgY3g9IjQ1IiBjeT0iNDAiIHI9IjMiIGZpbGw9IiNmZmZmZmYiLz4KPGF0aC5SYWRpdXMiIGN4PSI1NSIgY3k9IjQwIiByPSIzIiBmaWxsPSIjZmZmZmZmIi8+CjxjaXJjbGUgY3g9IjUwIiBjeT0iMzAiIHI9IjQiIGZpbGw9IiNmZmZmZmYiLz4KPC9zdmc+" 
+              src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTUwIiBoZWlnaHQ9IjE1MCIgdmlld0JveD0iMCAwIDEwMCAxMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxjaXJjbGUgY3g9IjUwIiBjeT0iNTAiIHI9IjQ1IiBmaWxsPSJ0cmFuc3BhcmVudCIgc3Ryb2tlPSIjZmZmZmZmIiBzdHJva2Utd2lkdGg9IjIiLz4KPHBhdGggZD0iTTUwIDEwTDQwIDI1TDYwIDI1WiIgZmlsbD0iI2ZmZmZmZiIvPgo8bGluZSB4MT0iNTAiIHkxPSIyNSIgeDI9IjUwIiB5Mj0iNDUiIHN0cm9rZT0iI2ZmZmZmZiIgc3Ryb2tlLXdpZHRoPSIzIi8+CjxsaW5lIHgxPSIzNSIgeTE9IjM1IiB4Mj0iNDUiIHkyPSIzNSIgc3Ryb2tlPSIjZmZmZmZmIiBzdHJva2Utd2lkdGg9IjIiLz4KPGxpbmUgeDE9IjU1IiB5MT0iMzUiIHgyPSI2NSIgeTI9IjM1IiBzdHJva2U9IiNmZmZmZmYiIHN0cm9rZS13aWR0aD0iMiIvPgo8bGluZSB4MT0iMzAiIHkxPSI0NSIgeDI9IjQwIiB5Mj0iNDUiIHN0cm9rZT0iI2ZmZmZmZiIgc3Ryb2tlLXdpZHRoPSIyIi8+CjxsaW5lIHgxPSI2MCIgeTE9IjQ1IiB4Mj0iNzAiIHkyPSI0NSIgc3Ryb2tlPSIjZmZmZmZmIiBzdHJva2Utd2lkdGg9IjIiLz4KPHJlY3QgeD0iNDUiIHk9IjQ1IiB3aWR0aD0iMTAiIGhlaWdodD0iMzUiIGZpbGw9IiM2MmE1MzMiLz4KPGNpcmNsZSBjeD0iNDAiIGN5PSIzNSIgcj0iMiIgZmlsbD0iI2ZmZmZmZiIvPgo8Y2lyY2xlIGN4PSI2MCIgY3k9IjM1IiByPSIyIiBmaWxsPSIjZmZmZmZmIi8+CjxjaXJjbGUgY3g9IjM1IiBjeT0iNDUiIHI9IjIiIGZpbGw9IiNmZmZmZmYiLz4KPGNpcmNsZSBjeD0iNjUiIGN5PSI0NSIgcj0iMiIgZmlsbD0iI2ZmZmZmZiIvPgo8L3N2Zz4=" 
               alt="The Direct Tree" 
-              className="w-20 h-20 mx-auto mb-4 rounded-full shadow-2xl animate-bounce"
+              className="w-20 h-20 mx-auto mb-4 animate-bounce"
             />
           </div>
-          <h1 className="text-6xl md:text-7xl font-bold mb-6 hero-title bg-gradient-to-r from-white via-green-100 to-amber-100 bg-clip-text text-transparent">
+          <h1 className="text-6xl md:text-7xl font-bold mb-6 hero-title text-white">
             Find & Connect with Local Bahamas Businesses
           </h1>
           <p className="text-2xl md:text-3xl mb-10 hero-subtitle text-green-100 font-light">
-            The Direct Tree - Your trusted directory for licensed businesses across all islands
+            The Direct Tree - Branch out and stand tall
           </p>
           
           {/* CTA Buttons */}
