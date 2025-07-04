@@ -181,14 +181,12 @@ const HomePage = () => {
               className="bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white px-10 py-4 rounded-2xl text-xl font-semibold transition-all transform hover:scale-105 shadow-2xl hover:shadow-green-500/50 flex items-center space-x-2"
             >
               <span>Explore Businesses</span>
-              <span className="text-2xl">🚀</span>
             </Link>
             <Link 
               to="/events"
               className="bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white px-10 py-4 rounded-2xl text-xl font-semibold transition-all transform hover:scale-105 shadow-2xl hover:shadow-amber-500/50 flex items-center space-x-2"
             >
               <span>Browse Events</span>
-              <span className="text-2xl">🎉</span>
             </Link>
           </div>
           
