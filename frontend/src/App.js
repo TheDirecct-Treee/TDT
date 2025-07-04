@@ -190,14 +190,10 @@ const HomePage = () => {
           </div>
           
           {/* Stats */}
-          <div className="mt-16 grid grid-cols-3 gap-8 max-w-2xl mx-auto">
+          <div className="mt-16 grid grid-cols-2 gap-8 max-w-2xl mx-auto">
             <div className="text-center">
               <div className="text-3xl font-bold text-white mb-2">17</div>
               <div className="text-green-200 text-sm">Islands Covered</div>
-            </div>
-            <div className="text-center">
-              <div className="text-3xl font-bold text-white mb-2">100+</div>
-              <div className="text-green-200 text-sm">Verified Businesses</div>
             </div>
             <div className="text-center">
               <div className="text-3xl font-bold text-white mb-2">24/7</div>
