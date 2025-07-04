@@ -263,6 +263,10 @@ const RegisterPage = () => {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
   const [message, setMessage] = useState('');
+  const [agreements, setAgreements] = useState({
+    termsAndConditions: false,
+    privacyPolicy: false
+  });
 
   useEffect(() => {
     fetchCategories();
