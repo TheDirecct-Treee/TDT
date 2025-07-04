@@ -65,9 +65,9 @@ const Header = () => {
         <div className="flex items-center justify-between">
           <Link to="/" className="flex items-center space-x-3 text-white hover:text-green-200 transition-colors group">
             <img 
-              src="https://images.unsplash.com/photo-1579678791222-a9351e73ea5f?w=80&h=80&fit=crop&crop=center" 
+              src="https://images.pexels.com/photos/10168430/pexels-photo-10168430.jpeg?w=80&h=80&fit=crop&crop=center" 
               alt="The Direct Tree Logo" 
-              className="w-10 h-10 rounded-lg bg-white/20 p-1 group-hover:scale-110 transition-transform shadow-lg"
+              className="w-10 h-10 rounded-full group-hover:scale-110 transition-transform shadow-lg"
             />
             <span className="text-2xl font-bold">The Direct Tree</span>
           </Link>
