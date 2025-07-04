@@ -1696,6 +1696,7 @@ function App() {
               <Route path="/events" element={<EventsPage />} />
               <Route path="/dashboard" element={<BusinessDashboard />} />
               <Route path="/admin" element={<AdminDashboard />} />
+              <Route path="/admin/promote" element={<AdminPromotion />} />
               <Route path="/subscription/success" element={<SubscriptionSuccess />} />
               <Route path="/subscription/cancel" element={<SubscriptionCancel />} />
               <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
