@@ -4,6 +4,7 @@ import axios from 'axios';
 import EventsPage from './EventsPage';
 import TermsAndConditions from './TermsAndConditions';
 import PrivacyPolicy from './PrivacyPolicy';
+import AdminDashboard from './AdminDashboard';
 import './App.css';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
