@@ -104,7 +104,7 @@ BUSINESS_CATEGORIES = [
 EVENT_CATEGORIES = [
     "Concert", "Festival", "Market", "Sports", "Food & Drink", "Art & Culture",
     "Workshop", "Conference", "Charity", "Community", "Religious", "Business",
-    "Education", "Health & Wellness", "Family", "Nightlife", "Other"
+    "Education", "Health & Wellness", "Family", "Nightlife", "Happy Hour", "Other"
 ]
 
 # Models
