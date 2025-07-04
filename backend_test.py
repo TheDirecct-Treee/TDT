@@ -5,7 +5,7 @@ import time
 from datetime import datetime, timedelta
 
 # Use the public endpoint for testing
-BACKEND_URL = "https://0570b8a0-8ac2-47c9-b54e-20b5abc9f354.preview.emergentagent.com/api"
+BACKEND_URL = "https://12f9c8c1-4cbd-43be-9ad4-a09db48b290e.preview.emergentagent.com/api"
 
 class DirectTreeAPITest(unittest.TestCase):
     def setUp(self):

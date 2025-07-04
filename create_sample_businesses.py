@@ -3,7 +3,7 @@ import requests
 import json
 import time
 
-API_BASE = "https://0570b8a0-8ac2-47c9-b54e-20b5abc9f354.preview.emergentagent.com/api"
+API_BASE = "https://12f9c8c1-4cbd-43be-9ad4-a09db48b290e.preview.emergentagent.com/api"
 ADMIN_TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMGMxNjVjMDgtYTgyMi00MDVkLTg4NzQtYzQyZWJmYTk5MjkyIiwicm9sZSI6ImFkbWluIiwiZXhwIjoxNzUzOTAxNjU4fQ.vGKSvqBh1ulNDC_kA3Nk2tvzB5fd3zhhpu_prP1Np_I"
 
 sample_businesses = [
