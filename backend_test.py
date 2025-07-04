@@ -355,6 +355,187 @@ class DirectTreeAPITest(unittest.TestCase):
         self.assertIn("plan_id", data)
         self.assertIn("status", data)
         print("✅ PayPal billing plan creation test passed")
+        
+    def test_19_get_event_categories(self):
+        """Test retrieving event categories including 'Happy Hour'"""
+        print("\n🔍 Testing event categories endpoint...")
+        response = requests.get(f"{BACKEND_URL}/event-categories")
+        self.assertEqual(response.status_code, 200)
+        data = response.json()
+        self.assertIn("categories", data)
+        self.assertIsInstance(data["categories"], list)
+        self.assertGreater(len(data["categories"]), 0)
+        self.assertIn("Happy Hour", data["categories"])
+        print(f"✅ Event categories endpoint test passed - Found {len(data['categories'])} categories including 'Happy Hour'")
+        
+    def test_20_business_search(self):
+        """Test business search functionality"""
+        print("\n🔍 Testing business search endpoint...")
+        
+        # Test basic search
+        response = requests.get(f"{BACKEND_URL}/businesses/search?q=test")
+        self.assertEqual(response.status_code, 200)
+        businesses = response.json()
+        self.assertIsInstance(businesses, list)
+        print(f"✅ Business search test passed - Found {len(businesses)} businesses matching 'test'")
+        
+        # Test search with island filter
+        if len(businesses) > 0:
+            island = businesses[0]["island"]
+            response = requests.get(f"{BACKEND_URL}/businesses/search?q=test&island={island}")
+            self.assertEqual(response.status_code, 200)
+            filtered_businesses = response.json()
+            self.assertIsInstance(filtered_businesses, list)
+            for business in filtered_businesses:
+                self.assertEqual(business["island"], island)
+            print(f"✅ Business search with island filter test passed")
+            
+        # Test search with category filter
+        response = requests.get(f"{BACKEND_URL}/businesses/search?q=test&category=Restaurant")
+        self.assertEqual(response.status_code, 200)
+        filtered_businesses = response.json()
+        self.assertIsInstance(filtered_businesses, list)
+        for business in filtered_businesses:
+            self.assertEqual(business["category"], "Restaurant")
+        print(f"✅ Business search with category filter test passed")
+        
+    def test_21_business_profile_photo_upload(self):
+        """Test business profile photo upload"""
+        if not self.business_owner_token:
+            self.test_06_business_owner_login()
+            
+        # Skip if we don't have a business ID
+        if not self.test_business_id:
+            print("\n⚠️ Skipping profile photo upload test - No business ID available")
+            return
+            
+        print("\n🔍 Testing business profile photo upload...")
+        
+        # Create a test image file
+        test_image_path = "/tmp/test_profile_photo.jpg"
+        with open(test_image_path, "wb") as f:
+            f.write(b"\xff\xd8\xff\xe0\x00\x10JFIF\x00\x01\x01\x01\x00H\x00H\x00\x00\xff\xdb\x00C\x00\x08\x06\x06\x07\x06\x05\x08\x07\x07\x07\t\t\x08\n\x0c\x14\r\x0c\x0b\x0b\x0c\x19\x12\x13\x0f\x14\x1d\x1a\x1f\x1e\x1d\x1a\x1c\x1c $.' \",#\x1c\x1c(7),01444\x1f'9=82<.342\xff\xdb\x00C\x01\t\t\t\x0c\x0b\x0c\x18\r\r\x182!\x1c!22222222222222222222222222222222222222222222222222\xff\xc0\x00\x11\x08\x00\x01\x00\x01\x03\x01\"\x00\x02\x11\x01\x03\x11\x01\xff\xc4\x00\x1f\x00\x00\x01\x05\x01\x01\x01\x01\x01\x01\x00\x00\x00\x00\x00\x00\x00\x00\x01\x02\x03\x04\x05\x06\x07\x08\t\n\x0b\xff\xc4\x00\xb5\x10\x00\x02\x01\x03\x03\x02\x04\x03\x05\x05\x04\x04\x00\x00\x01}\x01\x02\x03\x00\x04\x11\x05\x12!1A\x06\x13Qa\x07\"q\x142\x81\x91\xa1\x08#B\xb1\xc1\x15R\xd1\xf0$3br\x82\t\n\x16\x17\x18\x19\x1a%&'()*456789:CDEFGHIJSTUVWXYZcdefghijstuvwxyz\x83\x84\x85\x86\x87\x88\x89\x8a\x92\x93\x94\x95\x96\x97\x98\x99\x9a\xa2\xa3\xa4\xa5\xa6\xa7\xa8\xa9\xaa\xb2\xb3\xb4\xb5\xb6\xb7\xb8\xb9\xba\xc2\xc3\xc4\xc5\xc6\xc7\xc8\xc9\xca\xd2\xd3\xd4\xd5\xd6\xd7\xd8\xd9\xda\xe1\xe2\xe3\xe4\xe5\xe6\xe7\xe8\xe9\xea\xf1\xf2\xf3\xf4\xf5\xf6\xf7\xf8\xf9\xfa\xff\xc4\x00\x1f\x01\x00\x03\x01\x01\x01\x01\x01\x01\x01\x01\x01\x00\x00\x00\x00\x00\x00\x01\x02\x03\x04\x05\x06\x07\x08\t\n\x0b\xff\xc4\x00\xb5\x11\x00\x02\x01\x02\x04\x04\x03\x04\x07\x05\x04\x04\x00\x01\x02w\x00\x01\x02\x03\x11\x04\x05!1\x06\x12AQ\x07aq\x13\"2\x81\x08\x14B\x91\xa1\xb1\xc1\t#3R\xf0\x15br\xd1\n\x16$4\xe1%\xf1\x17\x18\x19\x1a&'()*56789:CDEFGHIJSTUVWXYZcdefghijstuvwxyz\x82\x83\x84\x85\x86\x87\x88\x89\x8a\x92\x93\x94\x95\x96\x97\x98\x99\x9a\xa2\xa3\xa4\xa5\xa6\xa7\xa8\xa9\xaa\xb2\xb3\xb4\xb5\xb6\xb7\xb8\xb9\xba\xc2\xc3\xc4\xc5\xc6\xc7\xc8\xc9\xca\xd2\xd3\xd4\xd5\xd6\xd7\xd8\xd9\xda\xe2\xe3\xe4\xe5\xe6\xe7\xe8\xe9\xea\xf2\xf3\xf4\xf5\xf6\xf7\xf8\xf9\xfa\xff\xda\x00\x0c\x03\x01\x00\x02\x11\x03\x11\x00?\x00\xfe\xfe(\xa2\x8a\x00\xff\xd9")
+        
+        headers = {"Authorization": f"Bearer {self.business_owner_token}"}
+        
+        # Test profile photo upload
+        with open(test_image_path, "rb") as f:
+            files = {"file": ("test_profile.jpg", f, "image/jpeg")}
+            response = requests.post(
+                f"{BACKEND_URL}/business/{self.test_business_id}/upload-profile-photo",
+                headers=headers,
+                files=files
+            )
+            
+        self.assertEqual(response.status_code, 200)
+        data = response.json()
+        self.assertIn("message", data)
+        self.assertIn("photo_url", data)
+        print("✅ Business profile photo upload test passed")
+        
+        # Clean up
+        if os.path.exists(test_image_path):
+            os.remove(test_image_path)
+            
+    def test_22_business_cover_photo_upload(self):
+        """Test business cover photo upload"""
+        if not self.business_owner_token:
+            self.test_06_business_owner_login()
+            
+        # Skip if we don't have a business ID
+        if not self.test_business_id:
+            print("\n⚠️ Skipping cover photo upload test - No business ID available")
+            return
+            
+        print("\n🔍 Testing business cover photo upload...")
+        
+        # Create a test image file
+        test_image_path = "/tmp/test_cover_photo.jpg"
+        with open(test_image_path, "wb") as f:
+            f.write(b"\xff\xd8\xff\xe0\x00\x10JFIF\x00\x01\x01\x01\x00H\x00H\x00\x00\xff\xdb\x00C\x00\x08\x06\x06\x07\x06\x05\x08\x07\x07\x07\t\t\x08\n\x0c\x14\r\x0c\x0b\x0b\x0c\x19\x12\x13\x0f\x14\x1d\x1a\x1f\x1e\x1d\x1a\x1c\x1c $.' \",#\x1c\x1c(7),01444\x1f'9=82<.342\xff\xdb\x00C\x01\t\t\t\x0c\x0b\x0c\x18\r\r\x182!\x1c!22222222222222222222222222222222222222222222222222\xff\xc0\x00\x11\x08\x00\x01\x00\x01\x03\x01\"\x00\x02\x11\x01\x03\x11\x01\xff\xc4\x00\x1f\x00\x00\x01\x05\x01\x01\x01\x01\x01\x01\x00\x00\x00\x00\x00\x00\x00\x00\x01\x02\x03\x04\x05\x06\x07\x08\t\n\x0b\xff\xc4\x00\xb5\x10\x00\x02\x01\x03\x03\x02\x04\x03\x05\x05\x04\x04\x00\x00\x01}\x01\x02\x03\x00\x04\x11\x05\x12!1A\x06\x13Qa\x07\"q\x142\x81\x91\xa1\x08#B\xb1\xc1\x15R\xd1\xf0$3br\x82\t\n\x16\x17\x18\x19\x1a%&'()*456789:CDEFGHIJSTUVWXYZcdefghijstuvwxyz\x83\x84\x85\x86\x87\x88\x89\x8a\x92\x93\x94\x95\x96\x97\x98\x99\x9a\xa2\xa3\xa4\xa5\xa6\xa7\xa8\xa9\xaa\xb2\xb3\xb4\xb5\xb6\xb7\xb8\xb9\xba\xc2\xc3\xc4\xc5\xc6\xc7\xc8\xc9\xca\xd2\xd3\xd4\xd5\xd6\xd7\xd8\xd9\xda\xe1\xe2\xe3\xe4\xe5\xe6\xe7\xe8\xe9\xea\xf1\xf2\xf3\xf4\xf5\xf6\xf7\xf8\xf9\xfa\xff\xc4\x00\x1f\x01\x00\x03\x01\x01\x01\x01\x01\x01\x01\x01\x01\x00\x00\x00\x00\x00\x00\x01\x02\x03\x04\x05\x06\x07\x08\t\n\x0b\xff\xc4\x00\xb5\x11\x00\x02\x01\x02\x04\x04\x03\x04\x07\x05\x04\x04\x00\x01\x02w\x00\x01\x02\x03\x11\x04\x05!1\x06\x12AQ\x07aq\x13\"2\x81\x08\x14B\x91\xa1\xb1\xc1\t#3R\xf0\x15br\xd1\n\x16$4\xe1%\xf1\x17\x18\x19\x1a&'()*56789:CDEFGHIJSTUVWXYZcdefghijstuvwxyz\x82\x83\x84\x85\x86\x87\x88\x89\x8a\x92\x93\x94\x95\x96\x97\x98\x99\x9a\xa2\xa3\xa4\xa5\xa6\xa7\xa8\xa9\xaa\xb2\xb3\xb4\xb5\xb6\xb7\xb8\xb9\xba\xc2\xc3\xc4\xc5\xc6\xc7\xc8\xc9\xca\xd2\xd3\xd4\xd5\xd6\xd7\xd8\xd9\xda\xe2\xe3\xe4\xe5\xe6\xe7\xe8\xe9\xea\xf2\xf3\xf4\xf5\xf6\xf7\xf8\xf9\xfa\xff\xda\x00\x0c\x03\x01\x00\x02\x11\x03\x11\x00?\x00\xfe\xfe(\xa2\x8a\x00\xff\xd9")
+        
+        headers = {"Authorization": f"Bearer {self.business_owner_token}"}
+        
+        # Test cover photo upload
+        with open(test_image_path, "rb") as f:
+            files = {"file": ("test_cover.jpg", f, "image/jpeg")}
+            response = requests.post(
+                f"{BACKEND_URL}/business/{self.test_business_id}/upload-cover-photo",
+                headers=headers,
+                files=files
+            )
+            
+        self.assertEqual(response.status_code, 200)
+        data = response.json()
+        self.assertIn("message", data)
+        self.assertIn("photo_url", data)
+        print("✅ Business cover photo upload test passed")
+        
+        # Clean up
+        if os.path.exists(test_image_path):
+            os.remove(test_image_path)
+            
+    def test_23_business_logo_upload(self):
+        """Test business logo upload"""
+        if not self.business_owner_token:
+            self.test_06_business_owner_login()
+            
+        # Skip if we don't have a business ID
+        if not self.test_business_id:
+            print("\n⚠️ Skipping logo upload test - No business ID available")
+            return
+            
+        print("\n🔍 Testing business logo upload...")
+        
+        # Create a test image file
+        test_image_path = "/tmp/test_logo.jpg"
+        with open(test_image_path, "wb") as f:
+            f.write(b"\xff\xd8\xff\xe0\x00\x10JFIF\x00\x01\x01\x01\x00H\x00H\x00\x00\xff\xdb\x00C\x00\x08\x06\x06\x07\x06\x05\x08\x07\x07\x07\t\t\x08\n\x0c\x14\r\x0c\x0b\x0b\x0c\x19\x12\x13\x0f\x14\x1d\x1a\x1f\x1e\x1d\x1a\x1c\x1c $.' \",#\x1c\x1c(7),01444\x1f'9=82<.342\xff\xdb\x00C\x01\t\t\t\x0c\x0b\x0c\x18\r\r\x182!\x1c!22222222222222222222222222222222222222222222222222\xff\xc0\x00\x11\x08\x00\x01\x00\x01\x03\x01\"\x00\x02\x11\x01\x03\x11\x01\xff\xc4\x00\x1f\x00\x00\x01\x05\x01\x01\x01\x01\x01\x01\x00\x00\x00\x00\x00\x00\x00\x00\x01\x02\x03\x04\x05\x06\x07\x08\t\n\x0b\xff\xc4\x00\xb5\x10\x00\x02\x01\x03\x03\x02\x04\x03\x05\x05\x04\x04\x00\x00\x01}\x01\x02\x03\x00\x04\x11\x05\x12!1A\x06\x13Qa\x07\"q\x142\x81\x91\xa1\x08#B\xb1\xc1\x15R\xd1\xf0$3br\x82\t\n\x16\x17\x18\x19\x1a%&'()*456789:CDEFGHIJSTUVWXYZcdefghijstuvwxyz\x83\x84\x85\x86\x87\x88\x89\x8a\x92\x93\x94\x95\x96\x97\x98\x99\x9a\xa2\xa3\xa4\xa5\xa6\xa7\xa8\xa9\xaa\xb2\xb3\xb4\xb5\xb6\xb7\xb8\xb9\xba\xc2\xc3\xc4\xc5\xc6\xc7\xc8\xc9\xca\xd2\xd3\xd4\xd5\xd6\xd7\xd8\xd9\xda\xe1\xe2\xe3\xe4\xe5\xe6\xe7\xe8\xe9\xea\xf1\xf2\xf3\xf4\xf5\xf6\xf7\xf8\xf9\xfa\xff\xc4\x00\x1f\x01\x00\x03\x01\x01\x01\x01\x01\x01\x01\x01\x01\x00\x00\x00\x00\x00\x00\x01\x02\x03\x04\x05\x06\x07\x08\t\n\x0b\xff\xc4\x00\xb5\x11\x00\x02\x01\x02\x04\x04\x03\x04\x07\x05\x04\x04\x00\x01\x02w\x00\x01\x02\x03\x11\x04\x05!1\x06\x12AQ\x07aq\x13\"2\x81\x08\x14B\x91\xa1\xb1\xc1\t#3R\xf0\x15br\xd1\n\x16$4\xe1%\xf1\x17\x18\x19\x1a&'()*56789:CDEFGHIJSTUVWXYZcdefghijstuvwxyz\x82\x83\x84\x85\x86\x87\x88\x89\x8a\x92\x93\x94\x95\x96\x97\x98\x99\x9a\xa2\xa3\xa4\xa5\xa6\xa7\xa8\xa9\xaa\xb2\xb3\xb4\xb5\xb6\xb7\xb8\xb9\xba\xc2\xc3\xc4\xc5\xc6\xc7\xc8\xc9\xca\xd2\xd3\xd4\xd5\xd6\xd7\xd8\xd9\xda\xe2\xe3\xe4\xe5\xe6\xe7\xe8\xe9\xea\xf2\xf3\xf4\xf5\xf6\xf7\xf8\xf9\xfa\xff\xda\x00\x0c\x03\x01\x00\x02\x11\x03\x11\x00?\x00\xfe\xfe(\xa2\x8a\x00\xff\xd9")
+        
+        headers = {"Authorization": f"Bearer {self.business_owner_token}"}
+        
+        # Test logo upload
+        with open(test_image_path, "rb") as f:
+            files = {"file": ("test_logo.jpg", f, "image/jpeg")}
+            response = requests.post(
+                f"{BACKEND_URL}/business/{self.test_business_id}/upload-logo",
+                headers=headers,
+                files=files
+            )
+            
+        self.assertEqual(response.status_code, 200)
+        data = response.json()
+        self.assertIn("message", data)
+        self.assertIn("photo_url", data)
+        print("✅ Business logo upload test passed")
+        
+        # Clean up
+        if os.path.exists(test_image_path):
+            os.remove(test_image_path)
+            
+    def test_24_business_model_fields(self):
+        """Test BusinessProfile model has new fields"""
+        if not self.test_business_id:
+            # Get the first business from the list
+            response = requests.get(f"{BACKEND_URL}/businesses")
+            businesses = response.json()
+            if len(businesses) > 0:
+                self.test_business_id = businesses[0]["id"]
+            else:
+                print("\n⚠️ Skipping business model fields test - No businesses available")
+                return
+                
+        print("\n🔍 Testing BusinessProfile model fields...")
+        response = requests.get(f"{BACKEND_URL}/business/{self.test_business_id}")
+        self.assertEqual(response.status_code, 200)
+        business = response.json()
+        
+        # Check for new fields
+        self.assertIn("profile_photo", business)
+        self.assertIn("cover_photo", business)
+        self.assertIn("logo", business)
+        
+        print("✅ BusinessProfile model fields test passed")
 
 def run_tests():
     # Create a test suite
