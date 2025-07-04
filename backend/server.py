@@ -179,6 +179,9 @@ class BusinessCreate(BaseModel):
     license_number: str
     accepts_appointments: bool = False
     appointment_duration: int = 60
+    profile_photo: Optional[str] = None
+    cover_photo: Optional[str] = None
+    logo: Optional[str] = None
 
 class Review(BaseModel):
     id: str = Field(default_factory=lambda: str(uuid.uuid4()))
