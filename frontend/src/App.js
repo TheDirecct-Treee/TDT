@@ -816,8 +816,27 @@ const BusinessListPage = () => {
           Browse Businesses
         </h1>
 
-        {/* Filters */}
+        {/* Search and Filters */}
         <div className="bg-white rounded-lg shadow-md p-6 mb-8">
+          {/* Search Bar */}
+          <div className="mb-6">
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              🔍 Search Businesses
+            </label>
+            <input
+              type="text"
+              name="search"
+              value={filters.search}
+              onChange={handleFilterChange}
+              placeholder="Search for restaurants, hair salons, mechanics, etc..."
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-200 text-lg"
+            />
+            <p className="text-sm text-gray-500 mt-1">
+              Search by business name, category, or services (e.g., "braider", "cakes", "mechanic")
+            </p>
+          </div>
+          
+          {/* Filters */}
           <div className="grid md:grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
