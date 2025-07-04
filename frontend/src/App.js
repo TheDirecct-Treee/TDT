@@ -373,7 +373,7 @@ const HomePage = () => {
                     to={`/business/${business.id}`}
                     className="block w-full bg-gradient-to-r from-blue-600 to-teal-600 hover:from-blue-700 hover:to-teal-700 text-white text-center py-3 rounded-xl transition-all font-medium transform hover:scale-105 shadow-lg"
                   >
-                    View Details 🔍
+                    View Details
                   </Link>
                 </div>
               </div>
