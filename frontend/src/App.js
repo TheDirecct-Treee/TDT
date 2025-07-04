@@ -163,6 +163,45 @@ const HomePage = () => {
         </div>
       </section>
 
+      {/* Search Section */}
+      <section className="py-12 bg-white">
+        <div className="container mx-auto px-6 max-w-4xl">
+          <h2 className="text-3xl font-bold text-center mb-8 text-gray-800">
+            🔍 Find Your Perfect Business
+          </h2>
+          <div className="bg-gradient-to-br from-green-50 to-amber-50 p-8 rounded-2xl shadow-lg">
+            <div className="flex flex-col md:flex-row gap-4">
+              <div className="flex-1">
+                <input
+                  type="text"
+                  placeholder="Search for restaurants, hair salons, mechanics, braiders, cakes..."
+                  className="w-full px-6 py-4 border border-gray-300 rounded-xl focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-200 text-lg shadow-sm"
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' && e.target.value.trim()) {
+                      window.location.href = `/businesses?search=${encodeURIComponent(e.target.value.trim())}`;
+                    }
+                  }}
+                />
+              </div>
+              <button
+                onClick={(e) => {
+                  const searchInput = e.target.parentElement.querySelector('input');
+                  if (searchInput.value.trim()) {
+                    window.location.href = `/businesses?search=${encodeURIComponent(searchInput.value.trim())}`;
+                  }
+                }}
+                className="bg-gradient-to-r from-green-600 to-amber-600 hover:from-green-700 hover:to-amber-700 text-white px-8 py-4 rounded-xl font-semibold transition-all transform hover:scale-105 shadow-lg whitespace-nowrap"
+              >
+                Search Now 🚀
+              </button>
+            </div>
+            <p className="text-center text-gray-600 mt-4">
+              Find exactly what you need across all Bahamas islands
+            </p>
+          </div>
+        </div>
+      </section>
+
       {/* Islands Section */}
       <section className="py-16 bg-gradient-to-br from-green-50 to-amber-50">
         <div className="container mx-auto px-6">
