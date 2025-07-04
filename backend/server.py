@@ -981,6 +981,97 @@ async def delete_photo(photo_id: str, current_user: User = Depends(get_current_u
         logger.error(f"Error deleting photo: {str(e)}")
         raise HTTPException(status_code=500, detail="Failed to delete photo")
 
+# Business Profile Photo Routes
+@api_router.post("/business/{business_id}/upload-profile-photo")
+async def upload_business_profile_photo(
+    business_id: str,
+    file: UploadFile = File(...),
+    current_user: User = Depends(get_current_user)
+):
+    # Verify business ownership
+    business = await db.businesses.find_one({"id": business_id, "user_id": current_user.id})
+    if not business:
+        raise HTTPException(status_code=403, detail="Access denied")
+    
+    try:
+        # Upload to Cloudinary
+        photo_metadata = await upload_to_cloudinary(file, business_id)
+        
+        # Update business profile photo
+        await db.businesses.update_one(
+            {"id": business_id},
+            {"$set": {"profile_photo": photo_metadata.optimized_url, "updated_at": datetime.utcnow()}}
+        )
+        
+        return {
+            "message": "Profile photo uploaded successfully",
+            "photo_url": photo_metadata.optimized_url
+        }
+        
+    except Exception as e:
+        logger.error(f"Error uploading profile photo: {str(e)}")
+        raise HTTPException(status_code=500, detail="Failed to upload profile photo")
+
+@api_router.post("/business/{business_id}/upload-cover-photo")
+async def upload_business_cover_photo(
+    business_id: str,
+    file: UploadFile = File(...),
+    current_user: User = Depends(get_current_user)
+):
+    # Verify business ownership
+    business = await db.businesses.find_one({"id": business_id, "user_id": current_user.id})
+    if not business:
+        raise HTTPException(status_code=403, detail="Access denied")
+    
+    try:
+        # Upload to Cloudinary
+        photo_metadata = await upload_to_cloudinary(file, business_id)
+        
+        # Update business cover photo
+        await db.businesses.update_one(
+            {"id": business_id},
+            {"$set": {"cover_photo": photo_metadata.optimized_url, "updated_at": datetime.utcnow()}}
+        )
+        
+        return {
+            "message": "Cover photo uploaded successfully",
+            "photo_url": photo_metadata.optimized_url
+        }
+        
+    except Exception as e:
+        logger.error(f"Error uploading cover photo: {str(e)}")
+        raise HTTPException(status_code=500, detail="Failed to upload cover photo")
+
+@api_router.post("/business/{business_id}/upload-logo")
+async def upload_business_logo(
+    business_id: str,
+    file: UploadFile = File(...),
+    current_user: User = Depends(get_current_user)
+):
+    # Verify business ownership
+    business = await db.businesses.find_one({"id": business_id, "user_id": current_user.id})
+    if not business:
+        raise HTTPException(status_code=403, detail="Access denied")
+    
+    try:
+        # Upload to Cloudinary
+        photo_metadata = await upload_to_cloudinary(file, business_id)
+        
+        # Update business logo
+        await db.businesses.update_one(
+            {"id": business_id},
+            {"$set": {"logo": photo_metadata.optimized_url, "updated_at": datetime.utcnow()}}
+        )
+        
+        return {
+            "message": "Logo uploaded successfully",
+            "photo_url": photo_metadata.optimized_url
+        }
+        
+    except Exception as e:
+        logger.error(f"Error uploading logo: {str(e)}")
+        raise HTTPException(status_code=500, detail="Failed to upload logo")
+
 # Business FAQ Routes
 @api_router.get("/business/{business_id}/faqs")
 async def get_business_faqs(business_id: str):
