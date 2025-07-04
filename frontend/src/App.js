@@ -162,9 +162,9 @@ const HomePage = () => {
         <div className="text-center text-white hero-text relative z-10 max-w-5xl mx-auto px-6">
           <div className="mb-8">
             <img 
-              src="https://images.unsplash.com/photo-1579678791222-a9351e73ea5f?w=120&h=120&fit=crop&crop=center" 
+              src="https://images.pexels.com/photos/10168430/pexels-photo-10168430.jpeg?w=120&h=120&fit=crop&crop=center" 
               alt="The Direct Tree" 
-              className="w-20 h-20 mx-auto mb-4 rounded-2xl bg-white/20 p-2 shadow-2xl animate-bounce"
+              className="w-20 h-20 mx-auto mb-4 rounded-full shadow-2xl animate-bounce"
             />
           </div>
           <h1 className="text-6xl md:text-7xl font-bold mb-6 hero-title bg-gradient-to-r from-white via-green-100 to-amber-100 bg-clip-text text-transparent">
