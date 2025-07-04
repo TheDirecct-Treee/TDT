@@ -1784,6 +1784,26 @@ async def cancel_subscription(subscription_id: str, current_user: User = Depends
         logger.error(f"Error cancelling subscription: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e))
 
+# Admin utility endpoint (for initial setup)
+@api_router.post("/admin/promote-user")
+async def promote_user_to_admin(email: str, current_user: User = Depends(get_current_user)):
+    """Promote a user to admin role - use this for initial admin setup"""
+    # Only allow if current user is already admin OR no admins exist yet
+    admin_count = await db.users.count_documents({"role": "admin"})
+    
+    if admin_count > 0 and current_user.role != UserRole.ADMIN:
+        raise HTTPException(status_code=403, detail="Only existing admins can promote users")
+    
+    result = await db.users.update_one(
+        {"email": email},
+        {"$set": {"role": "admin"}}
+    )
+    
+    if result.matched_count == 0:
+        raise HTTPException(status_code=404, detail="User not found")
+    
+    return {"message": f"User {email} promoted to admin successfully"}
+
 @api_router.get("/paypal/subscription-status")
 async def get_user_subscription_status(current_user: User = Depends(get_current_user)):
     try:
