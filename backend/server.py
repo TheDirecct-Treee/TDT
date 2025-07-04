@@ -322,9 +322,11 @@ def send_email(to_email: str, subject: str, html_content: str):
     """Send email using Mailgun"""
     try:
         if not MAILGUN_API_KEY or MAILGUN_API_KEY == "PLACEHOLDER_MAILGUN_KEY":
-            logger.info(f"Email would be sent to {to_email}: {subject}")
+            logger.info(f"[MOCK EMAIL] To: {to_email}, Subject: {subject}")
             return True
-            
+        
+        logger.info(f"Attempting to send email to {to_email} via Mailgun")
+        
         # Mailgun API endpoint
         mailgun_url = f"https://api.mailgun.net/v3/{MAILGUN_DOMAIN}/messages"
         
@@ -340,10 +342,17 @@ def send_email(to_email: str, subject: str, html_content: str):
         response = requests.post(
             mailgun_url,
             auth=("api", MAILGUN_API_KEY),
-            data=data
+            data=data,
+            timeout=10
         )
         
-        return response.status_code == 200
+        if response.status_code == 200:
+            logger.info(f"Email sent successfully to {to_email}")
+            return True
+        else:
+            logger.error(f"Mailgun API error: {response.status_code} - {response.text}")
+            return False
+            
     except Exception as e:
         logger.error(f"Email send error: {str(e)}")
         return False
