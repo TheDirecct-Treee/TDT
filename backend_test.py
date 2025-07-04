@@ -560,7 +560,13 @@ def run_tests():
         DirectTreeAPITest('test_15_approve_business'),
         DirectTreeAPITest('test_16_approve_review'),
         DirectTreeAPITest('test_17_create_appointment'),
-        DirectTreeAPITest('test_18_paypal_create_plan')
+        DirectTreeAPITest('test_18_paypal_create_plan'),
+        DirectTreeAPITest('test_19_get_event_categories'),
+        DirectTreeAPITest('test_20_business_search'),
+        DirectTreeAPITest('test_21_business_profile_photo_upload'),
+        DirectTreeAPITest('test_22_business_cover_photo_upload'),
+        DirectTreeAPITest('test_23_business_logo_upload'),
+        DirectTreeAPITest('test_24_business_model_fields')
     ]
     
     for test_case in test_cases:
