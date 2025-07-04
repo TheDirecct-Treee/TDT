@@ -244,7 +244,7 @@ const HomePage = () => {
                 }}
                 className="bg-gradient-to-r from-green-600 to-amber-600 hover:from-green-700 hover:to-amber-700 text-white px-8 py-4 rounded-xl font-semibold transition-all transform hover:scale-105 shadow-lg whitespace-nowrap"
               >
-                Search Now 🚀
+                Search Now
               </button>
             </div>
             <p className="text-center text-gray-600 mt-4">
