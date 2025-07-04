@@ -147,24 +147,73 @@ const HomePage = () => {
     <div className="min-h-screen">
       {/* Hero Section */}
       <section 
-        className="relative h-96 bg-cover bg-center flex items-center justify-center"
+        className="relative h-screen bg-cover bg-center flex items-center justify-center overflow-hidden"
         style={{ 
-          backgroundImage: "linear-gradient(rgba(22, 101, 52, 0.8), rgba(120, 53, 15, 0.8)), url('https://images.unsplash.com/photo-1568826248417-b40de68c4ad6?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDQ2NDF8MHwxfHNlYXJjaHwxfHwxNzUxMzEwNDgwfDA&ixlib=rb-4.1.0&q=85')"
+          backgroundImage: "linear-gradient(135deg, rgba(22, 101, 52, 0.9), rgba(120, 53, 15, 0.8)), url('https://images.unsplash.com/photo-1568826248417-b40de68c4ad6?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDQ2NDF8MHwxfHNlYXJjaHwxfHwxNzUxMzEwNDgwfDA&ixlib=rb-4.1.0&q=85')"
         }}
       >
-        <div className="text-center text-white hero-text">
-          <h1 className="text-5xl font-bold mb-4 hero-title">
+        {/* Floating Elements */}
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="absolute top-20 left-10 w-32 h-32 bg-white/10 rounded-full blur-xl animate-pulse"></div>
+          <div className="absolute bottom-20 right-10 w-40 h-40 bg-amber-300/20 rounded-full blur-xl animate-pulse delay-300"></div>
+          <div className="absolute top-1/2 left-1/4 w-24 h-24 bg-green-300/20 rounded-full blur-xl animate-pulse delay-700"></div>
+        </div>
+
+        <div className="text-center text-white hero-text relative z-10 max-w-5xl mx-auto px-6">
+          <div className="mb-8">
+            <img 
+              src="https://images.unsplash.com/photo-1579678791222-a9351e73ea5f?w=120&h=120&fit=crop&crop=center" 
+              alt="The Direct Tree" 
+              className="w-20 h-20 mx-auto mb-4 rounded-2xl bg-white/20 p-2 shadow-2xl animate-bounce"
+            />
+          </div>
+          <h1 className="text-6xl md:text-7xl font-bold mb-6 hero-title bg-gradient-to-r from-white via-green-100 to-amber-100 bg-clip-text text-transparent">
             Find & Connect with Local Bahamas Businesses
           </h1>
-          <p className="text-xl mb-8 hero-subtitle">
-            The Direct Tree - Your trusted directory for licensed businesses across all islands
+          <p className="text-2xl md:text-3xl mb-10 hero-subtitle text-green-100 font-light">
+            The Direct Tree - Your trusted directory for licensed businesses across all islands 🏝️
           </p>
-          <Link 
-            to="/businesses"
-            className="bg-gradient-to-r from-green-600 to-amber-600 hover:from-green-700 hover:to-amber-700 text-white px-8 py-3 rounded-full text-lg font-semibold transition-all transform hover:scale-105 shadow-lg"
-          >
-            Explore Businesses 🏝️
-          </Link>
+          
+          {/* CTA Buttons */}
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+            <Link 
+              to="/businesses"
+              className="bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white px-10 py-4 rounded-2xl text-xl font-semibold transition-all transform hover:scale-105 shadow-2xl hover:shadow-green-500/50 flex items-center space-x-2"
+            >
+              <span>Explore Businesses</span>
+              <span className="text-2xl">🚀</span>
+            </Link>
+            <Link 
+              to="/events"
+              className="bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white px-10 py-4 rounded-2xl text-xl font-semibold transition-all transform hover:scale-105 shadow-2xl hover:shadow-amber-500/50 flex items-center space-x-2"
+            >
+              <span>Browse Events</span>
+              <span className="text-2xl">🎉</span>
+            </Link>
+          </div>
+          
+          {/* Stats */}
+          <div className="mt-16 grid grid-cols-3 gap-8 max-w-2xl mx-auto">
+            <div className="text-center">
+              <div className="text-3xl font-bold text-white mb-2">17</div>
+              <div className="text-green-200 text-sm">Islands Covered</div>
+            </div>
+            <div className="text-center">
+              <div className="text-3xl font-bold text-white mb-2">100+</div>
+              <div className="text-green-200 text-sm">Verified Businesses</div>
+            </div>
+            <div className="text-center">
+              <div className="text-3xl font-bold text-white mb-2">24/7</div>
+              <div className="text-green-200 text-sm">Platform Access</div>
+            </div>
+          </div>
+        </div>
+
+        {/* Scroll Indicator */}
+        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+          <div className="w-8 h-12 border-2 border-white/50 rounded-full flex justify-center">
+            <div className="w-1 h-3 bg-white/70 rounded-full mt-2 animate-pulse"></div>
+          </div>
         </div>
       </section>
 
