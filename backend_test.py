@@ -2,6 +2,7 @@ import requests
 import unittest
 import json
 import time
+import os
 from datetime import datetime, timedelta
 
 # Use the public endpoint for testing
