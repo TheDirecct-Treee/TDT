@@ -62,7 +62,7 @@ const Header = () => {
   const navigate = useNavigate();
 
   return (
-    <header className="bg-gradient-to-r from-green-700 via-green-600 to-amber-700 text-white shadow-lg">
+    <header className="bg-green-700 text-white shadow-lg">
       <div className="container mx-auto px-6 py-4">
         <div className="flex items-center justify-between">
           <Link to="/" className="flex items-center space-x-3 text-white hover:text-green-200 transition-colors group">
