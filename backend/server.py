@@ -852,6 +852,41 @@ async def resend_verification(email: EmailStr, background_tasks: BackgroundTasks
     return {"message": "Verification email sent"}
 
 # Business Routes
+@api_router.get("/businesses/search")
+async def search_businesses(
+    q: str,
+    island: Optional[str] = None,
+    category: Optional[str] = None,
+    status: Optional[str] = "approved",
+    skip: int = 0,
+    limit: int = 50
+):
+    """Search businesses by name, description, category, or services"""
+    query = {"status": status} if status else {}
+    
+    # Add text search conditions
+    search_conditions = []
+    if q:
+        search_pattern = {"$regex": q, "$options": "i"}  # Case-insensitive
+        search_conditions.extend([
+            {"business_name": search_pattern},
+            {"description": search_pattern},
+            {"category": search_pattern},
+            {"services": {"$elemMatch": search_pattern}}
+        ])
+    
+    if search_conditions:
+        query["$or"] = search_conditions
+    
+    # Add filters
+    if island:
+        query["island"] = island
+    if category:
+        query["category"] = category
+    
+    businesses = await db.businesses.find(query).skip(skip).limit(limit).to_list(limit)
+    return [BusinessProfile(**business) for business in businesses]
+
 @api_router.post("/business/create", response_model=BusinessProfile)
 async def create_business(
     business_data: BusinessCreate,
