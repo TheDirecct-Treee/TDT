@@ -748,7 +748,8 @@ const BusinessListPage = () => {
   const [categories, setCategories] = useState([]);
   const [filters, setFilters] = useState({
     island: '',
-    category: ''
+    category: '',
+    search: ''
   });
   const [loading, setLoading] = useState(true);
 
@@ -763,7 +764,14 @@ const BusinessListPage = () => {
       if (filters.island) params.append('island', filters.island);
       if (filters.category) params.append('category', filters.category);
       
-      const response = await axios.get(`${API}/businesses?${params}`);
+      // Use search endpoint if there's a search query
+      let url = `${API}/businesses`;
+      if (filters.search) {
+        url = `${API}/businesses/search`;
+        params.append('q', filters.search);
+      }
+      
+      const response = await axios.get(`${url}?${params}`);
       setBusinesses(response.data);
     } catch (error) {
       console.error('Error fetching businesses:', error);
