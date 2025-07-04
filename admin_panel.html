@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Direct Tree Admin Panel</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 800px; margin: 20px auto; padding: 20px; }
+        .container { background: #f5f5f5; padding: 20px; border-radius: 10px; }
+        .admin-section { background: white; margin: 20px 0; padding: 20px; border-radius: 8px; }
+        button { background: #28a745; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; }
+        button:hover { background: #218838; }
+        .error { color: red; }
+        .success { color: green; }
+        input, select { width: 100%; padding: 8px; margin: 5px 0; border: 1px solid #ddd; border-radius: 4px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🌴 The Direct Tree - Admin Panel</h1>
+        
+        <div class="admin-section">
+            <h2>📧 Create Admin Account</h2>
+            <p>Since frontend connection issues, use this direct admin creator:</p>
+            <form id="adminForm">
+                <input type="email" id="adminEmail" placeholder="Enter your email address" required>
+                <input type="password" id="adminPassword" placeholder="Enter admin password" required>
+                <button type="submit">Create Admin Account</button>
+            </form>
+            <div id="adminResult"></div>
+        </div>
+
+        <div class="admin-section">
+            <h2>🏢 Pending Businesses</h2>
+            <button onclick="loadBusinesses()">Load Pending Businesses</button>
+            <div id="businessesList"></div>
+        </div>
+
+        <div class="admin-section">
+            <h2>📝 Admin Actions</h2>
+            <div>
+                <h3>Approve Business</h3>
+                <input type="text" id="businessId" placeholder="Business ID">
+                <button onclick="approveBusiness()">Approve Business</button>
+            </div>
+            <div style="margin-top: 10px;">
+                <h3>Reject Business</h3>
+                <input type="text" id="rejectBusinessId" placeholder="Business ID">
+                <button onclick="rejectBusiness()" style="background: #dc3545;">Reject Business</button>
+            </div>
+            <div id="actionResult"></div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = 'http://localhost:8001/api';
+        
+        // Create admin account
+        document.getElementById('adminForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('adminEmail').value;
+            const password = document.getElementById('adminPassword').value;
+            
+            try {
+                // Create user first
+                const registerResponse = await fetch(`${API_BASE}/register`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        email: email,
+                        password: password,
+                        first_name: 'Admin',
+                        last_name: 'User',
+                        role: 'customer'
+                    })
+                });
+                
+                if (registerResponse.ok) {
+                    // Login to get token
+                    const loginResponse = await fetch(`${API_BASE}/login`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                        body: `username=${email}&password=${password}`
+                    });
+                    
+                    if (loginResponse.ok) {
+                        const loginData = await loginResponse.json();
+                        localStorage.setItem('adminToken', loginData.access_token);
+                        
+                        // Promote to admin
+                        const promoteResponse = await fetch(`${API_BASE}/admin/promote-user?email=${email}`, {
+                            method: 'POST',
+                            headers: { 'Authorization': `Bearer ${loginData.access_token}` }
+                        });
+                        
+                        if (promoteResponse.ok) {
+                            document.getElementById('adminResult').innerHTML = '<p class="success">✅ Admin account created successfully!</p>';
+                        }
+                    }
+                } else {
+                    const errorData = await registerResponse.json();
+                    document.getElementById('adminResult').innerHTML = `<p class="error">❌ ${errorData.detail}</p>`;
+                }
+            } catch (error) {
+                document.getElementById('adminResult').innerHTML = `<p class="error">❌ Error: ${error.message}</p>`;
+            }
+        });
+
+        // Load pending businesses
+        async function loadBusinesses() {
+            try {
+                const token = localStorage.getItem('adminToken');
+                const response = await fetch(`${API_BASE}/admin/businesses/pending`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                
+                if (response.ok) {
+                    const businesses = await response.json();
+                    let html = '<h3>Pending Businesses:</h3>';
+                    
+                    if (businesses.length === 0) {
+                        html += '<p>No pending businesses!</p>';
+                    } else {
+                        businesses.forEach(business => {
+                            html += `
+                                <div style="border: 1px solid #ddd; padding: 10px; margin: 10px 0;">
+                                    <strong>${business.business_name}</strong><br>
+                                    Email: ${business.email}<br>
+                                    Category: ${business.category}<br>
+                                    Island: ${business.island}<br>
+                                    License: ${business.license_number}<br>
+                                    <strong>ID: ${business.id}</strong>
+                                </div>
+                            `;
+                        });
+                    }
+                    
+                    document.getElementById('businessesList').innerHTML = html;
+                } else {
+                    document.getElementById('businessesList').innerHTML = '<p class="error">❌ Failed to load businesses</p>';
+                }
+            } catch (error) {
+                document.getElementById('businessesList').innerHTML = `<p class="error">❌ Error: ${error.message}</p>`;
+            }
+        }
+
+        // Approve business
+        async function approveBusiness() {
+            const businessId = document.getElementById('businessId').value;
+            if (!businessId) return;
+            
+            try {
+                const token = localStorage.getItem('adminToken');
+                const response = await fetch(`${API_BASE}/admin/business/${businessId}/approve`, {
+                    method: 'PUT',
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                
+                if (response.ok) {
+                    document.getElementById('actionResult').innerHTML = '<p class="success">✅ Business approved!</p>';
+                    document.getElementById('businessId').value = '';
+                    loadBusinesses(); // Refresh list
+                } else {
+                    document.getElementById('actionResult').innerHTML = '<p class="error">❌ Failed to approve business</p>';
+                }
+            } catch (error) {
+                document.getElementById('actionResult').innerHTML = `<p class="error">❌ Error: ${error.message}</p>`;
+            }
+        }
+
+        // Reject business
+        async function rejectBusiness() {
+            const businessId = document.getElementById('rejectBusinessId').value;
+            if (!businessId) return;
+            
+            try {
+                const token = localStorage.getItem('adminToken');
+                const response = await fetch(`${API_BASE}/admin/business/${businessId}/reject`, {
+                    method: 'PUT',
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                
+                if (response.ok) {
+                    document.getElementById('actionResult').innerHTML = '<p class="success">✅ Business rejected!</p>';
+                    document.getElementById('rejectBusinessId').value = '';
+                    loadBusinesses(); // Refresh list
+                } else {
+                    document.getElementById('actionResult').innerHTML = '<p class="error">❌ Failed to reject business</p>';
+                }
+            } catch (error) {
+                document.getElementById('actionResult').innerHTML = `<p class="error">❌ Error: ${error.message}</p>`;
+            }
+        }
+    </script>
+</body>
+</html>
