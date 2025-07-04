@@ -63,8 +63,13 @@ const Header = () => {
     <header className="bg-gradient-to-r from-green-700 via-green-600 to-amber-700 text-white shadow-lg">
       <div className="container mx-auto px-6 py-4">
         <div className="flex items-center justify-between">
-          <Link to="/" className="text-2xl font-bold text-white hover:text-green-200 transition-colors">
-            The Direct Tree
+          <Link to="/" className="flex items-center space-x-3 text-white hover:text-green-200 transition-colors group">
+            <img 
+              src="https://images.unsplash.com/photo-1579678791222-a9351e73ea5f?w=80&h=80&fit=crop&crop=center" 
+              alt="The Direct Tree Logo" 
+              className="w-10 h-10 rounded-lg bg-white/20 p-1 group-hover:scale-110 transition-transform shadow-lg"
+            />
+            <span className="text-2xl font-bold">The Direct Tree</span>
           </Link>
           <nav className="flex items-center space-x-6">
             <Link to="/businesses" className="hover:text-green-200 transition-colors font-medium">
