@@ -791,10 +791,24 @@ const BusinessListPage = () => {
     search: ''
   });
   const [loading, setLoading] = useState(true);
+  const location = useLocation();
+
+  useEffect(() => {
+    // Parse URL parameters
+    const urlParams = new URLSearchParams(location.search);
+    const initialFilters = {
+      island: urlParams.get('island') || '',
+      category: urlParams.get('category') || '',
+      search: urlParams.get('search') || ''
+    };
+    setFilters(initialFilters);
+  }, [location.search]);
 
   useEffect(() => {
     fetchBusinesses();
-    fetchFilters();
+    if (islands.length === 0 || categories.length === 0) {
+      fetchFilters();
+    }
   }, [filters]);
 
   const fetchBusinesses = async () => {
