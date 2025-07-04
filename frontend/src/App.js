@@ -347,6 +347,13 @@ const RegisterPage = () => {
     setLicenseFile(e.target.files[0]);
   };
 
+  const handleAgreementChange = (e) => {
+    setAgreements({
+      ...agreements,
+      [e.target.name]: e.target.checked
+    });
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50 to-amber-50 flex items-center justify-center py-12 px-4">
       <div className="max-w-2xl w-full bg-white rounded-lg shadow-lg p-8">
