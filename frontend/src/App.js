@@ -149,10 +149,7 @@ const HomePage = () => {
     <div className="min-h-screen">
       {/* Hero Section */}
       <section 
-        className="relative h-screen bg-cover bg-center flex items-center justify-center overflow-hidden"
-        style={{ 
-          backgroundImage: "linear-gradient(135deg, rgba(22, 101, 52, 0.9), rgba(120, 53, 15, 0.8)), url('https://images.unsplash.com/photo-1568826248417-b40de68c4ad6?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDQ2NDF8MHwxfHNlYXJjaHwxfHwxNzUxMzEwNDgwfDA&ixlib=rb-4.1.0&q=85')"
-        }}
+        className="relative h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-green-600 via-green-700 to-amber-700"
       >
         {/* Floating Elements */}
         <div className="absolute inset-0 overflow-hidden">
