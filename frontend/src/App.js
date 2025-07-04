@@ -149,7 +149,7 @@ const HomePage = () => {
     <div className="min-h-screen">
       {/* Hero Section */}
       <section 
-        className="relative h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-green-600 via-green-700 to-amber-700"
+        className="relative h-screen flex items-center justify-center overflow-hidden bg-green-600"
       >
         {/* Floating Elements */}
         <div className="absolute inset-0 overflow-hidden">
