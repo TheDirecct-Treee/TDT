@@ -220,7 +220,7 @@ const HomePage = () => {
           <h2 className="text-3xl font-bold text-center mb-8 text-gray-800">
             🔍 Find Your Perfect Business
           </h2>
-          <div className="bg-gradient-to-br from-green-50 to-amber-50 p-8 rounded-2xl shadow-lg">
+          <div className="bg-white p-8 rounded-lg shadow-lg">
             <div className="flex flex-col md:flex-row gap-4">
               <div className="flex-1">
                 <input
