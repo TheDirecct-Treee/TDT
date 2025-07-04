@@ -296,6 +296,13 @@ const RegisterPage = () => {
     setLoading(true);
     setError('');
 
+    // Check agreements
+    if (!agreements.termsAndConditions || !agreements.privacyPolicy) {
+      setError('Please agree to both Terms & Conditions and Privacy Policy to continue');
+      setLoading(false);
+      return;
+    }
+
     // Validate business owner requirements
     if (formData.role === 'business_owner') {
       if (!businessData.business_name || !businessData.category || !businessData.island || !businessData.license_number) {
