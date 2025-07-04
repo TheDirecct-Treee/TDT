@@ -260,7 +260,11 @@ const HomePage = () => {
       <section className="py-16 bg-gradient-to-br from-green-50 to-amber-50">
         <div className="container mx-auto px-6">
           <h2 className="text-3xl font-bold text-center mb-12 text-gray-800">
-            🏝️ Explore Businesses by Island
+            <img 
+              src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgdmlld0JveD0iMCAwIDEwMCAxMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxjaXJjbGUgY3g9IjUwIiBjeT0iNTAiIHI9IjQ1IiBmaWxsPSIjZmZmZmZmIiBzdHJva2U9IiM2MmE1MzMiIHN0cm9rZS13aWR0aD0iMiIvPgo8Y2lyY2xlIGN4PSI1MCIgY3k9IjUwIiByPSIzNSIgZmlsbD0iIzYyYTUzMyIvPgo8cGF0aCBkPSJNMzUgNzBMMzUgNTVMNDUgNDVMNTUgNDVMNjUgNTVMNjUgNzAiIHN0cm9rZT0iI2ZmZmZmZiIgc3Ryb2tlLXdpZHRoPSIzIiBmaWxsPSJub25lIi8+CjxjaXJjbGUgY3g9IjQ1IiBjeT0iNDAiIHI9IjMiIGZpbGw9IiNmZmZmZmYiLz4KPGF0aC5SYWRpdXMiIGN4PSI1NSIgY3k9IjQwIiByPSIzIiBmaWxsPSIjZmZmZmZmIi8+CjxjaXJjbGUgY3g9IjUwIiBjeT0iMzAiIHI9IjQiIGZpbGw9IiNmZmZmZmYiLz4KPC9zdmc+" 
+              alt="The Direct Tree"
+              className="w-8 h-8 mb-2 mx-auto group-hover:scale-110 transition-transform"
+            /> Explore Businesses by Island
           </h2>
           <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
             {islands.slice(0, 12).map((island) => (
