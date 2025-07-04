@@ -767,7 +767,7 @@ const RegisterPage = () => {
             disabled={loading}
             className="w-full bg-gradient-to-r from-green-600 to-amber-600 hover:from-green-700 hover:to-amber-700 text-white font-semibold py-3 rounded-xl transition-all disabled:opacity-50 transform hover:scale-105"
           >
-            {loading ? 'Creating Account...' : 'Join The Direct Tree 🚀'}
+            {loading ? 'Creating Account...' : 'Join The Direct Tree'}
           </button>
         </form>
 
