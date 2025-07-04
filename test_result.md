@@ -145,15 +145,18 @@ backend:
 
   - task: "Business search API endpoint"
     implemented: true
-    working: "NA"
+    working: true
     file: "server.py"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: "NA"
         agent: "main"
         comment: "Added /businesses/search endpoint with text search across business_name, description, category, and services fields"
+      - working: true
+        agent: "testing"
+        comment: "Verified that the /businesses/search endpoint is working correctly. The endpoint accepts a 'q' parameter for text search and properly filters results. Additional filtering by island and category also works as expected. Tests passed successfully."
 
 frontend:
   - task: "Privacy Policy page creation"
