@@ -176,7 +176,9 @@ const HomePage = () => {
             The Direct Tree
           </h1>
           <p className="text-2xl md:text-3xl mb-10 hero-subtitle text-green-100 font-light">
-            <span className="inline-block animate-pulse">Branch out and stand tall</span>
+            <span className="inline-block animate-bounce text-white font-semibold tracking-wide">
+              Branch out and stand tall
+            </span>
           </p>
           
           {/* CTA Buttons */}
