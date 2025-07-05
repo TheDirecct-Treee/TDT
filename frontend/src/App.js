@@ -172,11 +172,11 @@ const HomePage = () => {
               className="w-20 h-20 mx-auto mb-4"
             />
           </div>
-          <h1 className="text-6xl md:text-7xl font-bold mb-6 hero-title text-white" style={{ fontFamily: "'Celestia BC', 'Orbitron', 'Exo 2', 'Rajdhani', sans-serif" }}>
+          <h1 className="text-6xl md:text-7xl font-bold mb-6 hero-title text-gray-800 drop-shadow-lg" style={{ fontFamily: "'Celestia BC', 'Orbitron', 'Exo 2', 'Rajdhani', sans-serif" }}>
             The Direct Tree
           </h1>
-          <p className="text-2xl md:text-3xl mb-10 hero-subtitle text-green-100 font-light">
-            <span className="inline-block animate-bounce text-white font-semibold tracking-wide">
+          <p className="text-2xl md:text-3xl mb-10 hero-subtitle text-gray-700 font-semibold">
+            <span className="inline-block animate-bounce bg-white/90 px-4 py-2 rounded-lg shadow-lg text-green-700">
               Branch out and stand tall
             </span>
           </p>
