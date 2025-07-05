@@ -149,7 +149,13 @@ const HomePage = () => {
     <div className="min-h-screen">
       {/* Hero Section */}
       <section 
-        className="relative h-screen flex items-center justify-center overflow-hidden bg-green-600"
+        className="relative h-screen flex items-center justify-center overflow-hidden"
+        style={{ 
+          backgroundImage: "url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTkyMCIgaGVpZ2h0PSIxMDgwIiB2aWV3Qm94PSIwIDAgMTkyMCAxMDgwIiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8IS0tIExhcmdlIGJhY2tncm91bmQgdmVyc2lvbiBvZiB5b3VyIGNpcmN1aXQgdHJlZSBsb2dvIC0tPgo8ZGVmcz4KICA8cGF0dGVybiBpZD0iY2lyY3VpdFBhdHRlcm4iIHg9IjAiIHk9IjAiIHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIiBwYXR0ZXJuVW5pdHM9InVzZXJTcGFjZU9uVXNlIj4KICAgIDwhLS0gUmVwZWF0aW5nIGNpcmN1aXQgcGF0dGVybiAtLT4KICAgIDxnIG9wYWNpdHk9IjAuMTUiPgogICAgICA8IS0tIE1haW4gVHJ1bmsgLS0+CiAgICAgIDxsaW5lIHgxPSIxMDAiIHkxPSIxNTAiIHgyPSIxMDAiIHkyPSIxMjAiIHN0cm9rZT0iIzg0Y2M1YyIgc3Ryb2tlLXdpZHRoPSI0Ii8+CiAgICAgIDwhLS0gQnJhbmNoZXMgLS0+CiAgICAgIDxsaW5lIHgxPSI4MCIgeTE9IjEzMCIgeDI9IjEyMCIgeTI9IjEzMCIgc3Ryb2tlPSIjODRjYzVjIiBzdHJva2Utd2lkdGg9IjMiLz4KICAgICAgPGxpbmUgeDE9IjgwIiB5MT0iMTMwIiB4Mj0iODAiIHkyPSIxMTAiIHN0cm9rZT0iIzg0Y2M1YyIgc3Ryb2tlLXdpZHRoPSIzIi8+CiAgICAgIDxsaW5lIHgxPSIxMjAiIHkxPSIxMzAiIHgyPSIxMjAiIHkyPSIxMTAiIHN0cm9rZT0iIzg0Y2M1YyIgc3Ryb2tlLXdpZHRoPSIzIi8+CiAgICAgIDwhLS0gTm9kZXMgLS0+CiAgICAgIDxjaXJjbGUgY3g9IjgwIiBjeT0iMTEwIiByPSIzIiBmaWxsPSIjODRjYzVjIi8+CiAgICAgIDxjaXJjbGUgY3g9IjEyMCIgY3k9IjExMCIgcj0iMyIgZmlsbD0iIzg0Y2M1YyIvPgogICAgICA8Y2lyY2xlIGN4PSIxMDAiIGN5PSIxMjAiIHI9IjMiIGZpbGw9IiM4NGNjNWMiLz4KICAgICAgPCEtLSBSb290IGNoaXAgLS0+CiAgICAgIDxyZWN0IHg9IjkwIiB5PSIxNTAiIHdpZHRoPSIyMCIgaGVpZ2h0PSIxMCIgZmlsbD0iIzZkNTQzMyIgc3Ryb2tlPSIjNGEzNzI2IiBzdHJva2Utd2lkdGg9IjEiLz4KICAgIDwvZz4KICA8L3BhdHRlcm4+CjwvZGVmcz4KPCEtLSBCYWNrZ3JvdW5kIGZpbGwgLS0+CjxyZWN0IHdpZHRoPSIxMDAliIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjY2lyY3VpdFBhdHRlcm4pIi8+CjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InJnYmEoMzQsIDEzNywgMzQsIDAuOSkiLz4KPC9zdmc+Cg==')", 
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat"
+        }}
       >
         {/* Floating Elements */}
         <div className="absolute inset-0 overflow-hidden">
