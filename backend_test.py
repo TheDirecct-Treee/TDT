@@ -6,7 +6,7 @@ import os
 from datetime import datetime, timedelta
 
 # Use the public endpoint for testing
-BACKEND_URL = "https://12f9c8c1-4cbd-43be-9ad4-a09db48b290e.preview.emergentagent.com/api"
+BACKEND_URL = "https://01f16dc2-4be8-4f34-b29a-a8f7b50340e0.preview.emergentagent.com/api"
 
 class DirectTreeAPITest(unittest.TestCase):
     def setUp(self):
