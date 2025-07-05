@@ -399,7 +399,7 @@ const HomePage = () => {
               <Link
                 key={category}
                 to={`/businesses?category=${encodeURIComponent(category)}`}
-                className="bg-gradient-to-br from-green-600 via-green-500 to-amber-600 text-white rounded-xl p-6 text-center hover:from-green-700 hover:via-green-600 hover:to-amber-700 transition-all transform hover:scale-105 shadow-lg hover:shadow-xl"
+                className="bg-white border-2 border-green-200 hover:border-green-400 text-gray-800 hover:text-green-700 rounded-xl p-6 text-center transition-all transform hover:scale-105 shadow-lg hover:shadow-xl"
               >
                 <div className="font-semibold text-sm">{category}</div>
               </Link>
