@@ -222,32 +222,57 @@ const HomePage = () => {
 
         <div className="text-center text-white hero-text relative z-10 max-w-5xl mx-auto px-6">
           <div className="mb-8">
-            {/* Simple circuit tree for hero section */}
-            <svg width="80" height="80" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" className="mx-auto">
-              <g transform="translate(50, 50)">
+            {/* User's Exact Logo for Hero Section */}
+            <svg width="120" height="120" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg" className="mx-auto">
+              <g transform="translate(100, 100)">
                 {/* Root Chip */}
-                <rect x="-15" y="25" width="30" height="15" fill="#8b4513" stroke="#654321" strokeWidth="1" rx="2"/>
-                <line x1="-20" y1="30" x2="-15" y2="30" stroke="#654321" strokeWidth="1"/>
-                <line x1="15" y1="30" x2="20" y2="30" stroke="#654321" strokeWidth="1"/>
-                <line x1="-20" y1="35" x2="-15" y2="35" stroke="#654321" strokeWidth="1"/>
-                <line x1="15" y1="35" x2="20" y2="35" stroke="#654321" strokeWidth="1"/>
+                <rect x="-18" y="60" width="36" height="18" fill="#8b4513" stroke="#654321" strokeWidth="2" rx="2"/>
+                <line x1="-25" y1="66" x2="-18" y2="66" stroke="#654321" strokeWidth="2"/>
+                <line x1="18" y1="66" x2="25" y2="66" stroke="#654321" strokeWidth="2"/>
+                <line x1="-25" y1="72" x2="-18" y2="72" stroke="#654321" strokeWidth="2"/>
+                <line x1="18" y1="72" x2="25" y2="72" stroke="#654321" strokeWidth="2"/>
                 
                 {/* Main Trunk */}
-                <line x1="0" y1="25" x2="0" y2="0" stroke="#ffffff" strokeWidth="4"/>
+                <line x1="0" y1="60" x2="0" y2="25" stroke="#ffffff" strokeWidth="5"/>
                 
-                {/* Branches */}
-                <line x1="-25" y1="15" x2="25" y2="15" stroke="#ffffff" strokeWidth="3"/>
-                <line x1="-25" y1="15" x2="-25" y2="-10" stroke="#ffffff" strokeWidth="3"/>
-                <line x1="25" y1="15" x2="25" y2="-10" stroke="#ffffff" strokeWidth="3"/>
+                {/* First Level Branches */}
+                <line x1="-35" y1="42" x2="35" y2="42" stroke="#ffffff" strokeWidth="4"/>
+                <line x1="-35" y1="42" x2="-35" y2="12" stroke="#ffffff" strokeWidth="4"/>
+                <line x1="35" y1="42" x2="35" y2="12" stroke="#ffffff" strokeWidth="4"/>
+                
+                {/* Second Level Branches */}
+                <line x1="-60" y1="25" x2="-12" y2="25" stroke="#ffffff" strokeWidth="3"/>
+                <line x1="12" y1="25" x2="60" y2="25" stroke="#ffffff" strokeWidth="3"/>
+                <line x1="-60" y1="25" x2="-60" y2="-5" stroke="#ffffff" strokeWidth="3"/>
+                <line x1="-12" y1="25" x2="-12" y2="-5" stroke="#ffffff" strokeWidth="3"/>
+                <line x1="12" y1="25" x2="12" y2="-5" stroke="#ffffff" strokeWidth="3"/>
+                <line x1="60" y1="25" x2="60" y2="-5" stroke="#ffffff" strokeWidth="3"/>
+                
+                {/* Third Level Branches */}
+                <line x1="-80" y1="8" x2="-36" y2="8" stroke="#ffffff" strokeWidth="2"/>
+                <line x1="-24" y1="8" x2="24" y2="8" stroke="#ffffff" strokeWidth="2"/>
+                <line x1="36" y1="8" x2="80" y2="8" stroke="#ffffff" strokeWidth="2"/>
                 
                 {/* Circuit Nodes */}
-                <circle cx="-25" cy="-10" r="2" fill="#ffffff"/>
-                <circle cx="25" cy="-10" r="2" fill="#ffffff"/>
-                <circle cx="0" cy="0" r="2" fill="#ffffff"/>
+                <circle cx="-60" cy="-5" r="4" fill="#ffffff"/>
+                <circle cx="-12" cy="-5" r="4" fill="#ffffff"/>
+                <circle cx="12" cy="-5" r="4" fill="#ffffff"/>
+                <circle cx="60" cy="-5" r="4" fill="#ffffff"/>
+                <circle cx="-35" cy="12" r="3" fill="#ffffff"/>
+                <circle cx="35" cy="12" r="3" fill="#ffffff"/>
+                <circle cx="0" cy="25" r="3" fill="#ffffff"/>
+                
+                {/* End Nodes */}
+                <circle cx="-80" cy="8" r="3" fill="#ffffff"/>
+                <circle cx="-36" cy="8" r="3" fill="#ffffff"/>
+                <circle cx="-24" cy="8" r="3" fill="#ffffff"/>
+                <circle cx="24" cy="8" r="3" fill="#ffffff"/>
+                <circle cx="36" cy="8" r="3" fill="#ffffff"/>
+                <circle cx="80" cy="8" r="3" fill="#ffffff"/>
               </g>
             </svg>
           </div>
-          <h1 className="text-6xl md:text-7xl font-bold mb-6 hero-title text-gray-800 drop-shadow-lg" style={{ fontFamily: "'Celestia BC', 'Orbitron', 'Exo 2', 'Rajdhani', sans-serif" }}>
+          <h1 className="text-6xl md:text-7xl font-bold mb-6 hero-title text-gray-800 drop-shadow-lg" style={{ fontFamily: "'Exo 2', 'Orbitron', 'Rajdhani', sans-serif" }}>
             The Direct Tree
           </h1>
           <p className="text-2xl md:text-3xl mb-10 hero-subtitle text-gray-700 font-semibold">
