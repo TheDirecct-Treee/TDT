@@ -179,7 +179,6 @@ const Header = () => {
 const HomePage = () => {
   const [islands, setIslands] = useState([]);
   const [categories, setCategories] = useState([]);
-  const [featuredBusinesses, setFeaturedBusinesses] = useState([]);
 
   useEffect(() => {
     fetchData();
@@ -187,15 +186,13 @@ const HomePage = () => {
 
   const fetchData = async () => {
     try {
-      const [islandsRes, categoriesRes, businessesRes] = await Promise.all([
+      const [islandsRes, categoriesRes] = await Promise.all([
         axios.get(`${API}/islands`),
-        axios.get(`${API}/categories`),
-        axios.get(`${API}/businesses?limit=6`)
+        axios.get(`${API}/categories`)
       ]);
       
       setIslands(islandsRes.data.islands);
       setCategories(categoriesRes.data.categories);
-      setFeaturedBusinesses(businessesRes.data);
     } catch (error) {
       console.error('Error fetching data:', error);
     }
