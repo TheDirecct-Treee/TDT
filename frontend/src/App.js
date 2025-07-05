@@ -189,7 +189,7 @@ const HomePage = () => {
             </Link>
             <Link 
               to="/events"
-              className="bg-amber-600 hover:bg-amber-700 text-white px-10 py-4 rounded-lg text-xl font-semibold transition-all transform hover:scale-105 shadow-lg flex items-center space-x-2"
+              className="bg-white hover:bg-gray-100 text-green-600 px-10 py-4 rounded-lg text-xl font-semibold transition-all transform hover:scale-105 shadow-lg flex items-center space-x-2"
             >
               <span>Browse Events</span>
             </Link>
