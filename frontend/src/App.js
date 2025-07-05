@@ -361,11 +361,42 @@ const HomePage = () => {
       <section className="py-16 bg-gradient-to-br from-green-50 to-amber-50">
         <div className="container mx-auto px-6">
           <h2 className="text-3xl font-bold text-center mb-12 text-gray-800">
-            <img 
-              src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgdmlld0JveD0iMCAwIDEwMCAxMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxnPgo8IS0tIENpcmN1aXQgVHJlZSBEZXNpZ24gLS0+CjwhLS0gUm9vdCBDaGlwIC0tPgo8cmVjdCB4PSI0MCIgeT0iNzUiIHdpZHRoPSIyMCIgaGVpZ2h0PSIxNSIgZmlsbD0iIzZkNTQzMyIgc3Ryb2tlPSIjNGEzNzI2IiBzdHJva2Utd2lkdGg9IjEiLz4KPGxpbmUgeDE9IjM4IiB5MT0iODIiIHgyPSI0MiIgeTI9IjgyIiBzdHJva2U9IiM0YTM3MjYiIHN0cm9rZS13aWR0aD0iMSIvPgo8bGluZSB4MT0iNTgiIHkxPSI4MiIgeDI9IjYyIiB5Mj0iODIiIHN0cm9rZT0iIzRhMzcyNiIgc3Ryb2tlLXdpZHRoPSIxIi8+CjxsaW5lIHgxPSIzOCIgeTE9Ijg2IiB4Mj0iNDIiIHkyPSI4NiIgc3Ryb2tlPSIjNGEzNzI2IiBzdHJva2Utd2lkdGg9IjEiLz4KPGxpbmUgeDE9IjU4IiB5MT0iODYiIHgyPSI2MiIgeTI9Ijg2IiBzdHJva2U9IiM0YTM3MjYiIHN0cm9rZS13aWR0aD0iMSIvPgoKPCEtLSBNYWluIFRydW5rIC0tPgo8bGluZSB4MT0iNTAiIHkxPSI3NSIgeDI9IjUwIiB5Mj0iNjAiIHN0cm9rZT0iIzg0Y2M1YyIgc3Ryb2tlLXdpZHRoPSIzIi8+Cgo8IS0tIEZpcnN0IExldmVsIEJyYW5jaGVzIC0tPgo8bGluZSB4MT0iNDAiIHkxPSI2NSIgeDI9IjYwIiB5Mj0iNjUiIHN0cm9rZT0iIzg0Y2M1YyIgc3Ryb2tlLXdpZHRoPSIyIi8+CjxsaW5lIHgxPSI0MCIgeTE9IjY1IiB4Mj0iNDAiIHkyPSI1NSIgc3Ryb2tlPSIjODRjYzVjIiBzdHJva2Utd2lkdGg9IjIiLz4KPGxpbmUgeDE9IjYwIiB5MT0iNjUiIHgyPSI2MCIgeTI9IjU1IiBzdHJva2U9IiM4NGNjNWMiIHN0cm9rZS13aWR0aD0iMiIvPgoKPCEtLSBTZWNvbmQgTGV2ZWwgQnJhbmNoZXMgLS0+CjxsaW5lIHgxPSIzNSIgeTE9IjYwIiB4Mj0iNDUiIHkyPSI2MCIgc3Ryb2tlPSIjODRjYzVjIiBzdHJva2Utd2lkdGg9IjIiLz4KPGxpbmUgeDE9IjU1IiB5MT0iNjAiIHgyPSI2NSIgeTI9IjYwIiBzdHJva2U9IiM4NGNjNWMiIHN0cm9rZS13aWR0aD0iMiIvPgo8bGluZSB4MT0iMzUiIHkxPSI2MCIgeDI9IjM1IiB5Mj0iNDUiIHN0cm9rZT0iIzg0Y2M1YyIgc3Ryb2tlLXdpZHRoPSIyIi8+CjxsaW5lIHgxPSI0NSIgeTE9IjYwIiB4Mj0iNDUiIHkyPSI0NSIgc3Ryb2tlPSIjODRjYzVjIiBzdHJva2Utd2lkdGg9IjIiLz4KPGxpbmUgeDE9IjU1IiB5MT0iNjAiIHgyPSI1NSIgeTI9IjQ1IiBzdHJva2U9IiM4NGNjNWMiIHN0cm9rZS13aWR0aD0iMiIvPgo8bGluZSB4MT0iNjUiIHkxPSI2MCIgeDI9IjY1IiB5Mj0iNDUiIHN0cm9rZT0iIzg0Y2M1YyIgc3Ryb2tlLXdpZHRoPSIyIi8+Cgo8IS0tIFRoaXJkIExldmVsIEJyYW5jaGVzIC0tPgo8bGluZSB4MT0iMjgiIHkxPSI1MCIgeDI9IjQyIiB5Mj0iNTAiIHN0cm9rZT0iIzg0Y2M1YyIgc3Ryb2tlLXdpZHRoPSIxLjUiLz4KPGxpbmUgeDE9IjU4IiB5MT0iNTAiIHgyPSI3MiIgeTI9IjUwIiBzdHJva2U9IiM4NGNjNWMiIHN0cm9rZS13aWR0aD0iMS41Ii8+CjxsaW5lIHgxPSIyOCIgeTE9IjUwIiB4Mj0iMjgiIHkyPSIzNSIgc3Ryb2tlPSIjODRjYzVjIiBzdHJva2Utd2lkdGg9IjEuNSIvPgo8bGluZSB4MT0iNDIiIHkxPSI1MCIgeDI9IjQyIiB5Mj0iMzUiIHN0cm9rZT0iIzg0Y2M1YyIgc3Ryb2tlLXdpZHRoPSIxLjUiLz4KPGxpbmUgeDE9IjU4IiB5MT0iNTAiIHgyPSI1OCIgeTI9IjM1IiBzdHJva2U9IiM4NGNjNWMiIHN0cm9rZS13aWR0aD0iMS41Ii8+CjxsaW5lIHgxPSI3MiIgeTE9IjUwIiB4Mj0iNzIiIHkyPSIzNSIgc3Ryb2tlPSIjODRjYzVjIiBzdHJva2Utd2lkdGg9IjEuNSIvPgoKPCEtLSBGb3VydGggTGV2ZWwgQnJhbmNoZXMgLS0+CjxsaW5lIHgxPSIyMiIgeTE9IjQwIiB4Mj0iMzQiIHkyPSI0MCIgc3Ryb2tlPSIjODRjYzVjIiBzdHJva2Utd2lkdGg9IjEiLz4KPGxpbmUgeDE9IjM2IiB5MT0iNDAiIHgyPSI0OCIgeTI9IjQwIiBzdHJva2U9IiM4NGNjNWMiIHN0cm9rZS13aWR0aD0iMSIvPgo8bGluZSB4MT0iNTIiIHkxPSI0MCIgeDI9IjY0IiB5Mj0iNDAiIHN0cm9rZT0iIzg0Y2M1YyIgc3Ryb2tlLXdpZHRoPSIxIi8+CjxsaW5lIHgxPSI2NiIgeTE9IjQwIiB4Mj0iNzgiIHkyPSI0MCIgc3Ryb2tlPSIjODRjYzVjIiBzdHJva2Utd2lkdGg9IjEiLz4KCjwhLS0gQ2lyY3VpdCBOb2RlcyAtLT4KPGV0IGN4PSIyOCIgY3k9IjM1IiByPSIyIiBmaWxsPSIjODRjYzVjIi8+CjxjaXJjbGUgY3g9IjQyIiBjeT0iMzUiIHI9IjIiIGZpbGw9IiM4NGNjNWMiLz4KPGV0IGN4PSI1OCIgY3k9IjM1IiByPSIyIiBmaWxsPSIjODRjYzVjIi8+CjxjaXJjbGUgY3g9IjcyIiBjeT0iMzUiIHI9IjIiIGZpbGw9IiM4NGNjNWMiLz4KPGV0IGN4PSIzNSIgY3k9IjQ1IiByPSIyIiBmaWxsPSIjODRjYzVjIi8+CjxjaXJjbGUgY3g9IjQ1IiBjeT0iNDUiIHI9IjIiIGZpbGw9IiM4NGNjNWMiLz4KPGV0IGN4PSI1NSIgY3k9IjQ1IiByPSIyIiBmaWxsPSIjODRjYzVjIi8+CjxjaXJjbGUgY3g9IjY1IiBjeT0iNDUiIHI9IjIiIGZpbGw9IiM4NGNjNWMiLz4KPGV0IGN4PSI0MCIgY3k9IjU1IiByPSIyIiBmaWxsPSIjODRjYzVjIi8+CjxjaXJjbGUgY3g9IjYwIiBjeT0iNTUiIHI9IjIiIGZpbGw9IiM4NGNjNWMiLz4KPGN0IGN4PSI1MCIgY3k9IjYwIiByPSIyIiBmaWxsPSIjODRjYzVjIi8+Cgo8IS0tIFRvcCBOb2RlcyAtLT4KPGV0IGN4PSIyMiIgY3k9IjQwIiByPSIxLjUiIGZpbGw9IiM4NGNjNWMiLz4KPGV0IGN4PSIzNCIgY3k9IjQwIiByPSIxLjUiIGZpbGw9IiM4NGNjNWMiLz4KPGV0IGN4PSI0OCIgY3k9IjQwIiByPSIxLjUiIGZpbGw9IiM4NGNjNWMiLz4KPGV0IGN4PSI2NCIgY3k9IjQwIiByPSIxLjUiIGZpbGw9IiM4NGNjNWMiLz4KPGV0IGN4PSI3OCIgY3k9IjQwIiByPSIxLjUiIGZpbGw9IiM4NGNjNWMiLz4KPC9nPgo8L3N2Zz4K" 
-              alt="The Direct Tree"
-              className="w-8 h-8 mb-2 mx-auto group-hover:scale-110 transition-transform"
-            /> Explore Businesses by Island
+            <svg width="40" height="40" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" className="inline-block mr-3 mb-2">
+              <g transform="translate(50, 50)">
+                {/* Root Chip */}
+                <rect x="-12" y="30" width="24" height="12" fill="#8b4513" stroke="#654321" strokeWidth="1" rx="2"/>
+                <line x1="-15" y1="34" x2="-12" y2="34" stroke="#654321" strokeWidth="1"/>
+                <line x1="12" y1="34" x2="15" y2="34" stroke="#654321" strokeWidth="1"/>
+                <line x1="-15" y1="38" x2="-12" y2="38" stroke="#654321" strokeWidth="1"/>
+                <line x1="12" y1="38" x2="15" y2="38" stroke="#654321" strokeWidth="1"/>
+                
+                {/* Main Trunk */}
+                <line x1="0" y1="30" x2="0" y2="15" stroke="#84cc5c" strokeWidth="3"/>
+                
+                {/* First Level Branches */}
+                <line x1="-20" y1="22" x2="20" y2="22" stroke="#84cc5c" strokeWidth="2"/>
+                <line x1="-20" y1="22" x2="-20" y2="8" stroke="#84cc5c" strokeWidth="2"/>
+                <line x1="20" y1="22" x2="20" y2="8" stroke="#84cc5c" strokeWidth="2"/>
+                
+                {/* Second Level Branches */}
+                <line x1="-35" y1="15" x2="-8" y2="15" stroke="#84cc5c" strokeWidth="1.5"/>
+                <line x1="8" y1="15" x2="35" y2="15" stroke="#84cc5c" strokeWidth="1.5"/>
+                <line x1="-35" y1="15" x2="-35" y2="0" stroke="#84cc5c" strokeWidth="1.5"/>
+                <line x1="-8" y1="15" x2="-8" y2="0" stroke="#84cc5c" strokeWidth="1.5"/>
+                <line x1="8" y1="15" x2="8" y2="0" stroke="#84cc5c" strokeWidth="1.5"/>
+                <line x1="35" y1="15" x2="35" y2="0" stroke="#84cc5c" strokeWidth="1.5"/>
+                
+                {/* Circuit Nodes */}
+                <circle cx="-35" cy="0" r="2" fill="#84cc5c"/>
+                <circle cx="-8" cy="0" r="2" fill="#84cc5c"/>
+                <circle cx="8" cy="0" r="2" fill="#84cc5c"/>
+                <circle cx="35" cy="0" r="2" fill="#84cc5c"/>
+                <circle cx="-20" cy="8" r="2" fill="#84cc5c"/>
+                <circle cx="20" cy="8" r="2" fill="#84cc5c"/>
+                <circle cx="0" cy="15" r="2" fill="#84cc5c"/>
+              </g>
+            </svg>
+            Explore Businesses by Island
           </h2>
           <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
             {islands.slice(0, 12).map((island) => (
@@ -375,11 +406,41 @@ const HomePage = () => {
                 className="bg-white rounded-xl p-4 text-center shadow-md hover:shadow-xl transition-all transform hover:scale-105 hover:bg-gradient-to-br hover:from-green-50 hover:to-amber-50 group"
               >
                 <div className="mb-2 group-hover:scale-110 transition-transform">
-                  <img 
-                    src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgdmlld0JveD0iMCAwIDEwMCAxMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxnPgo8IS0tIENpcmN1aXQgVHJlZSBEZXNpZ24gLS0+CjwhLS0gUm9vdCBDaGlwIC0tPgo8cmVjdCB4PSI0MCIgeT0iNzUiIHdpZHRoPSIyMCIgaGVpZ2h0PSIxNSIgZmlsbD0iIzZkNTQzMyIgc3Ryb2tlPSIjNGEzNzI2IiBzdHJva2Utd2lkdGg9IjEiLz4KPGxpbmUgeDE9IjM4IiB5MT0iODIiIHgyPSI0MiIgeTI9IjgyIiBzdHJva2U9IiM0YTM3MjYiIHN0cm9rZS13aWR0aD0iMSIvPgo8bGluZSB4MT0iNTgiIHkxPSI4MiIgeDI9IjYyIiB5Mj0iODIiIHN0cm9rZT0iIzRhMzcyNiIgc3Ryb2tlLXdpZHRoPSIxIi8+CjxsaW5lIHgxPSIzOCIgeTE9Ijg2IiB4Mj0iNDIiIHkyPSI4NiIgc3Ryb2tlPSIjNGEzNzI2IiBzdHJva2Utd2lkdGg9IjEiLz4KPGxpbmUgeDE9IjU4IiB5MT0iODYiIHgyPSI2MiIgeTI9Ijg2IiBzdHJva2U9IiM0YTM3MjYiIHN0cm9rZS13aWR0aD0iMSIvPgoKPCEtLSBNYWluIFRydW5rIC0tPgo8bGluZSB4MT0iNTAiIHkxPSI3NSIgeDI9IjUwIiB5Mj0iNjAiIHN0cm9rZT0iIzg0Y2M1YyIgc3Ryb2tlLXdpZHRoPSIzIi8+Cgo8IS0tIEZpcnN0IExldmVsIEJyYW5jaGVzIC0tPgo8bGluZSB4MT0iNDAiIHkxPSI2NSIgeDI9IjYwIiB5Mj0iNjUiIHN0cm9rZT0iIzg0Y2M1YyIgc3Ryb2tlLXdpZHRoPSIyIi8+CjxsaW5lIHgxPSI0MCIgeTE9IjY1IiB4Mj0iNDAiIHkyPSI1NSIgc3Ryb2tlPSIjODRjYzVjIiBzdHJva2Utd2lkdGg9IjIiLz4KPGxpbmUgeDE9IjYwIiB5MT0iNjUiIHgyPSI2MCIgeTI9IjU1IiBzdHJva2U9IiM4NGNjNWMiIHN0cm9rZS13aWR0aD0iMiIvPgoKPCEtLSBTZWNvbmQgTGV2ZWwgQnJhbmNoZXMgLS0+CjxsaW5lIHgxPSIzNSIgeTE9IjYwIiB4Mj0iNDUiIHkyPSI2MCIgc3Ryb2tlPSIjODRjYzVjIiBzdHJva2Utd2lkdGg9IjIiLz4KPGxpbmUgeDE9IjU1IiB5MT0iNjAiIHgyPSI2NSIgeTI9IjYwIiBzdHJva2U9IiM4NGNjNWMiIHN0cm9rZS13aWR0aD0iMiIvPgo8bGluZSB4MT0iMzUiIHkxPSI2MCIgeDI9IjM1IiB5Mj0iNDUiIHN0cm9rZT0iIzg0Y2M1YyIgc3Ryb2tlLXdpZHRoPSIyIi8+CjxsaW5lIHgxPSI0NSIgeTE9IjYwIiB4Mj0iNDUiIHkyPSI0NSIgc3Ryb2tlPSIjODRjYzVjIiBzdHJva2Utd2lkdGg9IjIiLz4KPGxpbmUgeDE9IjU1IiB5MT0iNjAiIHgyPSI1NSIgeTI9IjQ1IiBzdHJva2U9IiM4NGNjNWMiIHN0cm9rZS13aWR0aD0iMiIvPgo8bGluZSB4MT0iNjUiIHkxPSI2MCIgeDI9IjY1IiB5Mj0iNDUiIHN0cm9rZT0iIzg0Y2M1YyIgc3Ryb2tlLXdpZHRoPSIyIi8+Cgo8IS0tIFRoaXJkIExldmVsIEJyYW5jaGVzIC0tPgo8bGluZSB4MT0iMjgiIHkxPSI1MCIgeDI9IjQyIiB5Mj0iNTAiIHN0cm9rZT0iIzg0Y2M1YyIgc3Ryb2tlLXdpZHRoPSIxLjUiLz4KPGxpbmUgeDE9IjU4IiB5MT0iNTAiIHgyPSI3MiIgeTI9IjUwIiBzdHJva2U9IiM4NGNjNWMiIHN0cm9rZS13aWR0aD0iMS41Ii8+CjxsaW5lIHgxPSIyOCIgeTE9IjUwIiB4Mj0iMjgiIHkyPSIzNSIgc3Ryb2tlPSIjODRjYzVjIiBzdHJva2Utd2lkdGg9IjEuNSIvPgo8bGluZSB4MT0iNDIiIHkxPSI1MCIgeDI9IjQyIiB5Mj0iMzUiIHN0cm9rZT0iIzg0Y2M1YyIgc3Ryb2tlLXdpZHRoPSIxLjUiLz4KPGxpbmUgeDE9IjU4IiB5MT0iNTAiIHgyPSI1OCIgeTI9IjM1IiBzdHJva2U9IiM4NGNjNWMiIHN0cm9rZS13aWR0aD0iMS41Ii8+CjxsaW5lIHgxPSI3MiIgeTE9IjUwIiB4Mj0iNzIiIHkyPSIzNSIgc3Ryb2tlPSIjODRjYzVjIiBzdHJva2Utd2lkdGg9IjEuNSIvPgoKPCEtLSBGb3VydGggTGV2ZWwgQnJhbmNoZXMgLS0+CjxsaW5lIHgxPSIyMiIgeTE9IjQwIiB4Mj0iMzQiIHkyPSI0MCIgc3Ryb2tlPSIjODRjYzVjIiBzdHJva2Utd2lkdGg9IjEiLz4KPGxpbmUgeDE9IjM2IiB5MT0iNDAiIHgyPSI0OCIgeTI9IjQwIiBzdHJva2U9IiM4NGNjNWMiIHN0cm9rZS13aWR0aD0iMSIvPgo8bGluZSB4MT0iNTIiIHkxPSI0MCIgeDI9IjY0IiB5Mj0iNDAiIHN0cm9rZT0iIzg0Y2M1YyIgc3Ryb2tlLXdpZHRoPSIxIi8+CjxsaW5lIHgxPSI2NiIgeTE9IjQwIiB4Mj0iNzgiIHkyPSI0MCIgc3Ryb2tlPSIjODRjYzVjIiBzdHJva2Utd2lkdGg9IjEiLz4KCjwhLS0gQ2lyY3VpdCBOb2RlcyAtLT4KPGV0IGN4PSIyOCIgY3k9IjM1IiByPSIyIiBmaWxsPSIjODRjYzVjIi8+CjxjaXJjbGUgY3g9IjQyIiBjeT0iMzUiIHI9IjIiIGZpbGw9IiM4NGNjNWMiLz4KPGV0IGN4PSI1OCIgY3k9IjM1IiByPSIyIiBmaWxsPSIjODRjYzVjIi8+CjxjaXJjbGUgY3g9IjcyIiBjeT0iMzUiIHI9IjIiIGZpbGw9IiM4NGNjNWMiLz4KPGV0IGN4PSIzNSIgY3k9IjQ1IiByPSIyIiBmaWxsPSIjODRjYzVjIi8+CjxjaXJjbGUgY3g9IjQ1IiBjeT0iNDUiIHI9IjIiIGZpbGw9IiM4NGNjNWMiLz4KPGV0IGN4PSI1NSIgY3k9IjQ1IiByPSIyIiBmaWxsPSIjODRjYzVjIi8+CjxjaXJjbGUgY3g9IjY1IiBjeT0iNDUiIHI9IjIiIGZpbGw9IiM4NGNjNWMiLz4KPGV0IGN4PSI0MCIgY3k9IjU1IiByPSIyIiBmaWxsPSIjODRjYzVjIi8+CjxjaXJjbGUgY3g9IjYwIiBjeT0iNTUiIHI9IjIiIGZpbGw9IiM4NGNjNWMiLz4KPGN0IGN4PSI1MCIgY3k9IjYwIiByPSIyIiBmaWxsPSIjODRjYzVjIi8+Cgo8IS0tIFRvcCBOb2RlcyAtLT4KPGV0IGN4PSIyMiIgY3k9IjQwIiByPSIxLjUiIGZpbGw9IiM4NGNjNWMiLz4KPGV0IGN4PSIzNCIgY3k9IjQwIiByPSIxLjUiIGZpbGw9IiM4NGNjNWMiLz4KPGV0IGN4PSI0OCIgY3k9IjQwIiByPSIxLjUiIGZpbGw9IiM4NGNjNWMiLz4KPGV0IGN4PSI2NCIgY3k9IjQwIiByPSIxLjUiIGZpbGw9IiM4NGNjNWMiLz4KPGV0IGN4PSI3OCIgY3k9IjQwIiByPSIxLjUiIGZpbGw9IiM4NGNjNWMiLz4KPC9nPgo8L3N2Zz4K" 
-                    alt="The Direct Tree"
-                    className="w-12 h-12 mx-auto"
-                  />
+                  <svg width="48" height="48" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" className="mx-auto">
+                    <g transform="translate(50, 50)">
+                      {/* Root Chip */}
+                      <rect x="-12" y="30" width="24" height="12" fill="#8b4513" stroke="#654321" strokeWidth="1" rx="2"/>
+                      <line x1="-15" y1="34" x2="-12" y2="34" stroke="#654321" strokeWidth="1"/>
+                      <line x1="12" y1="34" x2="15" y2="34" stroke="#654321" strokeWidth="1"/>
+                      <line x1="-15" y1="38" x2="-12" y2="38" stroke="#654321" strokeWidth="1"/>
+                      <line x1="12" y1="38" x2="15" y2="38" stroke="#654321" strokeWidth="1"/>
+                      
+                      {/* Main Trunk */}
+                      <line x1="0" y1="30" x2="0" y2="15" stroke="#84cc5c" strokeWidth="3"/>
+                      
+                      {/* First Level Branches */}
+                      <line x1="-20" y1="22" x2="20" y2="22" stroke="#84cc5c" strokeWidth="2"/>
+                      <line x1="-20" y1="22" x2="-20" y2="8" stroke="#84cc5c" strokeWidth="2"/>
+                      <line x1="20" y1="22" x2="20" y2="8" stroke="#84cc5c" strokeWidth="2"/>
+                      
+                      {/* Second Level Branches */}
+                      <line x1="-35" y1="15" x2="-8" y2="15" stroke="#84cc5c" strokeWidth="1.5"/>
+                      <line x1="8" y1="15" x2="35" y2="15" stroke="#84cc5c" strokeWidth="1.5"/>
+                      <line x1="-35" y1="15" x2="-35" y2="0" stroke="#84cc5c" strokeWidth="1.5"/>
+                      <line x1="-8" y1="15" x2="-8" y2="0" stroke="#84cc5c" strokeWidth="1.5"/>
+                      <line x1="8" y1="15" x2="8" y2="0" stroke="#84cc5c" strokeWidth="1.5"/>
+                      <line x1="35" y1="15" x2="35" y2="0" stroke="#84cc5c" strokeWidth="1.5"/>
+                      
+                      {/* Circuit Nodes */}
+                      <circle cx="-35" cy="0" r="2" fill="#84cc5c"/>
+                      <circle cx="-8" cy="0" r="2" fill="#84cc5c"/>
+                      <circle cx="8" cy="0" r="2" fill="#84cc5c"/>
+                      <circle cx="35" cy="0" r="2" fill="#84cc5c"/>
+                      <circle cx="-20" cy="8" r="2" fill="#84cc5c"/>
+                      <circle cx="20" cy="8" r="2" fill="#84cc5c"/>
+                      <circle cx="0" cy="15" r="2" fill="#84cc5c"/>
+                    </g>
+                  </svg>
                 </div>
                 <div className="font-semibold text-gray-800 text-sm">{island}</div>
               </Link>
