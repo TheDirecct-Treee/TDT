@@ -230,11 +230,30 @@ const HomePage = () => {
 
         <div className="text-center text-white hero-text relative z-10 max-w-5xl mx-auto px-6">
           <div className="mb-8">
-            <img 
-              src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTUwIiBoZWlnaHQ9IjE1MCIgdmlld0JveD0iMCAwIDEwMCAxMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxnPgo8IS0tIENpcmN1aXQgVHJlZSBEZXNpZ24gLS0+CjwhLS0gUm9vdCBDaGlwIC0tPgo8cmVjdCB4PSI0MCIgeT0iNzUiIHdpZHRoPSIyMCIgaGVpZ2h0PSIxNSIgZmlsbD0iIzZkNTQzMyIgc3Ryb2tlPSIjNGEzNzI2IiBzdHJva2Utd2lkdGg9IjEiLz4KPGxpbmUgeDE9IjM4IiB5MT0iODIiIHgyPSI0MiIgeTI9IjgyIiBzdHJva2U9IiM0YTM3MjYiIHN0cm9rZS13aWR0aD0iMSIvPgo8bGluZSB4MT0iNTgiIHkxPSI4MiIgeDI9IjYyIiB5Mj0iODIiIHN0cm9rZT0iIzRhMzcyNiIgc3Ryb2tlLXdpZHRoPSIxIi8+CjxsaW5lIHgxPSIzOCIgeTE9Ijg2IiB4Mj0iNDIiIHkyPSI4NiIgc3Ryb2tlPSIjNGEzNzI2IiBzdHJva2Utd2lkdGg9IjEiLz4KPGxpbmUgeDE9IjU4IiB5MT0iODYiIHgyPSI2MiIgeTI9Ijg2IiBzdHJva2U9IiM0YTM3MjYiIHN0cm9rZS13aWR0aD0iMSIvPgoKPCEtLSBNYWluIFRydW5rIC0tPgo8bGluZSB4MT0iNTAiIHkxPSI3NSIgeDI9IjUwIiB5Mj0iNjAiIHN0cm9rZT0iI2ZmZmZmZiIgc3Ryb2tlLXdpZHRoPSIzIi8+Cgo8IS0tIEZpcnN0IExldmVsIEJyYW5jaGVzIC0tPgo8bGluZSB4MT0iNDAiIHkxPSI2NSIgeDI9IjYwIiB5Mj0iNjUiIHN0cm9rZT0iI2ZmZmZmZiIgc3Ryb2tlLXdpZHRoPSIyIi8+CjxsaW5lIHgxPSI0MCIgeTE9IjY1IiB4Mj0iNDAiIHkyPSI1NSIgc3Ryb2tlPSIjZmZmZmZmIiBzdHJva2Utd2lkdGg9IjIiLz4KPGxpbmUgeDE9IjYwIiB5MT0iNjUiIHgyPSI2MCIgeTI9IjU1IiBzdHJva2U9IiNmZmZmZmYiIHN0cm9rZS13aWR0aD0iMiIvPgoKPCEtLSBTZWNvbmQgTGV2ZWwgQnJhbmNoZXMgLS0+CjxsaW5lIHgxPSIzNSIgeTE9IjYwIiB4Mj0iNDUiIHkyPSI2MCIgc3Ryb2tlPSIjZmZmZmZmIiBzdHJva2Utd2lkdGg9IjIiLz4KPGxpbmUgeDE9IjU1IiB5MT0iNjAiIHgyPSI2NSIgeTI9IjYwIiBzdHJva2U9IiNmZmZmZmYiIHN0cm9rZS13aWR0aD0iMiIvPgo8bGluZSB4MT0iMzUiIHkxPSI2MCIgeDI9IjM1IiB5Mj0iNDUiIHN0cm9rZT0iI2ZmZmZmZiIgc3Ryb2tlLXdpZHRoPSIyIi8+CjxsaW5lIHgxPSI0NSIgeTE9IjYwIiB4Mj0iNDUiIHkyPSI0NSIgc3Ryb2tlPSIjZmZmZmZmIiBzdHJva2Utd2lkdGg9IjIiLz4KPGxpbmUgeDE9IjU1IiB5MT0iNjAiIHgyPSI1NSIgeTI9IjQ1IiBzdHJva2U9IiNmZmZmZmYiIHN0cm9rZS13aWR0aD0iMiIvPgo8bGluZSB4MT0iNjUiIHkxPSI2MCIgeDI9IjY1IiB5Mj0iNDUiIHN0cm9rZT0iI2ZmZmZmZiIgc3Ryb2tlLXdpZHRoPSIyIi8+Cgo8IS0tIFRoaXJkIExldmVsIEJyYW5jaGVzIC0tPgo8bGluZSB4MT0iMjgiIHkxPSI1MCIgeDI9IjQyIiB5Mj0iNTAiIHN0cm9rZT0iI2ZmZmZmZiIgc3Ryb2tlLXdpZHRoPSIxLjUiLz4KPGxpbmUgeDE9IjU4IiB5MT0iNTAiIHgyPSI3MiIgeTI9IjUwIiBzdHJva2U9IiNmZmZmZmYiIHN0cm9rZS13aWR0aD0iMS41Ii8+CjxsaW5lIHgxPSIyOCIgeTE9IjUwIiB4Mj0iMjgiIHkyPSIzNSIgc3Ryb2tlPSIjZmZmZmZmIiBzdHJva2Utd2lkdGg9IjEuNSIvPgo8bGluZSB4MT0iNDIiIHkxPSI1MCIgeDI9IjQyIiB5Mj0iMzUiIHN0cm9rZT0iI2ZmZmZmZiIgc3Ryb2tlLXdpZHRoPSIxLjUiLz4KPGxpbmUgeDE9IjU4IiB5MT0iNTAiIHgyPSI1OCIgeTI9IjM1IiBzdHJva2U9IiNmZmZmZmYiIHN0cm9rZS13aWR0aD0iMS41Ii8+CjxsaW5lIHgxPSI3MiIgeTE9IjUwIiB4Mj0iNzIiIHkyPSIzNSIgc3Ryb2tlPSIjZmZmZmZmIiBzdHJva2Utd2lkdGg9IjEuNSIvPgoKPCEtLSBGb3VydGggTGV2ZWwgQnJhbmNoZXMgLS0+CjxsaW5lIHgxPSIyMiIgeTE9IjQwIiB4Mj0iMzQiIHkyPSI0MCIgc3Ryb2tlPSIjZmZmZmZmIiBzdHJva2Utd2lkdGg9IjEiLz4KPGxpbmUgeDE9IjM2IiB5MT0iNDAiIHgyPSI0OCIgeTI9IjQwIiBzdHJva2U9IiNmZmZmZmYiIHN0cm9rZS13aWR0aD0iMSIvPgo8bGluZSB4MT0iNTIiIHkxPSI0MCIgeDI9IjY0IiB5Mj0iNDAiIHN0cm9rZT0iI2ZmZmZmZiIgc3Ryb2tlLXdpZHRoPSIxIi8+CjxsaW5lIHgxPSI2NiIgeTE9IjQwIiB4Mj0iNzgiIHkyPSI0MCIgc3Ryb2tlPSIjZmZmZmZmIiBzdHJva2Utd2lkdGg9IjEiLz4KCjwhLS0gQ2lyY3VpdCBOb2RlcyAtLT4KPGV0IGN4PSIyOCIgY3k9IjM1IiByPSIyIiBmaWxsPSIjZmZmZmZmIi8+CjxjaXJjbGUgY3g9IjQyIiBjeT0iMzUiIHI9IjIiIGZpbGw9IiNmZmZmZmYiLz4KPGV0IGN4PSI1OCIgY3k9IjM1IiByPSIyIiBmaWxsPSIjZmZmZmZmIi8+CjxjaXJjbGUgY3g9IjcyIiBjeT0iMzUiIHI9IjIiIGZpbGw9IiNmZmZmZmYiLz4KPGV0IGN4PSIzNSIgY3k9IjQ1IiByPSIyIiBmaWxsPSIjZmZmZmZmIi8+CjxjaXJjbGUgY3g9IjQ1IiBjeT0iNDUiIHI9IjIiIGZpbGw9IiNmZmZmZmYiLz4KPGV0IGN4PSI1NSIgY3k9IjQ1IiByPSIyIiBmaWxsPSIjZmZmZmZmIi8+CjxjaXJjbGUgY3g9IjY1IiBjeT0iNDUiIHI9IjIiIGZpbGw9IiNmZmZmZmYiLz4KPGV0IGN4PSI0MCIgY3k9IjU1IiByPSIyIiBmaWxsPSIjZmZmZmZmIi8+CjxjaXJjbGUgY3g9IjYwIiBjeT0iNTUiIHI9IjIiIGZpbGw9IiNmZmZmZmYiLz4KPGN0IGN4PSI1MCIgY3k9IjYwIiByPSIyIiBmaWxsPSIjZmZmZmZmIi8+Cgo8IS0tIFRvcCBOb2RlcyAtLT4KPGV0IGN4PSIyMiIgY3k9IjQwIiByPSIxLjUiIGZpbGw9IiNmZmZmZmYiLz4KPGV0IGN4PSIzNCIgY3k9IjQwIiByPSIxLjUiIGZpbGw9IiNmZmZmZmYiLz4KPGV0IGN4PSI0OCIgY3k9IjQwIiByPSIxLjUiIGZpbGw9IiNmZmZmZmYiLz4KPGV0IGN4PSI2NCIgY3k9IjQwIiByPSIxLjUiIGZpbGw9IiNmZmZmZmYiLz4KPGV0IGN4PSI3OCIgY3k9IjQwIiByPSIxLjUiIGZpbGw9IiNmZmZmZmYiLz4KPC9nPgo8L3N2Zz4K" 
-              alt="The Direct Tree" 
-              className="w-20 h-20 mx-auto mb-4"
-            />
+            {/* Simple circuit tree for hero section */}
+            <svg width="80" height="80" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" className="mx-auto">
+              <g transform="translate(50, 50)">
+                {/* Root Chip */}
+                <rect x="-15" y="25" width="30" height="15" fill="#8b4513" stroke="#654321" strokeWidth="1" rx="2"/>
+                <line x1="-20" y1="30" x2="-15" y2="30" stroke="#654321" strokeWidth="1"/>
+                <line x1="15" y1="30" x2="20" y2="30" stroke="#654321" strokeWidth="1"/>
+                <line x1="-20" y1="35" x2="-15" y2="35" stroke="#654321" strokeWidth="1"/>
+                <line x1="15" y1="35" x2="20" y2="35" stroke="#654321" strokeWidth="1"/>
+                
+                {/* Main Trunk */}
+                <line x1="0" y1="25" x2="0" y2="0" stroke="#ffffff" strokeWidth="4"/>
+                
+                {/* Branches */}
+                <line x1="-25" y1="15" x2="25" y2="15" stroke="#ffffff" strokeWidth="3"/>
+                <line x1="-25" y1="15" x2="-25" y2="-10" stroke="#ffffff" strokeWidth="3"/>
+                <line x1="25" y1="15" x2="25" y2="-10" stroke="#ffffff" strokeWidth="3"/>
+                
+                {/* Circuit Nodes */}
+                <circle cx="-25" cy="-10" r="2" fill="#ffffff"/>
+                <circle cx="25" cy="-10" r="2" fill="#ffffff"/>
+                <circle cx="0" cy="0" r="2" fill="#ffffff"/>
+              </g>
+            </svg>
           </div>
           <h1 className="text-6xl md:text-7xl font-bold mb-6 hero-title text-gray-800 drop-shadow-lg" style={{ fontFamily: "'Celestia BC', 'Orbitron', 'Exo 2', 'Rajdhani', sans-serif" }}>
             The Direct Tree
