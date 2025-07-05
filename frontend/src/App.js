@@ -66,75 +66,67 @@ const Header = () => {
       <div className="container mx-auto px-6 py-4">
         <div className="flex items-center justify-between">
           <Link to="/" className="flex items-center space-x-3 text-white hover:opacity-90 transition-opacity group">
-            <div className="flex flex-col items-center">
-              {/* Complete Logo with Circular Text */}
-              <svg width="120" height="120" viewBox="0 0 400 400" fill="none" xmlns="http://www.w3.org/2000/svg" className="group-hover:scale-105 transition-transform">
-                {/* Background Circle */}
-                <circle cx="200" cy="200" r="190" fill="rgba(255, 255, 255, 0.1)" stroke="rgba(255, 255, 255, 0.2)" strokeWidth="2"/>
-                
-                {/* Circular Text - THE DIRECT TREE */}
-                <defs>
-                  <path id="circle-text" d="M 200, 200 m -140, 0 a 140,140 0 1,1 280,0 a 140,140 0 1,1 -280,0"/>
-                </defs>
-                <text fontSize="32" fontWeight="bold" fill="#84cc5c" fontFamily="Arial, sans-serif">
-                  <textPath href="#circle-text" startOffset="0%">
-                    T H E   D I R E C T   T R E E
-                  </textPath>
-                </text>
-                
-                {/* Circuit Tree Design */}
-                <g transform="translate(200, 200)">
+            <div className="flex items-center space-x-3">
+              {/* User's Exact Logo Design */}
+              <svg width="80" height="80" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg" className="group-hover:scale-105 transition-transform">
+                {/* Circuit Tree Design - Exact Match */}
+                <g transform="translate(100, 100)">
                   {/* Root Chip */}
-                  <rect x="-25" y="60" width="50" height="25" fill="#8b4513" stroke="#654321" strokeWidth="2" rx="3"/>
-                  <line x1="-35" y1="70" x2="-25" y2="70" stroke="#654321" strokeWidth="2"/>
-                  <line x1="25" y1="70" x2="35" y2="70" stroke="#654321" strokeWidth="2"/>
-                  <line x1="-35" y1="75" x2="-25" y2="75" stroke="#654321" strokeWidth="2"/>
-                  <line x1="25" y1="75" x2="35" y2="75" stroke="#654321" strokeWidth="2"/>
+                  <rect x="-15" y="50" width="30" height="15" fill="#8b4513" stroke="#654321" strokeWidth="2" rx="2"/>
+                  <line x1="-20" y1="55" x2="-15" y2="55" stroke="#654321" strokeWidth="2"/>
+                  <line x1="15" y1="55" x2="20" y2="55" stroke="#654321" strokeWidth="2"/>
+                  <line x1="-20" y1="60" x2="-15" y2="60" stroke="#654321" strokeWidth="2"/>
+                  <line x1="15" y1="60" x2="20" y2="60" stroke="#654321" strokeWidth="2"/>
                   
                   {/* Main Trunk */}
-                  <line x1="0" y1="60" x2="0" y2="30" stroke="#84cc5c" strokeWidth="6"/>
+                  <line x1="0" y1="50" x2="0" y2="20" stroke="#84cc5c" strokeWidth="4"/>
                   
                   {/* First Level Branches */}
-                  <line x1="-40" y1="45" x2="40" y2="45" stroke="#84cc5c" strokeWidth="4"/>
-                  <line x1="-40" y1="45" x2="-40" y2="15" stroke="#84cc5c" strokeWidth="4"/>
-                  <line x1="40" y1="45" x2="40" y2="15" stroke="#84cc5c" strokeWidth="4"/>
+                  <line x1="-30" y1="35" x2="30" y2="35" stroke="#84cc5c" strokeWidth="3"/>
+                  <line x1="-30" y1="35" x2="-30" y2="10" stroke="#84cc5c" strokeWidth="3"/>
+                  <line x1="30" y1="35" x2="30" y2="10" stroke="#84cc5c" strokeWidth="3"/>
                   
                   {/* Second Level Branches */}
-                  <line x1="-70" y1="30" x2="-10" y2="30" stroke="#84cc5c" strokeWidth="3"/>
-                  <line x1="10" y1="30" x2="70" y2="30" stroke="#84cc5c" strokeWidth="3"/>
-                  <line x1="-70" y1="30" x2="-70" y2="0" stroke="#84cc5c" strokeWidth="3"/>
-                  <line x1="-10" y1="30" x2="-10" y2="0" stroke="#84cc5c" strokeWidth="3"/>
-                  <line x1="10" y1="30" x2="10" y2="0" stroke="#84cc5c" strokeWidth="3"/>
-                  <line x1="70" y1="30" x2="70" y2="0" stroke="#84cc5c" strokeWidth="3"/>
+                  <line x1="-50" y1="20" x2="-10" y2="20" stroke="#84cc5c" strokeWidth="2"/>
+                  <line x1="10" y1="20" x2="50" y2="20" stroke="#84cc5c" strokeWidth="2"/>
+                  <line x1="-50" y1="20" x2="-50" y2="-5" stroke="#84cc5c" strokeWidth="2"/>
+                  <line x1="-10" y1="20" x2="-10" y2="-5" stroke="#84cc5c" strokeWidth="2"/>
+                  <line x1="10" y1="20" x2="10" y2="-5" stroke="#84cc5c" strokeWidth="2"/>
+                  <line x1="50" y1="20" x2="50" y2="-5" stroke="#84cc5c" strokeWidth="2"/>
                   
                   {/* Third Level Branches */}
-                  <line x1="-90" y1="15" x2="-50" y2="15" stroke="#84cc5c" strokeWidth="2"/>
-                  <line x1="-30" y1="15" x2="30" y2="15" stroke="#84cc5c" strokeWidth="2"/>
-                  <line x1="50" y1="15" x2="90" y2="15" stroke="#84cc5c" strokeWidth="2"/>
+                  <line x1="-70" y1="5" x2="-30" y2="5" stroke="#84cc5c" strokeWidth="1.5"/>
+                  <line x1="-20" y1="5" x2="20" y2="5" stroke="#84cc5c" strokeWidth="1.5"/>
+                  <line x1="30" y1="5" x2="70" y2="5" stroke="#84cc5c" strokeWidth="1.5"/>
                   
                   {/* Circuit Nodes */}
-                  <circle cx="-70" cy="0" r="4" fill="#84cc5c"/>
-                  <circle cx="-10" cy="0" r="4" fill="#84cc5c"/>
-                  <circle cx="10" cy="0" r="4" fill="#84cc5c"/>
-                  <circle cx="70" cy="0" r="4" fill="#84cc5c"/>
-                  <circle cx="-40" cy="15" r="3" fill="#84cc5c"/>
-                  <circle cx="40" cy="15" r="3" fill="#84cc5c"/>
-                  <circle cx="0" cy="30" r="3" fill="#84cc5c"/>
+                  <circle cx="-50" cy="-5" r="3" fill="#84cc5c"/>
+                  <circle cx="-10" cy="-5" r="3" fill="#84cc5c"/>
+                  <circle cx="10" cy="-5" r="3" fill="#84cc5c"/>
+                  <circle cx="50" cy="-5" r="3" fill="#84cc5c"/>
+                  <circle cx="-30" cy="10" r="2.5" fill="#84cc5c"/>
+                  <circle cx="30" cy="10" r="2.5" fill="#84cc5c"/>
+                  <circle cx="0" cy="20" r="2.5" fill="#84cc5c"/>
                   
                   {/* End Nodes */}
-                  <circle cx="-90" cy="15" r="3" fill="#84cc5c"/>
-                  <circle cx="-50" cy="15" r="3" fill="#84cc5c"/>
-                  <circle cx="-30" cy="15" r="3" fill="#84cc5c"/>
-                  <circle cx="30" cy="15" r="3" fill="#84cc5c"/>
-                  <circle cx="50" cy="15" r="3" fill="#84cc5c"/>
-                  <circle cx="90" cy="15" r="3" fill="#84cc5c"/>
+                  <circle cx="-70" cy="5" r="2" fill="#84cc5c"/>
+                  <circle cx="-30" cy="5" r="2" fill="#84cc5c"/>
+                  <circle cx="-20" cy="5" r="2" fill="#84cc5c"/>
+                  <circle cx="20" cy="5" r="2" fill="#84cc5c"/>
+                  <circle cx="30" cy="5" r="2" fill="#84cc5c"/>
+                  <circle cx="70" cy="5" r="2" fill="#84cc5c"/>
                 </g>
-                
-                {/* Tagline at Bottom */}
-                <text x="200" y="340" textAnchor="middle" fontSize="16" fontWeight="600" fill="#84cc5c" letterSpacing="3">
-                  BRANCH OUT &amp; STAND TALL
-                </text>
               </svg>
+              
+              {/* Text Logo */}
+              <div className="flex flex-col">
+                <h1 className="text-2xl font-bold text-white tracking-wide" style={{ fontFamily: "'Exo 2', 'Orbitron', 'Rajdhani', sans-serif" }}>
+                  THE DIRECT TREE
+                </h1>
+                <p className="text-sm text-green-200 tracking-wider font-medium">
+                  BRANCH OUT & STAND TALL
+                </p>
+              </div>
             </div>
           </Link>
           <nav className="flex items-center space-x-6">
