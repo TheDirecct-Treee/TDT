@@ -71,7 +71,7 @@ const Header = () => {
               alt="Celestia BC Logo" 
               className="w-10 h-10 group-hover:scale-110 transition-transform"
             />
-            <span className="text-2xl font-bold">Celestia BC</span>
+            <span className="text-2xl font-bold" style={{ fontFamily: "'Celestia BC', 'Orbitron', 'Exo 2', 'Rajdhani', sans-serif" }}>The Direct Tree</span>
           </Link>
           <nav className="flex items-center space-x-6">
             <Link to="/businesses" className="hover:text-green-200 transition-colors font-medium">
