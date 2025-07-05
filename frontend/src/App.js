@@ -199,13 +199,13 @@ const HomePage = () => {
           
           {/* Stats */}
           <div className="mt-16 grid grid-cols-2 gap-8 max-w-2xl mx-auto">
-            <div className="text-center">
-              <div className="text-3xl font-bold text-white mb-2">17</div>
-              <div className="text-green-200 text-sm">Islands Covered</div>
+            <div className="text-center bg-white/80 rounded-lg p-4 shadow-lg">
+              <div className="text-3xl font-bold text-green-700 mb-2">17</div>
+              <div className="text-gray-600 text-sm font-medium">Islands Covered</div>
             </div>
-            <div className="text-center">
-              <div className="text-3xl font-bold text-white mb-2">24/7</div>
-              <div className="text-green-200 text-sm">Platform Access</div>
+            <div className="text-center bg-white/80 rounded-lg p-4 shadow-lg">
+              <div className="text-3xl font-bold text-green-700 mb-2">24/7</div>
+              <div className="text-gray-600 text-sm font-medium">Platform Access</div>
             </div>
           </div>
         </div>
