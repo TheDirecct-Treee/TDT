@@ -65,13 +65,77 @@ const Header = () => {
     <header className="bg-green-700 text-white shadow-lg">
       <div className="container mx-auto px-6 py-4">
         <div className="flex items-center justify-between">
-          <Link to="/" className="flex items-center space-x-3 text-white hover:text-green-200 transition-colors group">
-            <img 
-              src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgdmlld0JveD0iMCAwIDEwMCAxMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxnPgo8IS0tIENpcmN1aXQgVHJlZSBEZXNpZ24gLS0+CjwhLS0gUm9vdCBDaGlwIC0tPgo8cmVjdCB4PSI0MCIgeT0iNzUiIHdpZHRoPSIyMCIgaGVpZ2h0PSIxNSIgZmlsbD0iIzZkNTQzMyIgc3Ryb2tlPSIjNGEzNzI2IiBzdHJva2Utd2lkdGg9IjEiLz4KPGxpbmUgeDE9IjM4IiB5MT0iODIiIHgyPSI0MiIgeTI9IjgyIiBzdHJva2U9IiM0YTM3MjYiIHN0cm9rZS13aWR0aD0iMSIvPgo8bGluZSB4MT0iNTgiIHkxPSI4MiIgeDI9IjYyIiB5Mj0iODIiIHN0cm9rZT0iIzRhMzcyNiIgc3Ryb2tlLXdpZHRoPSIxIi8+CjxsaW5lIHgxPSIzOCIgeTE9Ijg2IiB4Mj0iNDIiIHkyPSI4NiIgc3Ryb2tlPSIjNGEzNzI2IiBzdHJva2Utd2lkdGg9IjEiLz4KPGxpbmUgeDE9IjU4IiB5MT0iODYiIHgyPSI2MiIgeTI9Ijg2IiBzdHJva2U9IiM0YTM3MjYiIHN0cm9rZS13aWR0aD0iMSIvPgoKPCEtLSBNYWluIFRydW5rIC0tPgo8bGluZSB4MT0iNTAiIHkxPSI3NSIgeDI9IjUwIiB5Mj0iNjAiIHN0cm9rZT0iIzg0Y2M1YyIgc3Ryb2tlLXdpZHRoPSIzIi8+Cgo8IS0tIEZpcnN0IExldmVsIEJyYW5jaGVzIC0tPgo8bGluZSB4MT0iNDAiIHkxPSI2NSIgeDI9IjYwIiB5Mj0iNjUiIHN0cm9rZT0iIzg0Y2M1YyIgc3Ryb2tlLXdpZHRoPSIyIi8+CjxsaW5lIHgxPSI0MCIgeTE9IjY1IiB4Mj0iNDAiIHkyPSI1NSIgc3Ryb2tlPSIjODRjYzVjIiBzdHJva2Utd2lkdGg9IjIiLz4KPGxpbmUgeDE9IjYwIiB5MT0iNjUiIHgyPSI2MCIgeTI9IjU1IiBzdHJva2U9IiM4NGNjNWMiIHN0cm9rZS13aWR0aD0iMiIvPgoKPCEtLSBTZWNvbmQgTGV2ZWwgQnJhbmNoZXMgLS0+CjxsaW5lIHgxPSIzNSIgeTE9IjYwIiB4Mj0iNDUiIHkyPSI2MCIgc3Ryb2tlPSIjODRjYzVjIiBzdHJva2Utd2lkdGg9IjIiLz4KPGxpbmUgeDE9IjU1IiB5MT0iNjAiIHgyPSI2NSIgeTI9IjYwIiBzdHJva2U9IiM4NGNjNWMiIHN0cm9rZS13aWR0aD0iMiIvPgo8bGluZSB4MT0iMzUiIHkxPSI2MCIgeDI9IjM1IiB5Mj0iNDUiIHN0cm9rZT0iIzg0Y2M1YyIgc3Ryb2tlLXdpZHRoPSIyIi8+CjxsaW5lIHgxPSI0NSIgeTE9IjYwIiB4Mj0iNDUiIHkyPSI0NSIgc3Ryb2tlPSIjODRjYzVjIiBzdHJva2Utd2lkdGg9IjIiLz4KPGxpbmUgeDE9IjU1IiB5MT0iNjAiIHgyPSI1NSIgeTI9IjQ1IiBzdHJva2U9IiM4NGNjNWMiIHN0cm9rZS13aWR0aD0iMiIvPgo8bGluZSB4MT0iNjUiIHkxPSI2MCIgeDI9IjY1IiB5Mj0iNDUiIHN0cm9rZT0iIzg0Y2M1YyIgc3Ryb2tlLXdpZHRoPSIyIi8+Cgo8IS0tIFRoaXJkIExldmVsIEJyYW5jaGVzIC0tPgo8bGluZSB4MT0iMjgiIHkxPSI1MCIgeDI9IjQyIiB5Mj0iNTAiIHN0cm9rZT0iIzg0Y2M1YyIgc3Ryb2tlLXdpZHRoPSIxLjUiLz4KPGxpbmUgeDE9IjU4IiB5MT0iNTAiIHgyPSI3MiIgeTI9IjUwIiBzdHJva2U9IiM4NGNjNWMiIHN0cm9rZS13aWR0aD0iMS41Ii8+CjxsaW5lIHgxPSIyOCIgeTE9IjUwIiB4Mj0iMjgiIHkyPSIzNSIgc3Ryb2tlPSIjODRjYzVjIiBzdHJva2Utd2lkdGg9IjEuNSIvPgo8bGluZSB4MT0iNDIiIHkxPSI1MCIgeDI9IjQyIiB5Mj0iMzUiIHN0cm9rZT0iIzg0Y2M1YyIgc3Ryb2tlLXdpZHRoPSIxLjUiLz4KPGxpbmUgeDE9IjU4IiB5MT0iNTAiIHgyPSI1OCIgeTI9IjM1IiBzdHJva2U9IiM4NGNjNWMiIHN0cm9rZS13aWR0aD0iMS41Ii8+CjxsaW5lIHgxPSI3MiIgeTE9IjUwIiB4Mj0iNzIiIHkyPSIzNSIgc3Ryb2tlPSIjODRjYzVjIiBzdHJva2Utd2lkdGg9IjEuNSIvPgoKPCEtLSBGb3VydGggTGV2ZWwgQnJhbmNoZXMgLS0+CjxsaW5lIHgxPSIyMiIgeTE9IjQwIiB4Mj0iMzQiIHkyPSI0MCIgc3Ryb2tlPSIjODRjYzVjIiBzdHJva2Utd2lkdGg9IjEiLz4KPGxpbmUgeDE9IjM2IiB5MT0iNDAiIHgyPSI0OCIgeTI9IjQwIiBzdHJva2U9IiM4NGNjNWMiIHN0cm9rZS13aWR0aD0iMSIvPgo8bGluZSB4MT0iNTIiIHkxPSI0MCIgeDI9IjY0IiB5Mj0iNDAiIHN0cm9rZT0iIzg0Y2M1YyIgc3Ryb2tlLXdpZHRoPSIxIi8+CjxsaW5lIHgxPSI2NiIgeTE9IjQwIiB4Mj0iNzgiIHkyPSI0MCIgc3Ryb2tlPSIjODRjYzVjIiBzdHJva2Utd2lkdGg9IjEiLz4KCjwhLS0gQ2lyY3VpdCBOb2RlcyAtLT4KPGV0IGN4PSIyOCIgY3k9IjM1IiByPSIyIiBmaWxsPSIjODRjYzVjIi8+CjxjaXJjbGUgY3g9IjQyIiBjeT0iMzUiIHI9IjIiIGZpbGw9IiM4NGNjNWMiLz4KPGV0IGN4PSI1OCIgY3k9IjM1IiByPSIyIiBmaWxsPSIjODRjYzVjIi8+CjxjaXJjbGUgY3g9IjcyIiBjeT0iMzUiIHI9IjIiIGZpbGw9IiM4NGNjNWMiLz4KPGV0IGN4PSIzNSIgY3k9IjQ1IiByPSIyIiBmaWxsPSIjODRjYzVjIi8+CjxjaXJjbGUgY3g9IjQ1IiBjeT0iNDUiIHI9IjIiIGZpbGw9IiM4NGNjNWMiLz4KPGV0IGN4PSI1NSIgY3k9IjQ1IiByPSIyIiBmaWxsPSIjODRjYzVjIi8+CjxjaXJjbGUgY3g9IjY1IiBjeT0iNDUiIHI9IjIiIGZpbGw9IiM4NGNjNWMiLz4KPGV0IGN4PSI0MCIgY3k9IjU1IiByPSIyIiBmaWxsPSIjODRjYzVjIi8+CjxjaXJjbGUgY3g9IjYwIiBjeT0iNTUiIHI9IjIiIGZpbGw9IiM4NGNjNWMiLz4KPGN0IGN4PSI1MCIgY3k9IjYwIiByPSIyIiBmaWxsPSIjODRjYzVjIi8+Cgo8IS0tIFRvcCBOb2RlcyAtLT4KPGV0IGN4PSIyMiIgY3k9IjQwIiByPSIxLjUiIGZpbGw9IiM4NGNjNWMiLz4KPGV0IGN4PSIzNCIgY3k9IjQwIiByPSIxLjUiIGZpbGw9IiM4NGNjNWMiLz4KPGV0IGN4PSI0OCIgY3k9IjQwIiByPSIxLjUiIGZpbGw9IiM4NGNjNWMiLz4KPGV0IGN4PSI2NCIgY3k9IjQwIiByPSIxLjUiIGZpbGw9IiM4NGNjNWMiLz4KPGV0IGN4PSI3OCIgY3k9IjQwIiByPSIxLjUiIGZpbGw9IiM4NGNjNWMiLz4KPC9nPgo8L3N2Zz4K" 
-              alt="The Direct Tree Logo" 
-              className="w-10 h-10 group-hover:scale-110 transition-transform"
-            />
-            <span className="text-2xl font-bold" style={{ fontFamily: "'Celestia BC', 'Orbitron', 'Exo 2', 'Rajdhani', sans-serif" }}>The Direct Tree</span>
+          <Link to="/" className="flex items-center space-x-3 text-white hover:opacity-90 transition-opacity group">
+            <div className="flex flex-col items-center">
+              {/* Complete Logo with Circular Text */}
+              <svg width="120" height="120" viewBox="0 0 400 400" fill="none" xmlns="http://www.w3.org/2000/svg" className="group-hover:scale-105 transition-transform">
+                {/* Background Circle */}
+                <circle cx="200" cy="200" r="190" fill="rgba(255, 255, 255, 0.1)" stroke="rgba(255, 255, 255, 0.2)" strokeWidth="2"/>
+                
+                {/* Circular Text - THE DIRECT TREE */}
+                <defs>
+                  <path id="circle-text" d="M 200, 200 m -140, 0 a 140,140 0 1,1 280,0 a 140,140 0 1,1 -280,0"/>
+                </defs>
+                <text fontSize="32" fontWeight="bold" fill="#84cc5c" fontFamily="Arial, sans-serif">
+                  <textPath href="#circle-text" startOffset="0%">
+                    T H E   D I R E C T   T R E E
+                  </textPath>
+                </text>
+                
+                {/* Circuit Tree Design */}
+                <g transform="translate(200, 200)">
+                  {/* Root Chip */}
+                  <rect x="-25" y="60" width="50" height="25" fill="#8b4513" stroke="#654321" strokeWidth="2" rx="3"/>
+                  <line x1="-35" y1="70" x2="-25" y2="70" stroke="#654321" strokeWidth="2"/>
+                  <line x1="25" y1="70" x2="35" y2="70" stroke="#654321" strokeWidth="2"/>
+                  <line x1="-35" y1="75" x2="-25" y2="75" stroke="#654321" strokeWidth="2"/>
+                  <line x1="25" y1="75" x2="35" y2="75" stroke="#654321" strokeWidth="2"/>
+                  
+                  {/* Main Trunk */}
+                  <line x1="0" y1="60" x2="0" y2="30" stroke="#84cc5c" strokeWidth="6"/>
+                  
+                  {/* First Level Branches */}
+                  <line x1="-40" y1="45" x2="40" y2="45" stroke="#84cc5c" strokeWidth="4"/>
+                  <line x1="-40" y1="45" x2="-40" y2="15" stroke="#84cc5c" strokeWidth="4"/>
+                  <line x1="40" y1="45" x2="40" y2="15" stroke="#84cc5c" strokeWidth="4"/>
+                  
+                  {/* Second Level Branches */}
+                  <line x1="-70" y1="30" x2="-10" y2="30" stroke="#84cc5c" strokeWidth="3"/>
+                  <line x1="10" y1="30" x2="70" y2="30" stroke="#84cc5c" strokeWidth="3"/>
+                  <line x1="-70" y1="30" x2="-70" y2="0" stroke="#84cc5c" strokeWidth="3"/>
+                  <line x1="-10" y1="30" x2="-10" y2="0" stroke="#84cc5c" strokeWidth="3"/>
+                  <line x1="10" y1="30" x2="10" y2="0" stroke="#84cc5c" strokeWidth="3"/>
+                  <line x1="70" y1="30" x2="70" y2="0" stroke="#84cc5c" strokeWidth="3"/>
+                  
+                  {/* Third Level Branches */}
+                  <line x1="-90" y1="15" x2="-50" y2="15" stroke="#84cc5c" strokeWidth="2"/>
+                  <line x1="-30" y1="15" x2="30" y2="15" stroke="#84cc5c" strokeWidth="2"/>
+                  <line x1="50" y1="15" x2="90" y2="15" stroke="#84cc5c" strokeWidth="2"/>
+                  
+                  {/* Circuit Nodes */}
+                  <circle cx="-70" cy="0" r="4" fill="#84cc5c"/>
+                  <circle cx="-10" cy="0" r="4" fill="#84cc5c"/>
+                  <circle cx="10" cy="0" r="4" fill="#84cc5c"/>
+                  <circle cx="70" cy="0" r="4" fill="#84cc5c"/>
+                  <circle cx="-40" cy="15" r="3" fill="#84cc5c"/>
+                  <circle cx="40" cy="15" r="3" fill="#84cc5c"/>
+                  <circle cx="0" cy="30" r="3" fill="#84cc5c"/>
+                  
+                  {/* End Nodes */}
+                  <circle cx="-90" cy="15" r="3" fill="#84cc5c"/>
+                  <circle cx="-50" cy="15" r="3" fill="#84cc5c"/>
+                  <circle cx="-30" cy="15" r="3" fill="#84cc5c"/>
+                  <circle cx="30" cy="15" r="3" fill="#84cc5c"/>
+                  <circle cx="50" cy="15" r="3" fill="#84cc5c"/>
+                  <circle cx="90" cy="15" r="3" fill="#84cc5c"/>
+                </g>
+                
+                {/* Tagline at Bottom */}
+                <text x="200" y="340" textAnchor="middle" fontSize="16" fontWeight="600" fill="#84cc5c" letterSpacing="3">
+                  BRANCH OUT &amp; STAND TALL
+                </text>
+              </svg>
+            </div>
           </Link>
           <nav className="flex items-center space-x-6">
             <Link to="/businesses" className="hover:text-green-200 transition-colors font-medium">
