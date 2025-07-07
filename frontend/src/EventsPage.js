@@ -333,9 +333,9 @@ const EventsPage = () => {
                 <div className="flex items-start">
                   <span className="text-green-500 text-lg mr-2">💰</span>
                   <div>
-                    <h4 className="font-semibold text-green-800">Event Listing Fee: $5</h4>
-                    <p className="text-green-700 text-sm">
-                      After creating your event, you'll be redirected to PayPal to pay the $5 listing fee. Your event will be live immediately after payment confirmation.
+                    <h4 className="font-semibold text-green-800">Event Listing</h4>
+                    <p className="text-sm text-gray-600 mt-2">
+                      After creating your event, you'll be redirected to PayPal for payment. Your event will be live immediately after payment confirmation.
                     </p>
                   </div>
                 </div>
