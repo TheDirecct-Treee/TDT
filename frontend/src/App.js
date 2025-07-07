@@ -864,42 +864,26 @@ const RegisterPage = () => {
           {/* Terms and Privacy Policy Agreement */}
           <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
             <h3 className="font-semibold text-gray-800 mb-4">📋 Agreement Required</h3>
-            <div className="space-y-3">
-              <div className="flex items-start">
-                <input
-                  type="checkbox"
-                  id="termsAndConditions"
-                  name="termsAndConditions"
-                  checked={agreements.termsAndConditions}
-                  onChange={handleAgreementChange}
-                  className="mt-1 mr-3 w-4 h-4 text-green-600 border-gray-300 rounded focus:ring-green-500"
-                  required
-                />
-                <label htmlFor="termsAndConditions" className="text-sm text-gray-700">
-                  I agree to The Direct Tree's{' '}
-                  <Link to="/terms" target="_blank" className="text-green-600 hover:text-green-800 underline font-semibold">
-                    Terms and Conditions
-                  </Link>
-                </label>
-              </div>
-              
-              <div className="flex items-start">
-                <input
-                  type="checkbox"
-                  id="privacyPolicy"
-                  name="privacyPolicy"
-                  checked={agreements.privacyPolicy}
-                  onChange={handleAgreementChange}
-                  className="mt-1 mr-3 w-4 h-4 text-green-600 border-gray-300 rounded focus:ring-green-500"
-                  required
-                />
-                <label htmlFor="privacyPolicy" className="text-sm text-gray-700">
-                  I agree to The Direct Tree's{' '}
-                  <Link to="/privacy-policy" target="_blank" className="text-green-600 hover:text-green-800 underline font-semibold">
-                    Privacy Policy
-                  </Link>
-                </label>
-              </div>
+            <div className="flex items-start gap-2 mt-4">
+              <input
+                type="checkbox"
+                id="agreesToTermsAndPrivacy"
+                name="agreesToTermsAndPrivacy"
+                checked={agreements.agreesToTermsAndPrivacy}
+                onChange={handleAgreementChange}
+                className="mt-1 w-4 h-4 text-green-600 border-gray-300 rounded focus:ring-green-500"
+                required
+              />
+              <label htmlFor="agreesToTermsAndPrivacy" className="text-sm text-gray-700">
+                I agree to the{" "}
+                <Link to="/terms" className="text-green-600 hover:text-green-800 underline font-semibold" target="_blank" rel="noopener noreferrer">
+                  Terms & Conditions
+                </Link>{" "}
+                and{" "}
+                <Link to="/privacy-policy" className="text-green-600 hover:text-green-800 underline font-semibold" target="_blank" rel="noopener noreferrer">
+                  Privacy Policy
+                </Link>.
+              </label>
             </div>
             
             <div className="mt-3 text-xs text-gray-600 bg-gray-50 p-2 rounded">
