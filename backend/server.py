@@ -1551,6 +1551,250 @@ async def delete_event(event_id: str, organizer_email: str):
     
     return {"message": "Event deleted successfully"}
 
+# Apartment Listing Routes
+@api_router.get("/apartments")
+async def get_apartments(
+    island: Optional[str] = None,
+    property_type: Optional[str] = None,
+    min_rent: Optional[float] = None,
+    max_rent: Optional[float] = None,
+    bedrooms: Optional[int] = None,
+    skip: int = 0,
+    limit: int = 50
+):
+    query = {"is_active": True, "is_paid": True, "is_available": True}
+    
+    if island:
+        query["island"] = island
+    if property_type:
+        query["property_type"] = property_type
+    if bedrooms:
+        query["bedrooms"] = bedrooms
+    if min_rent is not None or max_rent is not None:
+        rent_query = {}
+        if min_rent is not None:
+            rent_query["$gte"] = min_rent
+        if max_rent is not None:
+            rent_query["$lte"] = max_rent
+        query["monthly_rent"] = rent_query
+    
+    apartments = await db.apartments.find(query).sort("created_at", -1).skip(skip).limit(limit).to_list(limit)
+    return [ApartmentListing(**apartment) for apartment in apartments]
+
+@api_router.post("/apartment/create", response_model=ApartmentListing)
+async def create_apartment_listing(apartment_data: ApartmentListingCreate):
+    apartment_dict = apartment_data.model_dump()
+    apartment_dict["id"] = str(uuid.uuid4())
+    apartment_dict["created_at"] = datetime.utcnow()
+    apartment_dict["updated_at"] = datetime.utcnow()
+    
+    await db.apartments.insert_one(apartment_dict)
+    
+    return ApartmentListing(**apartment_dict)
+
+@api_router.get("/apartment/{listing_id}", response_model=ApartmentListing)
+async def get_apartment_listing(listing_id: str):
+    apartment = await db.apartments.find_one({"id": listing_id, "is_active": True})
+    if not apartment:
+        raise HTTPException(status_code=404, detail="Apartment listing not found")
+    
+    return ApartmentListing(**apartment)
+
+@api_router.post("/apartment/{listing_id}/create-payment")
+async def create_apartment_payment(listing_id: str):
+    # Verify listing exists
+    listing = await db.apartments.find_one({"id": listing_id})
+    if not listing:
+        raise HTTPException(status_code=404, detail="Apartment listing not found")
+    
+    if listing.get("is_paid", False):
+        raise HTTPException(status_code=400, detail="Apartment listing is already paid")
+    
+    try:
+        payment = paypalrestsdk.Payment({
+            "intent": "sale",
+            "payer": {
+                "payment_method": "paypal"
+            },
+            "redirect_urls": {
+                "return_url": f"{os.environ.get('FRONTEND_URL', 'http://localhost:3000')}/apartment/payment/success",
+                "cancel_url": f"{os.environ.get('FRONTEND_URL', 'http://localhost:3000')}/apartment/payment/cancel"
+            },
+            "transactions": [{
+                "item_list": {
+                    "items": [{
+                        "name": f"Apartment Listing: {listing['title']}",
+                        "sku": "apartment_listing",
+                        "price": "10.00",
+                        "currency": "USD",
+                        "quantity": 1
+                    }]
+                },
+                "amount": {
+                    "total": "10.00",
+                    "currency": "USD"
+                },
+                "description": f"Payment for apartment listing: {listing['title']}"
+            }]
+        })
+        
+        if payment.create():
+            # Store payment info
+            await db.apartment_payments.insert_one({
+                "payment_id": payment.id,
+                "listing_id": listing_id,
+                "amount": 10.00,
+                "currency": "USD",
+                "status": "created",
+                "created_at": datetime.utcnow()
+            })
+            
+            # Find approval URL
+            approval_url = None
+            for link in payment.links:
+                if link.rel == "approval_url":
+                    approval_url = link.href
+                    break
+            
+            return {
+                "payment_id": payment.id,
+                "approval_url": approval_url
+            }
+        else:
+            logging.error(f"PayPal payment creation failed: {payment.error}")
+            raise HTTPException(status_code=400, detail="Payment creation failed")
+    
+    except Exception as e:
+        logging.error(f"Error creating apartment payment: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Payment creation failed: {str(e)}")
+
+@api_router.post("/apartment/{listing_id}/execute-payment")
+async def execute_apartment_payment(listing_id: str, payment_data: ApartmentPayment):
+    try:
+        payment = paypalrestsdk.Payment.find(payment_data.paypal_payment_id)
+        
+        if payment.execute({"payer_id": payment_data.paypal_payment_id}):
+            # Update listing as paid
+            await db.apartments.update_one(
+                {"id": listing_id},
+                {
+                    "$set": {
+                        "is_paid": True,
+                        "payment_date": datetime.utcnow(),
+                        "paypal_payment_id": payment_data.paypal_payment_id,
+                        "updated_at": datetime.utcnow()
+                    }
+                }
+            )
+            
+            # Update payment record
+            await db.apartment_payments.update_one(
+                {"payment_id": payment_data.paypal_payment_id},
+                {
+                    "$set": {
+                        "status": "completed",
+                        "executed_at": datetime.utcnow()
+                    }
+                }
+            )
+            
+            return {"message": "Payment successful! Your apartment listing is now live."}
+        else:
+            logging.error(f"PayPal payment execution failed: {payment.error}")
+            raise HTTPException(status_code=400, detail="Payment execution failed")
+    
+    except Exception as e:
+        logging.error(f"Error executing apartment payment: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Payment execution failed: {str(e)}")
+
+@api_router.post("/apartment/{listing_id}/upload-photo")
+async def upload_apartment_photo(
+    listing_id: str,
+    file: UploadFile = File(...),
+    contact_email: str = Form(...)
+):
+    # Verify listing ownership
+    listing = await db.apartments.find_one({"id": listing_id, "contact_email": contact_email})
+    if not listing:
+        raise HTTPException(status_code=404, detail="Apartment listing not found or access denied")
+    
+    # Check photo limit (max 6 photos)
+    current_photos = listing.get("photos", [])
+    if len(current_photos) >= 6:
+        raise HTTPException(status_code=400, detail="Maximum 6 photos allowed per listing")
+    
+    try:
+        # Upload to Cloudinary
+        upload_result = cloudinary.uploader.upload(
+            file.file,
+            folder=f"apartment_listings/{listing_id}",
+            transformation=[
+                {"width": 800, "height": 600, "crop": "fill", "quality": "auto"},
+            ]
+        )
+        
+        # Update listing with new photo
+        new_photos = current_photos + [upload_result["secure_url"]]
+        await db.apartments.update_one(
+            {"id": listing_id},
+            {
+                "$set": {
+                    "photos": new_photos,
+                    "updated_at": datetime.utcnow()
+                }
+            }
+        )
+        
+        return {
+            "message": "Photo uploaded successfully",
+            "photo_url": upload_result["secure_url"],
+            "total_photos": len(new_photos)
+        }
+    
+    except Exception as e:
+        logging.error(f"Error uploading apartment photo: {str(e)}")
+        raise HTTPException(status_code=500, detail="Photo upload failed")
+
+@api_router.get("/my-apartments")
+async def get_my_apartment_listings(contact_email: str):
+    listings = await db.apartments.find({"contact_email": contact_email, "is_active": True}).sort("created_at", -1).to_list(100)
+    return [ApartmentListing(**listing) for listing in listings]
+
+@api_router.put("/apartment/{listing_id}")
+async def update_apartment_listing(
+    listing_id: str,
+    apartment_data: ApartmentListingCreate,
+    contact_email: str
+):
+    # Verify listing ownership
+    existing_listing = await db.apartments.find_one({"id": listing_id, "contact_email": contact_email})
+    if not existing_listing:
+        raise HTTPException(status_code=404, detail="Apartment listing not found or access denied")
+    
+    update_data = apartment_data.model_dump()
+    update_data["updated_at"] = datetime.utcnow()
+    
+    await db.apartments.update_one(
+        {"id": listing_id},
+        {"$set": update_data}
+    )
+    
+    return {"message": "Apartment listing updated successfully"}
+
+@api_router.delete("/apartment/{listing_id}")
+async def delete_apartment_listing(listing_id: str, contact_email: str):
+    # Verify listing ownership
+    listing = await db.apartments.find_one({"id": listing_id, "contact_email": contact_email})
+    if not listing:
+        raise HTTPException(status_code=404, detail="Apartment listing not found or access denied")
+    
+    await db.apartments.update_one(
+        {"id": listing_id},
+        {"$set": {"is_active": False, "updated_at": datetime.utcnow()}}
+    )
+    
+    return {"message": "Apartment listing deleted successfully"}
+
 # Admin Routes
 @api_router.get("/admin/businesses/pending")
 async def get_pending_businesses(current_user: User = Depends(get_current_user)):
