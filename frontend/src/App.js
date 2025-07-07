@@ -137,6 +137,9 @@ const Header = () => {
             <Link to="/events" className="hover:text-green-200 transition-colors font-medium">
               Events
             </Link>
+            <Link to="/apartments" className="hover:text-green-200 transition-colors font-medium">
+              Apartments
+            </Link>
             {user ? (
               <div className="flex items-center space-x-4">
                 <span className="text-green-100">
