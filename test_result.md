@@ -327,6 +327,42 @@ frontend:
         agent: "testing"
         comment: "The hero section features a modern design with floating elements and enhanced CTA buttons. The logo 'THE DIRECT TREE' and tagline 'BRANCH OUT & STAND TALL' are correctly displayed in the header. The circuit board tree icon is properly implemented."
 
+  - task: "Apartments page implementation"
+    implemented: true
+    working: true
+    file: "ApartmentsPage.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "Apartments page is fully functional with proper listing creation form, filtering system (island, property type, rent range, bedrooms), and 'List Your Property' button. The $10 fee display is correctly shown and the payment flow initiation is properly implemented."
+
+  - task: "Events page update"
+    implemented: true
+    working: true
+    file: "EventsPage.js"
+    stuck_count: 0
+    priority: "medium"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "Events page has been updated correctly. The '($5)' text has been removed from the create event button. The event creation form functions properly and includes the 'Happy Hour' category in the dropdown options. Event filtering and display work as expected."
+
+  - task: "Business categories update"
+    implemented: true
+    working: true
+    file: "App.js"
+    stuck_count: 0
+    priority: "medium"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "The business categories have been successfully updated to include 'Gym' and 'Personal Trainers'. Both categories appear in the category selection dropdown during business registration. The categories are properly integrated into the system."
+
 metadata:
   created_by: "main_agent"
   version: "1.0"
