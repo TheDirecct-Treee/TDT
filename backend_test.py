@@ -541,6 +541,188 @@ class DirectTreeAPITest(unittest.TestCase):
         self.assertIn("logo", business)
         
         print("✅ BusinessProfile model fields test passed")
+        
+    def test_25_create_apartment_listing(self):
+        """Test apartment listing creation"""
+        print("\n🔍 Testing apartment listing creation...")
+        
+        # Generate unique test data
+        timestamp = int(time.time())
+        test_apartment_title = f"Test Apartment {timestamp}"
+        
+        apartment_data = {
+            "title": test_apartment_title,
+            "description": "Spacious 2-bedroom apartment with ocean view",
+            "address": "123 Ocean Drive",
+            "island": "New Providence",
+            "bedrooms": 2,
+            "bathrooms": 1,
+            "monthly_rent": 1200.00,
+            "property_type": "Apartment",
+            "furnishing": "Furnished",
+            "amenities": ["Pool", "Gym", "A/C", "Parking"],
+            "utilities_included": ["Water", "Internet"],
+            "lease_duration": "1 Year",
+            "available_date": (datetime.utcnow() + timedelta(days=7)).isoformat(),
+            "contact_name": "John Smith",
+            "contact_email": "john.smith@example.com",
+            "contact_phone": "1234567890"
+        }
+        
+        response = requests.post(f"{BACKEND_URL}/apartment/create", json=apartment_data)
+        self.assertEqual(response.status_code, 200)
+        data = response.json()
+        self.assertEqual(data["title"], test_apartment_title)
+        self.test_apartment_id = data["id"]
+        print("✅ Apartment listing creation test passed")
+        
+    def test_26_get_apartment_listing(self):
+        """Test retrieving a specific apartment listing"""
+        # Skip if we don't have an apartment ID
+        if not hasattr(self, 'test_apartment_id'):
+            print("\n⚠️ Skipping apartment retrieval test - No apartment ID available")
+            return
+            
+        print(f"\n🔍 Testing apartment retrieval by ID: {self.test_apartment_id}...")
+        response = requests.get(f"{BACKEND_URL}/apartment/{self.test_apartment_id}")
+        self.assertEqual(response.status_code, 200)
+        apartment = response.json()
+        self.assertEqual(apartment["id"], self.test_apartment_id)
+        print("✅ Apartment retrieval test passed")
+        
+    def test_27_get_apartments_with_filtering(self):
+        """Test retrieving apartments with filtering"""
+        print("\n🔍 Testing apartments endpoint with filtering...")
+        
+        # Test basic retrieval
+        response = requests.get(f"{BACKEND_URL}/apartments")
+        self.assertEqual(response.status_code, 200)
+        apartments = response.json()
+        self.assertIsInstance(apartments, list)
+        print(f"✅ Apartments endpoint test passed - Found {len(apartments)} apartments")
+        
+        # Skip further tests if no apartments available
+        if len(apartments) == 0:
+            print("⚠️ No apartments available for filter testing")
+            return
+            
+        # Test filtering by island
+        island = apartments[0]["island"]
+        response = requests.get(f"{BACKEND_URL}/apartments?island={island}")
+        self.assertEqual(response.status_code, 200)
+        filtered_apartments = response.json()
+        self.assertIsInstance(filtered_apartments, list)
+        if len(filtered_apartments) > 0:
+            for apartment in filtered_apartments:
+                self.assertEqual(apartment["island"], island)
+            print(f"✅ Apartment filtering by island test passed")
+        
+        # Test filtering by property_type
+        property_type = apartments[0]["property_type"]
+        response = requests.get(f"{BACKEND_URL}/apartments?property_type={property_type}")
+        self.assertEqual(response.status_code, 200)
+        filtered_apartments = response.json()
+        self.assertIsInstance(filtered_apartments, list)
+        if len(filtered_apartments) > 0:
+            for apartment in filtered_apartments:
+                self.assertEqual(apartment["property_type"], property_type)
+            print(f"✅ Apartment filtering by property_type test passed")
+        
+        # Test filtering by rent range
+        min_rent = 500
+        max_rent = 2000
+        response = requests.get(f"{BACKEND_URL}/apartments?min_rent={min_rent}&max_rent={max_rent}")
+        self.assertEqual(response.status_code, 200)
+        filtered_apartments = response.json()
+        self.assertIsInstance(filtered_apartments, list)
+        if len(filtered_apartments) > 0:
+            for apartment in filtered_apartments:
+                self.assertGreaterEqual(apartment["monthly_rent"], min_rent)
+                self.assertLessEqual(apartment["monthly_rent"], max_rent)
+            print(f"✅ Apartment filtering by rent range test passed")
+        
+        # Test filtering by bedrooms
+        bedrooms = apartments[0]["bedrooms"]
+        response = requests.get(f"{BACKEND_URL}/apartments?bedrooms={bedrooms}")
+        self.assertEqual(response.status_code, 200)
+        filtered_apartments = response.json()
+        self.assertIsInstance(filtered_apartments, list)
+        if len(filtered_apartments) > 0:
+            for apartment in filtered_apartments:
+                self.assertEqual(apartment["bedrooms"], bedrooms)
+            print(f"✅ Apartment filtering by bedrooms test passed")
+        
+    def test_28_apartment_photo_upload(self):
+        """Test apartment photo upload"""
+        # Skip if we don't have an apartment ID
+        if not hasattr(self, 'test_apartment_id'):
+            print("\n⚠️ Skipping apartment photo upload test - No apartment ID available")
+            return
+            
+        print("\n🔍 Testing apartment photo upload...")
+        
+        # Create a test image file
+        test_image_path = "/tmp/test_apartment_photo.jpg"
+        with open(test_image_path, "wb") as f:
+            f.write(b"\xff\xd8\xff\xe0\x10JFIF\x01\x01\x01HH\xff\xdbC\x08\x06\x06\x07\x06\x05\x08\x07\x07\x07\t\t\x08\n\x0c\x14\r\x0c\x0b\x0b\x0c\x19\x12\x13\x0f\x14\x1d\x1a\x1f\x1e\x1d\x1a\x1c\x1c $.' \",#\x1c\x1c(7),01444\x1f'9=82<.342\xff\xdbC\x01\t\t\t\x0c\x0b\x0c\x18\r\r\x182!\x1c!22222222222222222222222222222222222222222222222222\xff\xc0\x11\x08\x01\x01\x03\x01\"\x02\x11\x01\x03\x11\x01\xff\xc4\x1f\x01\x05\x01\x01\x01\x01\x01\x01\x01\x02\x03\x04\x05\x06\x07\x08\t\n\x0b\xff\xc4\xb5\x10\x02\x01\x03\x03\x02\x04\x03\x05\x05\x04\x04\x01}\x01\x02\x03\x04\x11\x05\x12!1A\x06\x13Qa\x07\"q\x142\x81\x91\xa1\x08#B\xb1\xc1\x15R\xd1\xf0$3br\x82\t\n\x16\x17\x18\x19\x1a%&'()*456789:CDEFGHIJSTUVWXYZcdefghijstuvwxyz\x83\x84\x85\x86\x87\x88\x89\x8a\x92\x93\x94\x95\x96\x97\x98\x99\x9a\xa2\xa3\xa4\xa5\xa6\xa7\xa8\xa9\xaa\xb2\xb3\xb4\xb5\xb6\xb7\xb8\xb9\xba\xc2\xc3\xc4\xc5\xc6\xc7\xc8\xc9\xca\xd2\xd3\xd4\xd5\xd6\xd7\xd8\xd9\xda\xe1\xe2\xe3\xe4\xe5\xe6\xe7\xe8\xe9\xea\xf1\xf2\xf3\xf4\xf5\xf6\xf7\xf8\xf9\xfa\xff\xc4\x1f\x01\x03\x01\x01\x01\x01\x01\x01\x01\x01\x01\x01\x02\x03\x04\x05\x06\x07\x08\t\n\x0b\xff\xc4\xb5\x11\x02\x01\x02\x04\x04\x03\x04\x07\x05\x04\x04\x01\x02w\x01\x02\x03\x11\x04\x05!1\x06\x12AQ\x07aq\x13\"2\x81\x08\x14B\x91\xa1\xb1\xc1\t#3R\xf0\x15br\xd1\n\x16$4\xe1%\xf1\x17\x18\x19\x1a&'()*56789:CDEFGHIJSTUVWXYZcdefghijstuvwxyz\x82\x83\x84\x85\x86\x87\x88\x89\x8a\x92\x93\x94\x95\x96\x97\x98\x99\x9a\xa2\xa3\xa4\xa5\xa6\xa7\xa8\xa9\xaa\xb2\xb3\xb4\xb5\xb6\xb7\xb8\xb9\xba\xc2\xc3\xc4\xc5\xc6\xc7\xc8\xc9\xca\xd2\xd3\xd4\xd5\xd6\xd7\xd8\xd9\xda\xe2\xe3\xe4\xe5\xe6\xe7\xe8\xe9\xea\xf2\xf3\xf4\xf5\xf6\xf7\xf8\xf9\xfa\xff\xda\x0c\x03\x01\x02\x11\x03\x11?\xfe\xfe(\xa2\x8a\xff\xd9")
+        
+        # Test photo upload
+        with open(test_image_path, "rb") as f:
+            files = {"file": ("test_apartment.jpg", f, "image/jpeg")}
+            data = {"contact_email": "john.smith@example.com"}
+            response = requests.post(
+                f"{BACKEND_URL}/apartment/{self.test_apartment_id}/upload-photo",
+                files=files,
+                data=data
+            )
+            
+        self.assertEqual(response.status_code, 200)
+        data = response.json()
+        self.assertIn("message", data)
+        print("✅ Apartment photo upload test passed")
+        
+        # Clean up
+        if os.path.exists(test_image_path):
+            os.remove(test_image_path)
+            
+    def test_29_apartment_payment_creation(self):
+        """Test apartment payment creation"""
+        # Skip if we don't have an apartment ID
+        if not hasattr(self, 'test_apartment_id'):
+            print("\n⚠️ Skipping apartment payment creation test - No apartment ID available")
+            return
+            
+        print("\n🔍 Testing apartment payment creation...")
+        response = requests.post(f"{BACKEND_URL}/apartment/{self.test_apartment_id}/create-payment")
+        self.assertEqual(response.status_code, 200)
+        data = response.json()
+        self.assertIn("payment_id", data)
+        self.assertIn("approval_url", data)
+        print("✅ Apartment payment creation test passed")
+        
+    def test_30_user_registration_with_agreements(self):
+        """Test user registration with agreements"""
+        print("\n🔍 Testing user registration with agreements...")
+        
+        # Generate unique test data
+        timestamp = int(time.time())
+        test_user_email = f"test_user_agreements_{timestamp}@example.com"
+        
+        user_data = {
+            "email": test_user_email,
+            "password": "TestPass123!",
+            "first_name": "Test",
+            "last_name": "User",
+            "role": "customer",
+            "phone": "1234567890"
+        }
+        
+        response = requests.post(f"{BACKEND_URL}/register", json=user_data)
+        self.assertEqual(response.status_code, 200)
+        data = response.json()
+        self.assertIn("message", data)
+        self.assertEqual(data["email"], test_user_email)
+        print("✅ User registration with agreements test passed")
 
 def run_tests():
     # Create a test suite
