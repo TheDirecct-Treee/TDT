@@ -304,6 +304,57 @@ class EventPayment(BaseModel):
     event_id: str
     paypal_payment_id: str
 
+# Apartment Listing Models
+class ApartmentListing(BaseModel):
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    title: str
+    description: str
+    address: str
+    island: str
+    bedrooms: int
+    bathrooms: int
+    monthly_rent: float
+    currency: str = "USD"
+    property_type: str  # "Apartment", "House", "Condo", "Room", "Studio"
+    furnishing: str  # "Furnished", "Semi-Furnished", "Unfurnished"
+    amenities: List[str] = []  # ["Pool", "Gym", "Parking", "A/C", "Washer/Dryer", etc.]
+    utilities_included: List[str] = []  # ["Water", "Electricity", "Internet", "Cable", etc.]
+    lease_duration: str  # "Monthly", "6 Months", "1 Year", "Negotiable"
+    available_date: datetime
+    contact_name: str
+    contact_email: EmailStr
+    contact_phone: str
+    photos: List[str] = []  # URLs to photos
+    is_paid: bool = False
+    payment_date: Optional[datetime] = None
+    paypal_payment_id: Optional[str] = None
+    is_active: bool = True
+    is_available: bool = True
+    created_at: datetime = Field(default_factory=datetime.utcnow)
+    updated_at: datetime = Field(default_factory=datetime.utcnow)
+
+class ApartmentListingCreate(BaseModel):
+    title: str
+    description: str
+    address: str
+    island: str
+    bedrooms: int
+    bathrooms: int
+    monthly_rent: float
+    property_type: str
+    furnishing: str
+    amenities: List[str] = []
+    utilities_included: List[str] = []
+    lease_duration: str
+    available_date: datetime
+    contact_name: str
+    contact_email: EmailStr
+    contact_phone: str
+
+class ApartmentPayment(BaseModel):
+    listing_id: str
+    paypal_payment_id: str
+
 # Photo Models
 class PhotoMetadata(BaseModel):
     id: str = Field(default_factory=lambda: str(uuid.uuid4()))
