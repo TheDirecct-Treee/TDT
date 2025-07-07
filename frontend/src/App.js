@@ -274,7 +274,7 @@ const HomePage = () => {
             The Direct Tree
           </h1>
           <p className="text-2xl md:text-3xl mb-10 hero-subtitle text-gray-700 font-semibold">
-            <span className="inline-block bg-white/90 px-4 py-2 rounded-lg shadow-lg text-green-700 animate-pulse">
+            <span className="inline-block px-4 py-2 rounded-lg text-green-700 animate-subtle-glow">
               Branch out and stand tall
             </span>
           </p>
