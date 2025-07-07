@@ -370,11 +370,7 @@ metadata:
   run_ui: false
 
 test_plan:
-  current_focus:
-    - "Registration form Terms & Privacy Policy agreement"
-    - "Business search functionality"
-    - "Enhanced business cards display"
-    - "Backend profile photo upload endpoints"
+  current_focus: []
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
