@@ -63,7 +63,12 @@ class DirectTreeAPITest(unittest.TestCase):
         self.assertIn("categories", data)
         self.assertIsInstance(data["categories"], list)
         self.assertGreater(len(data["categories"]), 0)
-        print(f"✅ Categories endpoint test passed - Found {len(data['categories'])} categories")
+        
+        # Verify new categories are present
+        self.assertIn("Gym", data["categories"])
+        self.assertIn("Personal Trainers", data["categories"])
+        
+        print(f"✅ Categories endpoint test passed - Found {len(data['categories'])} categories including 'Gym' and 'Personal Trainers'")
 
     def test_04_admin_login(self):
         """Test admin login"""
