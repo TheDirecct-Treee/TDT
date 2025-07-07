@@ -214,7 +214,7 @@ const PrivacyPolicy = () => {
           <div className="mt-8 pt-6 border-t border-gray-200">
             <div className="flex justify-between items-center">
               <Link 
-                to="/terms-and-conditions" 
+                to="/terms" 
                 className="text-green-600 hover:text-green-800 font-semibold"
               >
                 ← View Terms & Conditions
