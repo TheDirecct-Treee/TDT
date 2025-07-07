@@ -587,8 +587,8 @@ const RegisterPage = () => {
     setError('');
 
     // Check agreements
-    if (!agreements.termsAndConditions || !agreements.privacyPolicy) {
-      setError('Please agree to both Terms & Conditions and Privacy Policy to continue');
+    if (!agreements.agreesToTermsAndPrivacy) {
+      setError('Please agree to the Terms & Conditions and Privacy Policy to continue');
       setLoading(false);
       return;
     }
