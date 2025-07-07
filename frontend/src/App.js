@@ -555,8 +555,7 @@ const RegisterPage = () => {
   const [success, setSuccess] = useState(false);
   const [message, setMessage] = useState('');
   const [agreements, setAgreements] = useState({
-    termsAndConditions: false,
-    privacyPolicy: false
+    agreesToTermsAndPrivacy: false
   });
 
   useEffect(() => {
