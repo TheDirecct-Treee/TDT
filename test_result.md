@@ -160,6 +160,81 @@ backend:
       - working: true
         agent: "testing"
         comment: "Verified that the /businesses/search endpoint is working correctly. The endpoint accepts a 'q' parameter for text search and properly filters results. Additional filtering by island and category also works as expected. Tests passed successfully."
+        
+  - task: "New Categories - Gym and Personal Trainers"
+    implemented: true
+    working: true
+    file: "server.py"
+    stuck_count: 0
+    priority: "medium"
+    needs_retesting: false
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Added 'Gym' and 'Personal Trainers' to BUSINESS_CATEGORIES list in server.py"
+      - working: true
+        agent: "testing"
+        comment: "Verified that 'Gym' and 'Personal Trainers' are successfully added to BUSINESS_CATEGORIES and are returned by the /categories endpoint. Test passed successfully."
+        
+  - task: "Apartment listing feature"
+    implemented: true
+    working: true
+    file: "server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Added apartment listing models and endpoints for creating, retrieving, and filtering apartment listings"
+      - working: true
+        agent: "testing"
+        comment: "Verified that the apartment listing feature is working correctly. The /apartment/create endpoint successfully creates new apartment listings. The /apartments endpoint returns listings with proper filtering by island, property_type, rent range, and bedrooms. Tests passed successfully."
+        
+  - task: "Apartment photo upload"
+    implemented: true
+    working: true
+    file: "server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Added /apartment/{listing_id}/upload-photo endpoint for uploading apartment photos"
+      - working: true
+        agent: "testing"
+        comment: "Verified that the apartment photo upload endpoint is working correctly. The endpoint accepts a file upload and contact_email for verification. Tests passed successfully."
+        
+  - task: "Apartment payment creation"
+    implemented: true
+    working: true
+    file: "server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Added /apartment/{listing_id}/create-payment endpoint for creating PayPal payments for apartment listings"
+      - working: true
+        agent: "testing"
+        comment: "Verified that the apartment payment creation endpoint is working correctly. The endpoint creates a PayPal payment for $10 and returns a payment_id and approval_url. Tests passed successfully."
+        
+  - task: "User registration with agreements"
+    implemented: true
+    working: true
+    file: "server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Updated user registration flow to handle agreements to Terms & Conditions and Privacy Policy"
+      - working: true
+        agent: "testing"
+        comment: "Verified that the user registration endpoint still works correctly with the updated agreement system. Tests passed successfully."
 
 frontend:
   - task: "Privacy Policy page creation"
@@ -259,3 +334,5 @@ agent_communication:
     message: "Starting Phase 2: UI/UX improvements based on user feedback. Tasks include: 1) Implementing exact user logo design, 2) Removing gradient schemes from categories, 3) Updating island icons to solo version, 4) Removing/emptying featured business section, 5) Ensuring clean, sleek design throughout."
   - agent: "testing"
     message: "Completed comprehensive backend testing for all core functionality. All tests passed successfully. The backend API endpoints for user registration, authentication, business profile management, search functionality, event management (including Happy Hour category), and file uploads are working correctly. The BusinessProfile model includes the required profile_photo, cover_photo, and logo fields, and all three upload endpoints function as expected. The business search API properly filters across multiple fields including business_name, description, category, and services. Admin features for business approval are also working correctly. No issues found with the backend implementation."
+  - agent: "testing"
+    message: "Completed testing for the newly added features. All tests passed successfully. The new business categories 'Gym' and 'Personal Trainers' are correctly added and accessible via the /categories endpoint. The apartment listing feature is working correctly, including creation, retrieval, and filtering by island, property_type, rent range, and bedrooms. The apartment photo upload and payment creation endpoints are functioning as expected. User registration with the updated agreement system is also working properly. No issues found with the new backend implementations."
