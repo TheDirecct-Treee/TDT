@@ -1843,7 +1843,7 @@ function App() {
               <Route path="/admin/promote" element={<AdminPromotion />} />
               <Route path="/subscription/success" element={<SubscriptionSuccess />} />
               <Route path="/subscription/cancel" element={<SubscriptionCancel />} />
-              <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
+              <Route path="/terms" element={<TermsAndConditions />} />
               <Route path="/privacy-policy" element={<PrivacyPolicy />} />
             </Routes>
           </main>
