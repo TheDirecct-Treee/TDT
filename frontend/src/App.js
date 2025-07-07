@@ -296,6 +296,12 @@ const HomePage = () => {
             >
               <span>Browse Events</span>
             </Link>
+            <Link 
+              to="/apartments"
+              className="bg-blue-600 hover:bg-blue-700 text-white px-10 py-4 rounded-lg text-xl font-semibold transition-all transform hover:scale-105 shadow-lg border-2 border-blue-700 hover:border-blue-800"
+            >
+              <span>Find Apartments</span>
+            </Link>
           </div>
           
           {/* Stats */}
