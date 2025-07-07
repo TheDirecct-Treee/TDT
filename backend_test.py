@@ -753,7 +753,13 @@ def run_tests():
         DirectTreeAPITest('test_21_business_profile_photo_upload'),
         DirectTreeAPITest('test_22_business_cover_photo_upload'),
         DirectTreeAPITest('test_23_business_logo_upload'),
-        DirectTreeAPITest('test_24_business_model_fields')
+        DirectTreeAPITest('test_24_business_model_fields'),
+        DirectTreeAPITest('test_25_create_apartment_listing'),
+        DirectTreeAPITest('test_26_get_apartment_listing'),
+        DirectTreeAPITest('test_27_get_apartments_with_filtering'),
+        DirectTreeAPITest('test_28_apartment_photo_upload'),
+        DirectTreeAPITest('test_29_apartment_payment_creation'),
+        DirectTreeAPITest('test_30_user_registration_with_agreements')
     ]
     
     for test_case in test_cases:
