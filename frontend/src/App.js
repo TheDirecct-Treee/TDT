@@ -878,7 +878,7 @@ const RegisterPage = () => {
                 />
                 <label htmlFor="termsAndConditions" className="text-sm text-gray-700">
                   I agree to The Direct Tree's{' '}
-                  <Link to="/terms-and-conditions" target="_blank" className="text-green-600 hover:text-green-800 underline font-semibold">
+                  <Link to="/terms" target="_blank" className="text-green-600 hover:text-green-800 underline font-semibold">
                     Terms and Conditions
                   </Link>
                 </label>
