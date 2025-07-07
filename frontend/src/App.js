@@ -124,9 +124,6 @@ const Header = () => {
                 <h1 className="text-2xl font-bold text-white tracking-wide" style={{ fontFamily: "'Exo 2', 'Orbitron', 'Rajdhani', sans-serif" }}>
                   THE DIRECT TREE
                 </h1>
-                <p className="text-sm text-green-200 tracking-wider font-medium">
-                  BRANCH OUT & STAND TALL
-                </p>
               </div>
             </div>
           </Link>
