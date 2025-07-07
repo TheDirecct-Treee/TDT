@@ -97,7 +97,7 @@ BUSINESS_CATEGORIES = [
     "Graphic Designers", "Cellphone Repairs", "Aestheticians", 
     "Hair Stylist/Braiders", "A/C Technician", "Carpenters", "Catering",
     "Shipping Companies", "Pet Grooming", "Seamstress", "Car Rentals",
-    "Fishing Charters", "Other"
+    "Fishing Charters", "Gym", "Personal Trainers", "Other"
 ]
 
 # Event Categories
