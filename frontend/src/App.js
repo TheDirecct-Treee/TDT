@@ -1822,6 +1822,7 @@ function App() {
               <Route path="/verify-email" element={<EmailVerificationPage />} />
               <Route path="/businesses" element={<BusinessListPage />} />
               <Route path="/events" element={<EventsPage />} />
+              <Route path="/apartments" element={<ApartmentsPage />} />
               <Route path="/dashboard" element={<BusinessDashboard />} />
               <Route path="/admin" element={<AdminDashboard />} />
               <Route path="/admin/promote" element={<AdminPromotion />} />
