@@ -128,7 +128,7 @@ const EventsPage = () => {
             onClick={() => setShowCreateForm(!showCreateForm)}
             className="mt-4 bg-gradient-to-r from-green-600 to-amber-600 hover:from-green-700 hover:to-amber-700 text-white px-6 py-3 rounded-lg font-semibold transition-all transform hover:scale-105"
           >
-            Create Event ($5)
+            Create Event
           </button>
         </div>
 
